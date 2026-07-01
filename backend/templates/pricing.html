@@ -1,0 +1,150 @@
+{% extends 'base_public.html' %}
+
+{% block title %}Pricing & Plans - BlueNova Technologies{% endblock %}
+
+{% block content %}
+    <!-- Breadcrumb -->
+    <nav class="container mb-4" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/" class="text-secondary text-decoration-none">Home</a></li>
+            <li class="breadcrumb-item active text-white" aria-current="page">Pricing</li>
+        </ol>
+    </nav>
+
+    <!-- Pricing Section -->
+    <main class="container py-5">
+        <div class="text-center mb-5 col-lg-8 mx-auto">
+            <span class="badge bg-primary-gradient px-3 py-2 rounded-pill mb-3">AFFORDABLE ENROLLMENT</span>
+            <h1 class="display-4 text-white fw-bold mb-4">Pricing Plans & Cohort <span class="gradient-text">Packages</span></h1>
+            <p class="text-secondary">Select the program path that matches your technical timeline and target placement level.</p>
+        </div>
+
+        <!-- Pricing Cards Row -->
+        <div class="row g-4 mb-5">
+            <!-- Basic Plan -->
+            <div class="col-lg-3 col-md-6">
+                <div class="glass-panel p-4 h-100 d-flex flex-column justify-content-between text-start">
+                    <div>
+                        <h4 class="text-white mb-2">Basic</h4>
+                        <p class="text-secondary small mb-4">Self-guided training guides</p>
+                        <h2 class="text-white fw-bold mb-4">$0 <span class="fs-6 text-muted">/ Free</span></h2>
+                        <hr class="border-secondary opacity-25 mb-4">
+                        <ul class="list-unstyled d-flex flex-column gap-2 small text-secondary">
+                            <li><i class="bi bi-check-circle-fill text-success me-2"></i> Static code syllabi access</li>
+                            <li><i class="bi bi-check-circle-fill text-success me-2"></i> Public sitemap files</li>
+                            <li><i class="bi bi-x-circle-fill text-danger me-2"></i> No active code reviews</li>
+                            <li><i class="bi bi-x-circle-fill text-danger me-2"></i> No placement assistance</li>
+                        </ul>
+                    </div>
+                    <a href="/auth/signup/" class="btn btn-sm btn-secondary-premium w-100 mt-4 py-2">Get Started</a>
+                </div>
+            </div>
+
+            <!-- Standard Plan -->
+            <div class="col-lg-3 col-md-6">
+                <div class="glass-panel p-4 h-100 d-flex flex-column justify-content-between text-start">
+                    <div>
+                        <h4 class="text-white mb-2">Standard</h4>
+                        <p class="text-secondary small mb-4">Standard guided internship</p>
+                        <h2 class="text-white fw-bold mb-4">$299 <span class="fs-6 text-muted">/ Cohort</span></h2>
+                        <hr class="border-secondary opacity-25 mb-4">
+                        <ul class="list-unstyled d-flex flex-column gap-2 small text-secondary">
+                            <li><i class="bi bi-check-circle-fill text-success me-2"></i> 12-Week guided tracks</li>
+                            <li><i class="bi bi-check-circle-fill text-success me-2"></i> Custom dashboard logins</li>
+                            <li><i class="bi bi-check-circle-fill text-success me-2"></i> Completion certificate</li>
+                            <li><i class="bi bi-x-circle-fill text-danger me-2"></i> No custom mock interviews</li>
+                        </ul>
+                    </div>
+                    <a href="/auth/signup/" class="btn btn-sm btn-secondary-premium w-100 mt-4 py-2">Apply Now</a>
+                </div>
+            </div>
+
+            <!-- Professional Plan -->
+            <div class="col-lg-3 col-md-6">
+                <div class="glass-panel p-4 border border-primary h-100 d-flex flex-column justify-content-between text-start" style="position: relative;">
+                    <span class="position-absolute top-0 end-0 bg-primary text-white px-3 py-1 rounded-bl small" style="border-bottom-left-radius: 12px; border-top-right-radius: 16px;">POPULAR</span>
+                    <div>
+                        <h4 class="text-white mb-2">Professional</h4>
+                        <p class="text-secondary small mb-4">Complete mentorship plan</p>
+                        <h2 class="text-white fw-bold mb-4">$499 <span class="fs-6 text-muted">/ Cohort</span></h2>
+                        <hr class="border-secondary opacity-25 mb-4">
+                        <ul class="list-unstyled d-flex flex-column gap-2 small text-secondary">
+                            <li><i class="bi bi-check-circle-fill text-success me-2"></i> Weekly 1-on-1 reviews</li>
+                            <li><i class="bi bi-check-circle-fill text-success me-2"></i> Live team coding projects</li>
+                            <li><i class="bi bi-check-circle-fill text-success me-2"></i> Recommendation letters</li>
+                            <li><i class="bi bi-check-circle-fill text-success me-2"></i> Resume auditing layers</li>
+                        </ul>
+                    </div>
+                    <a href="/auth/signup/" class="btn btn-sm btn-premium w-100 mt-4 py-2">Enroll Professional</a>
+                </div>
+            </div>
+
+            <!-- Enterprise Plan -->
+            <div class="col-lg-3 col-md-6">
+                <div class="glass-panel p-4 h-100 d-flex flex-column justify-content-between text-start">
+                    <div>
+                        <h4 class="text-white mb-2">Enterprise</h4>
+                        <p class="text-secondary small mb-4">Advanced placement assistance</p>
+                        <h2 class="text-white fw-bold mb-4">$850 <span class="fs-6 text-muted">/ Cohort</span></h2>
+                        <hr class="border-secondary opacity-25 mb-4">
+                        <ul class="list-unstyled d-flex flex-column gap-2 small text-secondary">
+                            <li><i class="bi bi-check-circle-fill text-success me-2"></i> Full spring boot/Django coaching</li>
+                            <li><i class="bi bi-check-circle-fill text-success me-2"></i> Unlimited mock reviews</li>
+                            <li><i class="bi bi-check-circle-fill text-success me-2"></i> 100% placement alignment</li>
+                            <li><i class="bi bi-check-circle-fill text-success me-2"></i> 2-Year verification record</li>
+                        </ul>
+                    </div>
+                    <a href="/auth/signup/" class="btn btn-sm btn-secondary-premium w-100 mt-4 py-2">Join Enterprise</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Comparison Table Section -->
+        <div class="glass-panel p-5">
+            <h3 class="text-white mb-4 text-center">Feature Comparison Table</h3>
+            <div class="table-responsive">
+                <table class="table table-dark table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th scope="col">Feature</th>
+                            <th scope="col" class="text-center">Basic</th>
+                            <th scope="col" class="text-center">Standard</th>
+                            <th scope="col" class="text-center">Professional</th>
+                            <th scope="col" class="text-center">Enterprise</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Dashboard access</td>
+                            <td class="text-center"><i class="bi bi-check-lg text-success"></i></td>
+                            <td class="text-center"><i class="bi bi-check-lg text-success"></i></td>
+                            <td class="text-center"><i class="bi bi-check-lg text-success"></i></td>
+                            <td class="text-center"><i class="bi bi-check-lg text-success"></i></td>
+                        </tr>
+                        <tr>
+                            <td>Weekly Mentor Review</td>
+                            <td class="text-center"><i class="bi bi-dash-lg text-muted"></i></td>
+                            <td class="text-center"><i class="bi bi-dash-lg text-muted"></i></td>
+                            <td class="text-center"><i class="bi bi-check-lg text-success"></i></td>
+                            <td class="text-center"><i class="bi bi-check-lg text-success"></i></td>
+                        </tr>
+                        <tr>
+                            <td>Verifiable Certificate</td>
+                            <td class="text-center"><i class="bi bi-dash-lg text-muted"></i></td>
+                            <td class="text-center"><i class="bi bi-check-lg text-success"></i></td>
+                            <td class="text-center"><i class="bi bi-check-lg text-success"></i></td>
+                            <td class="text-center"><i class="bi bi-check-lg text-success"></i></td>
+                        </tr>
+                        <tr>
+                            <td>100% Placement Coordination</td>
+                            <td class="text-center"><i class="bi bi-dash-lg text-muted"></i></td>
+                            <td class="text-center"><i class="bi bi-dash-lg text-muted"></i></td>
+                            <td class="text-center"><i class="bi bi-dash-lg text-muted"></i></td>
+                            <td class="text-center"><i class="bi bi-check-lg text-success"></i></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+{% endblock %}

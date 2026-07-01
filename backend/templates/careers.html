@@ -1,0 +1,115 @@
+{% extends 'base_public.html' %}
+
+{% block title %}Careers at BlueNova - BlueNova Technologies{% endblock %}
+
+{% block content %}
+    <!-- Breadcrumb -->
+    <nav class="container mb-4" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/" class="text-secondary text-decoration-none">Home</a></li>
+            <li class="breadcrumb-item active text-white" aria-current="page">Careers</li>
+        </ol>
+    </nav>
+
+    <!-- Careers Page Body -->
+    <main class="container py-5">
+        <div class="text-center mb-5 col-lg-8 mx-auto">
+            <span class="badge bg-primary-gradient px-3 py-2 rounded-pill mb-3">WE ARE HIRING</span>
+            <h1 class="display-4 text-white fw-bold mb-4">Build the Future of Tech with <span class="gradient-text">BlueNova</span></h1>
+            <p class="text-secondary">Join our team of engineering mentors, developers, and product leads. Explore open internal roles and cohort mentor openings.</p>
+        </div>
+
+        <!-- Benefits Grid -->
+        <div class="mb-5 text-center">
+            <h3 class="text-white mb-4">Benefits & Culture</h3>
+            <div class="row g-4 text-start">
+                <div class="col-md-4">
+                    <div class="glass-panel p-4 h-100">
+                        <i class="bi bi-balloon-heart-fill text-danger fs-2 mb-3"></i>
+                        <h4 class="text-white mb-2">Remote-First Culture</h4>
+                        <p class="text-secondary small mb-0">Collaborate synchronously from anywhere with flexible scheduled routines.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="glass-panel p-4 h-100">
+                        <i class="bi bi-wallet2 text-success fs-2 mb-3"></i>
+                        <h4 class="text-white mb-2">Premium Pay & equity</h4>
+                        <p class="text-secondary small mb-0">Competitive wages, annual bonus matrices, and company stock opportunities.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="glass-panel p-4 h-100">
+                        <i class="bi bi-shield-check text-primary fs-2 mb-3"></i>
+                        <h4 class="text-white mb-2">Health & Wellness</h4>
+                        <p class="text-secondary small mb-0">Comprehensive medical packages, wellness programs, and educational allowances.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Open Positions List -->
+        <div class="row g-4">
+            <div class="col-lg-7">
+                <h3 class="text-white mb-4">Current Openings</h3>
+                
+                <!-- Position 1 -->
+                <div class="glass-panel p-4 mb-3 d-flex justify-content-between align-items-center flex-wrap gap-3">
+                    <div>
+                        <h5 class="text-white mb-1">Senior Django Mentor</h5>
+                        <p class="text-muted small mb-0"><i class="bi bi-geo-alt-fill me-1"></i> Remote (US/Canada) &bull; Full-Time</p>
+                    </div>
+                    <button class="btn btn-sm btn-premium px-4" onclick="document.getElementById('role-title').value = 'Senior Django Mentor';">Apply Now</button>
+                </div>
+
+                <!-- Position 2 -->
+                <div class="glass-panel p-4 mb-3 d-flex justify-content-between align-items-center flex-wrap gap-3">
+                    <div>
+                        <h5 class="text-white mb-1">UI/UX Figma Mentor</h5>
+                        <p class="text-muted small mb-0"><i class="bi bi-geo-alt-fill me-1"></i> Hybrid (Boston Office) &bull; Part-Time</p>
+                    </div>
+                    <button class="btn btn-sm btn-premium px-4" onclick="document.getElementById('role-title').value = 'UI/UX Figma Mentor';">Apply Now</button>
+                </div>
+
+                <!-- Position 3 -->
+                <div class="glass-panel p-4 mb-3 d-flex justify-content-between align-items-center flex-wrap gap-3">
+                    <div>
+                        <h5 class="text-white mb-1">Internship Program HR Coordinator</h5>
+                        <p class="text-muted small mb-0"><i class="bi bi-geo-alt-fill me-1"></i> Remote (US) &bull; Full-Time</p>
+                    </div>
+                    <button class="btn btn-sm btn-premium px-4" onclick="document.getElementById('role-title').value = 'Internship Program HR Coordinator';">Apply Now</button>
+                </div>
+            </div>
+
+            <!-- Apply Form -->
+            <div class="col-lg-5">
+                <div class="glass-panel p-5">
+                    <h3 class="text-white mb-4">Submit Application</h3>
+                    <form id="careerForm" onsubmit="event.preventDefault(); showToast('Application submitted successfully!', 'success'); this.reset();">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label class="form-label text-secondary small">Target Role</label>
+                            <input type="text" id="role-title" class="form-control form-control-premium" required placeholder="Select a role or write custom title">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-secondary small">Full Name</label>
+                            <input type="text" class="form-control form-control-premium" required placeholder="Alice Vance">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-secondary small">Email Address</label>
+                            <input type="email" class="form-control form-control-premium" required placeholder="alice@example.com">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-secondary small">LinkedIn/Portfolio URL</label>
+                            <input type="url" class="form-control form-control-premium" required placeholder="https://linkedin.com/in/">
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label text-secondary small">Resume File (PDF/DOCX)</label>
+                            <input type="file" class="form-control form-control-premium" required>
+                        </div>
+                        <button type="submit" class="btn btn-premium w-100 py-3">Submit Career Application</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

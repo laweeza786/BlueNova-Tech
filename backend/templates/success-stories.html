@@ -1,0 +1,86 @@
+{% extends 'base_public.html' %}
+
+{% block title %}Cohort Success Stories - BlueNova Technologies{% endblock %}
+
+{% block content %}
+    <!-- Breadcrumb -->
+    <nav class="container mb-4" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/" class="text-secondary text-decoration-none">Home</a></li>
+            <li class="breadcrumb-item active text-white" aria-current="page">Success Stories</li>
+        </ol>
+    </nav>
+
+    <!-- Success Stories Overview -->
+    <main class="container py-5">
+        <div class="text-center mb-5 col-lg-8 mx-auto">
+            <span class="badge bg-primary-gradient px-3 py-2 rounded-pill mb-3">JOURNEY INSIGHTS</span>
+            <h1 class="display-4 text-white fw-bold mb-4">Student Journey & Success <span class="gradient-text">Stories</span></h1>
+            <p class="text-secondary">Explore real student journeys tracing how candidates transformed their theoretical knowledge into structured engineering careers.</p>
+        </div>
+
+        <div class="row g-4">
+            <!-- Story 1 -->
+            <div class="col-lg-6">
+                <div class="glass-panel p-5 h-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <div class="d-flex align-items-center gap-3 mb-4">
+                            <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=80&q=80" class="rounded-circle border border-2 border-secondary" width="70" height="70" alt="Student">
+                            <div>
+                                <h4 class="text-white mb-0">Ethan Rogers</h4>
+                                <small class="text-muted">Software Developer, Microsoft</small>
+                            </div>
+                        </div>
+                        <div class="row g-3 mb-4">
+                            <div class="col-6 border-end border-secondary-subtle">
+                                <span class="text-muted small d-block">BEFORE</span>
+                                <strong class="text-danger-gradient">Theoretical Knowledge</strong>
+                                <p class="text-secondary small mb-0">Undergraduate student building small local script files without databases.</p>
+                            </div>
+                            <div class="col-6">
+                                <span class="text-muted small d-block">AFTER</span>
+                                <strong class="text-success-gradient">Django Engineer</strong>
+                                <p class="text-secondary small mb-0">Engineered a complete media sharing application and verified database indexing.</p>
+                            </div>
+                        </div>
+                        <p class="text-secondary small mb-4">"The 12-week program gave me the structure I needed. Reviewing code with my mentor Sarah helped me understand routing logic, REST architecture, and production configurations."</p>
+                    </div>
+                    <div class="border-top border-secondary-subtle pt-3 text-muted small">
+                        <strong>Joined:</strong> Microsoft &bull; 12 LPA Package
+                    </div>
+                </div>
+            </div>
+
+            <!-- Story 2 -->
+            <div class="col-lg-6">
+                <div class="glass-panel p-5 h-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <div class="d-flex align-items-center gap-3 mb-4">
+                            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=80&q=80" class="rounded-circle border border-2 border-secondary" width="70" height="70" alt="Student">
+                            <div>
+                                <h4 class="text-white mb-0">Clara Mitchell</h4>
+                                <small class="text-muted">UI/UX Designer, Amazon</small>
+                            </div>
+                        </div>
+                        <div class="row g-3 mb-4">
+                            <div class="col-6 border-end border-secondary-subtle">
+                                <span class="text-muted small d-block">BEFORE</span>
+                                <strong class="text-danger-gradient">Figma Novice</strong>
+                                <p class="text-secondary small mb-0">Drafting basic website static components without structural alignment layout grids.</p>
+                            </div>
+                            <div class="col-6">
+                                <span class="text-muted small d-block">AFTER</span>
+                                <strong class="text-success-gradient">Senior UI Designer</strong>
+                                <p class="text-secondary small mb-0">Completed a glassmorphic dashboard design, mapping token grids and micro-interactions.</p>
+                            </div>
+                        </div>
+                        <p class="text-secondary small mb-4">"BlueNova's dashboard and profile track pushed my UI skills to standard SaaS engineering levels. The design audits made my case studies highly professional."</p>
+                    </div>
+                    <div class="border-top border-secondary-subtle pt-3 text-muted small">
+                        <strong>Joined:</strong> Amazon &bull; 14 LPA Package
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

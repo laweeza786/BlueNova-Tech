@@ -1,0 +1,158 @@
+{% extends 'base_lms.html' %}
+
+{% block title %}LMS Admin Management - BlueNova ERP{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header -->
+    <div class="mb-5 text-start">
+        <h1 class="display-6 text-white fw-bold"><i class="bi bi-sliders2 text-primary me-2"></i>LMS Admin Management</h1>
+        <p class="text-secondary mb-0">Construct courses, map modules, upload lectures, and monitor student watch logs.</p>
+    </div>
+
+    <!-- Alert feeds -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show mb-4" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="row g-4 text-start">
+        <!-- Forms Panel (Left 7 Columns) -->
+        <div class="col-lg-7">
+            <!-- 1. Create Course -->
+            <div class="glass-panel p-4 mb-4">
+                <h5 class="text-white mb-3"><i class="bi bi-folder-plus text-primary me-2"></i>Create New Course</h5>
+                <form method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="create_course">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label text-secondary small">Course Name</label>
+                            <input type="text" name="name" class="form-control form-control-premium text-white py-1" required placeholder="e.g. Python Scripting">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label text-secondary small">Tagline</label>
+                            <input type="text" name="tagline" class="form-control form-control-premium text-white py-1" placeholder="e.g. Master Python basics to advanced">
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label text-secondary small">Banner Image URL</label>
+                            <input type="text" name="banner_url" class="form-control form-control-premium text-white py-1" placeholder="https://images.unsplash.com/photo-...">
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label text-secondary small">Description</label>
+                            <textarea name="description" rows="3" class="form-control form-control-premium text-white" placeholder="Course outline..."></textarea>
+                        </div>
+                        <div class="col-12 text-end">
+                            <button type="submit" class="btn btn-premium btn-sm">Create Course</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- 2. Create Module -->
+            <div class="glass-panel p-4 mb-4">
+                <h5 class="text-white mb-3"><i class="bi bi-journal-plus text-primary me-2"></i>Add Module to Course</h5>
+                <form method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="create_module">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label text-secondary small">Select Course</label>
+                            <select name="course_id" class="form-select form-control-premium text-white" required>
+                                {% for c in courses_list %}
+                                    <option value="{{ c.id }}">{{ c.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label text-secondary small">Module Title</label>
+                            <input type="text" name="title" class="form-control form-control-premium text-white py-1" required placeholder="e.g. Module 1: OOP">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label text-secondary small">Sort Order</label>
+                            <input type="number" name="order" class="form-control form-control-premium text-white py-1" value="1" required>
+                        </div>
+                        <div class="col-12 text-end">
+                            <button type="submit" class="btn btn-premium btn-sm">Add Module</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- 3. Create Lecture -->
+            <div class="glass-panel p-4">
+                <h5 class="text-white mb-3"><i class="bi bi-file-earmark-play text-primary me-2"></i>Add Lecture to Module</h5>
+                <form method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="create_lecture">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label text-secondary small">Select Module</label>
+                            <select name="module_id" class="form-select form-control-premium text-white" required>
+                                {% for m in modules_list %}
+                                    <option value="{{ m.id }}">{{ m.course.name }} - {{ m.title }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label text-secondary small">Lecture Title</label>
+                            <input type="text" name="title" class="form-control form-control-premium text-white py-1" required placeholder="e.g. 1. Installation Guide">
+                        </div>
+                        <div class="col-md-8">
+                            <label class="form-label text-secondary small">Video URL (MP4 path, YouTube or Vimeo Link)</label>
+                            <input type="text" name="video_url" class="form-control form-control-premium text-white py-1" placeholder="https://www.w3schools.com/html/mov_bbb.mp4">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label text-secondary small">Duration</label>
+                            <input type="text" name="duration" class="form-control form-control-premium text-white py-1" value="15:00">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label text-secondary small">Sort Order</label>
+                            <input type="number" name="order" class="form-control form-control-premium text-white py-1" value="1" required>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label text-secondary small">Lecture Description</label>
+                            <textarea name="description" rows="2" class="form-control form-control-premium text-white" placeholder="Lecture overview..."></textarea>
+                        </div>
+                        <div class="col-12 text-end">
+                            <button type="submit" class="btn btn-premium btn-sm">Add Lecture</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Progress Tracker logs (Right 5 Columns) -->
+        <div class="col-lg-5">
+            <div class="glass-panel p-4 mb-4" style="max-height: calc(100vh - 120px); overflow-y: auto;">
+                <h5 class="text-white mb-3"><i class="bi bi-clock-history text-primary me-2"></i>Student Progress Logs</h5>
+                {% if progress_list %}
+                    <div class="d-flex flex-column gap-3">
+                        {% for log in progress_list %}
+                            <div class="p-3 rounded bg-secondary-bg border border-secondary-subtle">
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <strong class="text-white small">{{ log.user.username }}</strong>
+                                    {% if log.completed %}
+                                        <span class="badge bg-success small">Completed</span>
+                                    {% else %}
+                                        <span class="badge bg-warning text-dark small">{{ log.watch_percentage|floatformat:1 }}%</span>
+                                    {% endif %}
+                                </div>
+                                <span class="text-secondary small d-block mb-1">{{ log.lecture.title }}</span>
+                                <span class="text-muted small d-block">Time Spent: {{ log.time_spent }}s • Active Playhead: {{ log.resume_timestamp|floatformat:0 }}s</span>
+                                <span class="text-muted small d-block mt-1" style="font-size: 0.75rem;">Last active {{ log.updated_at|timesince }} ago</span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="text-secondary small text-center mb-0">No active progress tracks detected in SQLite logs.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

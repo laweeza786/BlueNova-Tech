@@ -1,0 +1,66 @@
+{% extends 'base_public.html' %}
+
+{% block title %}Sitemap - BlueNova Technologies{% endblock %}
+
+{% block content %}
+    <!-- Breadcrumb -->
+    <nav class="container mb-4" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/" class="text-secondary text-decoration-none">Home</a></li>
+            <li class="breadcrumb-item active text-white" aria-current="page">Sitemap</li>
+        </ol>
+    </nav>
+
+    <!-- Sitemap List -->
+    <main class="container py-5 text-start">
+        <div class="glass-panel p-5 col-lg-10 mx-auto">
+            <h1 class="text-white mb-4"><i class="bi bi-diagram-3-fill text-primary me-2"></i>Portal Sitemap</h1>
+            <p class="text-secondary mb-4">Complete hierarchical file index mapping all public pages and registration routes.</p>
+            
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <h5 class="text-white mb-3">Main Navigation</h5>
+                    <ul class="list-unstyled d-flex flex-column gap-2 small text-secondary">
+                        <li><a href="/" class="text-secondary text-decoration-none hover-primary"><i class="bi bi-link-45deg me-1"></i> Home Page</a></li>
+                        <li><a href="/about/" class="text-secondary text-decoration-none hover-primary"><i class="bi bi-link-45deg me-1"></i> About Us</a></li>
+                        <li><a href="/services/" class="text-secondary text-decoration-none hover-primary"><i class="bi bi-link-45deg me-1"></i> IT Services</a></li>
+                        <li><a href="/pricing/" class="text-secondary text-decoration-none hover-primary"><i class="bi bi-link-45deg me-1"></i> Cohort Pricing</a></li>
+                        <li><a href="/contact/" class="text-secondary text-decoration-none hover-primary"><i class="bi bi-link-45deg me-1"></i> Contact Desk</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-md-4">
+                    <h5 class="text-white mb-3">Cohort Programs</h5>
+                    <ul class="list-unstyled d-flex flex-column gap-2 small text-secondary">
+                        <li><a href="/internships/" class="text-secondary text-decoration-none hover-primary"><i class="bi bi-link-45deg me-1"></i> Internship Tracks</a></li>
+                        <li><a href="/training/" class="text-secondary text-decoration-none hover-primary"><i class="bi bi-link-45deg me-1"></i> Training Bootcamps</a></li>
+                        <li><a href="/technologies/" class="text-secondary text-decoration-none hover-primary"><i class="bi bi-link-45deg me-1"></i> Stack Technologies</a></li>
+                        <li><a href="/placements/" class="text-secondary text-decoration-none hover-primary"><i class="bi bi-link-45deg me-1"></i> Placements Support</a></li>
+                        <li><a href="/success-stories/" class="text-secondary text-decoration-none hover-primary"><i class="bi bi-link-45deg me-1"></i> Success Journeys</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-md-4">
+                    <h5 class="text-white mb-3">Portal Resources</h5>
+                    <ul class="list-unstyled d-flex flex-column gap-2 small text-secondary">
+                        <li><a href="/portfolio/" class="text-secondary text-decoration-none hover-primary"><i class="bi bi-link-45deg me-1"></i> Portfolio Cards</a></li>
+                        <li><a href="/gallery/" class="text-secondary text-decoration-none hover-primary"><i class="bi bi-link-45deg me-1"></i> Media Gallery</a></li>
+                        <li><a href="/events/" class="text-secondary text-decoration-none hover-primary"><i class="bi bi-link-45deg me-1"></i> Events Calendar</a></li>
+                        <li><a href="/blog/" class="text-secondary text-decoration-none hover-primary"><i class="bi bi-link-45deg me-1"></i> Tech Blog</a></li>
+                        <li><a href="/faq/" class="text-secondary text-decoration-none hover-primary"><i class="bi bi-link-45deg me-1"></i> FAQ Desk</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-12 mt-4 pt-3 border-top border-secondary-subtle">
+                    <h5 class="text-white mb-3">Legal Guidelines</h5>
+                    <div class="d-flex flex-wrap gap-4 small">
+                        <a href="/privacy/" class="text-secondary text-decoration-none hover-primary"><i class="bi bi-file-earmark-lock me-1"></i> Privacy Policy</a>
+                        <a href="/terms/" class="text-secondary text-decoration-none hover-primary"><i class="bi bi-file-earmark-check me-1"></i> Terms & Conditions</a>
+                        <a href="/refund-policy/" class="text-secondary text-decoration-none hover-primary"><i class="bi bi-file-earmark-minus me-1"></i> Refund Policy</a>
+                        <a href="/help-center-public/" class="text-secondary text-decoration-none hover-primary"><i class="bi bi-question-circle me-1"></i> Help Center</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

@@ -1,0 +1,208 @@
+{% extends 'base_public.html' %}
+
+{% block title %}{{ course.name }} - Course Details - BlueNova Technologies{% endblock %}
+
+{% block content %}
+<main class="container py-4 text-start">
+    <!-- Breadcrumbs -->
+    <nav class="mb-4" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/" class="text-secondary text-decoration-none">Home</a></li>
+            <li class="breadcrumb-item"><a href="/services/" class="text-secondary text-decoration-none">Services</a></li>
+            <li class="breadcrumb-item active text-white" aria-current="page">{{ course.name }}</li>
+        </ol>
+    </nav>
+
+    <!-- Course Hero Section -->
+    <section class="glass-panel p-5 mb-5 overflow-hidden position-relative">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-7">
+                <span class="badge bg-primary-gradient px-3 py-2 rounded-pill mb-3 text-uppercase">INTERNSHIP PROGRAM</span>
+                <h1 class="display-4 text-white fw-bold mb-3">{{ course.name }}</h1>
+                <p class="fs-5 text-secondary mb-4">{{ course.tagline }}</p>
+                
+                <!-- Quick Meta Cards -->
+                <div class="row g-3 mb-4">
+                    <div class="col-sm-6 col-md-3">
+                        <div class="p-3 rounded-3 bg-secondary-bg text-center">
+                            <i class="bi bi-clock-fill text-primary fs-3 d-block mb-1"></i>
+                            <span class="d-block small text-muted text-uppercase">Duration</span>
+                            <strong class="text-white">{{ course.duration }}</strong>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <div class="p-3 rounded-3 bg-secondary-bg text-center">
+                            <i class="bi bi-bar-chart-fill text-primary fs-3 d-block mb-1"></i>
+                            <span class="d-block small text-muted text-uppercase">Difficulty</span>
+                            <strong class="text-white">{{ course.difficulty }}</strong>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <div class="p-3 rounded-3 bg-secondary-bg text-center">
+                            <i class="bi bi-laptop-fill text-primary fs-3 d-block mb-1"></i>
+                            <span class="d-block small text-muted text-uppercase">Mode</span>
+                            <strong class="text-white">{{ course.mode }}</strong>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <div class="p-3 rounded-3 bg-secondary-bg text-center">
+                            <i class="bi bi-award-fill text-primary fs-3 d-block mb-1"></i>
+                            <span class="d-block small text-muted text-uppercase">Type</span>
+                            <strong class="text-white">{{ course.type }}</strong>
+                        </div>
+                    </div>
+                </div>
+                
+                <a href="{% url 'apply' %}?course={{ course_slug }}" class="btn btn-premium btn-lg">Apply Now <i class="bi bi-arrow-right-short ms-1"></i></a>
+            </div>
+            <div class="col-lg-5">
+                <img src="{{ course.banner }}" alt="{{ course.name }}" class="img-fluid rounded-4 shadow-lg w-100" style="max-height: 320px; object-fit: cover;">
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content Layout -->
+    <div class="row g-5">
+        <!-- Main details -->
+        <div class="col-lg-8">
+            <!-- Overview -->
+            <section class="glass-panel p-4 mb-4">
+                <h3 class="text-white mb-3"><i class="bi bi-file-text-fill text-primary me-2"></i>Course Overview</h3>
+                <p class="text-secondary leading-relaxed mb-0">{{ course.overview }}</p>
+            </section>
+
+            <!-- Curriculum -->
+            <section class="glass-panel p-4 mb-4">
+                <h3 class="text-white mb-4"><i class="bi bi-journals text-primary me-2"></i>What You Will Learn</h3>
+                <div class="row g-3">
+                    {% for item in course.curriculum %}
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-start gap-2">
+                            <i class="bi bi-patch-check-fill text-success fs-5"></i>
+                            <span class="text-white">{{ item }}</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <!-- Interactive Timeline / Roadmap -->
+            <section class="glass-panel p-4 mb-4">
+                <h3 class="text-white mb-4"><i class="bi bi-map-fill text-primary me-2"></i>Internship Roadmap</h3>
+                <div class="ps-3 border-start border-primary border-2 ms-2">
+                    {% for step in course.roadmap %}
+                    <div class="position-relative mb-4">
+                        <span class="position-absolute translate-middle-x bg-primary rounded-circle" style="left: -19px; top: 8px; width: 12px; height: 12px;"></span>
+                        <div class="ms-3">
+                            <span class="badge bg-secondary-bg text-primary fw-bold mb-1">{{ step.week }}</span>
+                            <h5 class="text-white mb-1">{{ step.topic }}</h5>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <!-- Projects Included -->
+            <section class="glass-panel p-4 mb-4">
+                <h3 class="text-white mb-4"><i class="bi bi-code-square text-primary me-2"></i>Capstone Projects Included</h3>
+                <div class="row g-3">
+                    {% for p in course.projects %}
+                    <div class="col-md-6">
+                        <div class="p-3 rounded-3 bg-secondary-bg h-100 border border-secondary-subtle">
+                            <h5 class="text-white mb-2"><i class="bi bi-folder-fill text-warning me-1"></i>{{ p.name }}</h5>
+                            <p class="text-secondary small mb-0">{{ p.desc }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <!-- Skills Gained -->
+            <section class="glass-panel p-4 mb-4">
+                <h3 class="text-white mb-3"><i class="bi bi-tag-fill text-primary me-2"></i>Skills You'll Gain</h3>
+                <div class="d-flex flex-wrap gap-2">
+                    {% for skill in course.skills %}
+                    <span class="badge bg-secondary-bg border border-secondary-subtle px-3 py-2 rounded-2 text-white"><i class="bi bi-star-fill text-warning me-1"></i>{{ skill }}</span>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <!-- Career Paths -->
+            <section class="glass-panel p-4 mb-4">
+                <h3 class="text-white mb-3"><i class="bi bi-briefcase-fill text-primary me-2"></i>Target Career Roles</h3>
+                <div class="d-flex flex-wrap gap-2">
+                    {% for role in course.career %}
+                    <span class="badge bg-primary-gradient px-3 py-2 rounded-2 text-white"><i class="bi bi-arrow-up-right-circle-fill me-1"></i>{{ role }}</span>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <!-- FAQs -->
+            <section class="glass-panel p-4 mb-4">
+                <h3 class="text-white mb-4"><i class="bi bi-question-circle-fill text-primary me-2"></i>Frequently Asked Questions</h3>
+                <div class="accordion" id="faqAccordion">
+                    {% for faq in course.faqs %}
+                    <div class="accordion-item bg-transparent border-secondary-subtle">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed bg-transparent text-white" type="button" data-bs-toggle="collapse" data-bs-target="#faq{{ forloop.counter }}">
+                                {{ faq.q }}
+                            </button>
+                        </h2>
+                        <div id="faq{{ forloop.counter }}" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body text-secondary">
+                                {{ faq.a }}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+        </div>
+
+        <!-- Sidebar Details -->
+        <div class="col-lg-4">
+            <!-- Mentor Card -->
+            <div class="glass-panel p-4 mb-4 text-center">
+                <h4 class="text-white mb-3 text-start"><i class="bi bi-person-workspace text-primary me-2"></i>Lead Mentor</h4>
+                <img src="{{ course.mentor.photo }}" alt="{{ course.mentor.name }}" class="rounded-circle shadow mb-3" style="width: 100px; height: 100px; object-fit: cover;">
+                <h5 class="text-white mb-1">{{ course.mentor.name }}</h5>
+                <span class="text-primary small d-block mb-2">{{ course.mentor.role }}</span>
+                <p class="text-secondary small mb-0">{{ course.mentor.exp }} • Specializing in {{ course.mentor.spec }}.</p>
+            </div>
+
+            <!-- Benefits Checklist -->
+            <div class="glass-panel p-4 mb-4">
+                <h4 class="text-white mb-3"><i class="bi bi-gem text-primary me-2"></i>Program Benefits</h4>
+                <ul class="list-unstyled mb-0 d-flex flex-column gap-2">
+                    <li class="text-secondary small"><i class="bi bi-check-circle-fill text-success me-2"></i>Live Real Client Projects</li>
+                    <li class="text-secondary small"><i class="bi bi-check-circle-fill text-success me-2"></i>1-on-1 Mentorship Sessions</li>
+                    <li class="text-secondary small"><i class="bi bi-check-circle-fill text-success me-2"></i>Certified Verification Registry</li>
+                    <li class="text-secondary small"><i class="bi bi-check-circle-fill text-success me-2"></i>Resume Building & Review</li>
+                    <li class="text-secondary small"><i class="bi bi-check-circle-fill text-success me-2"></i>Placement Interview Prep</li>
+                    <li class="text-secondary small"><i class="bi bi-check-circle-fill text-success me-2"></i>Letter of Recommendation</li>
+                </ul>
+            </div>
+
+            <!-- Related Courses -->
+            <div class="glass-panel p-4">
+                <h4 class="text-white mb-3"><i class="bi bi-grid-fill text-primary me-2"></i>Related Programs</h4>
+                <div class="d-flex flex-column gap-3">
+                    {% for rc in related_courses %}
+                    <div class="p-3 bg-secondary-bg rounded-3 border border-secondary-subtle">
+                        <img src="{{ rc.banner }}" class="img-fluid rounded mb-2 w-100" style="height: 100px; object-fit: cover;" alt="{{ rc.name }}">
+                        <h6 class="text-white mb-1">{{ rc.name }}</h6>
+                        <span class="text-muted small d-block mb-2">{{ rc.duration }}</span>
+                        <a href="{% url 'course_detail' rc.slug %}" class="btn btn-sm btn-outline-light w-100">View Program</a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Sticky Bottom apply action bar for smaller layouts -->
+<div class="position-sticky bottom-0 bg-secondary-bg border-top border-secondary-subtle p-3 text-center d-lg-none" style="z-index: 100;">
+    <a href="{% url 'apply' %}?course={{ course_slug }}" class="btn btn-premium w-100 max-w-sm">Apply for {{ course.name }}</a>
+</div>
+{% endblock %}

@@ -1,0 +1,93 @@
+{% extends 'base_public.html' %}
+
+{% block title %}Graduate Testimonials - BlueNova Technologies{% endblock %}
+
+{% block content %}
+    <!-- Breadcrumb -->
+    <nav class="container mb-4" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/" class="text-secondary text-decoration-none">Home</a></li>
+            <li class="breadcrumb-item active text-white" aria-current="page">Testimonials</li>
+        </ol>
+    </nav>
+
+    <!-- Testimonials Section -->
+    <main class="container py-5">
+        <div class="text-center mb-5 col-lg-8 mx-auto">
+            <span class="badge bg-primary-gradient px-3 py-2 rounded-pill mb-3">FEEDBACK LOGS</span>
+            <h1 class="display-4 text-white fw-bold mb-4">Reviews & Student <span class="gradient-text">Testimonials</span></h1>
+            <p class="text-secondary">Read ratings and logs recorded directly by candidates who completed our internship sprints.</p>
+        </div>
+
+        <div class="row g-4">
+            <!-- Review 1 -->
+            <div class="col-md-4">
+                <div class="glass-panel p-4 h-100 d-flex flex-column justify-content-between text-start">
+                    <div>
+                        <div class="d-flex gap-1 text-warning mb-3">
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                        </div>
+                        <p class="text-secondary small">"The drag-and-drop file upload task in the ERP project was my first time wiring dynamic AJAX progress metrics. Building it gave me immense coding confidence."</p>
+                    </div>
+                    <div class="d-flex align-items-center gap-3 mt-4">
+                        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=50&q=80" class="rounded-circle" width="40" height="40" alt="">
+                        <div>
+                            <h6 class="text-white mb-0 small">Jane Smith</h6>
+                            <small class="text-muted">React Intern, Cohort 2026</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Review 2 -->
+            <div class="col-md-4">
+                <div class="glass-panel p-4 h-100 d-flex flex-column justify-content-between text-start">
+                    <div>
+                        <div class="d-flex gap-1 text-warning mb-3">
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                        </div>
+                        <p class="text-secondary small">"Connecting authentication sessions, managing profiles, and auditing user-level dashboard databases in Django ORM prepared me for mid-level software roles."</p>
+                    </div>
+                    <div class="d-flex align-items-center gap-3 mt-4">
+                        <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=50&q=80" class="rounded-circle" width="40" height="40" alt="">
+                        <div>
+                            <h6 class="text-white mb-0 small">David Lawson</h6>
+                            <small class="text-muted">Django Intern, Cohort 2025</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Review 3 -->
+            <div class="col-md-4">
+                <div class="glass-panel p-4 h-100 d-flex flex-column justify-content-between text-start">
+                    <div>
+                        <div class="d-flex gap-1 text-warning mb-3">
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                        </div>
+                        <p class="text-secondary small">"The mock developer interview sprint and HR resume workshops corrected several mistakes in my profile layouts. Received an offer in weeks!"</p>
+                    </div>
+                    <div class="d-flex align-items-center gap-3 mt-4">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=50&q=80" class="rounded-circle" width="40" height="40" alt="">
+                        <div>
+                            <h6 class="text-white mb-0 small">Marcus Chen</h6>
+                            <small class="text-muted">Data Intern, Cohort 2026</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

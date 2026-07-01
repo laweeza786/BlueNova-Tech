@@ -1,0 +1,106 @@
+{% extends 'base_public.html' %}
+
+{% block title %}Verify Certificates - BlueNova Technologies{% endblock %}
+
+{% block content %}
+    <!-- Breadcrumb -->
+    <nav class="container mb-4" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/" class="text-secondary text-decoration-none">Home</a></li>
+            <li class="breadcrumb-item active text-white" aria-current="page">Verification</li>
+        </ol>
+    </nav>
+
+    <!-- Certificate Verification Interface -->
+    <main class="container py-5">
+        <div class="text-center mb-5 col-lg-8 mx-auto">
+            <span class="badge bg-primary-gradient px-3 py-2 rounded-pill mb-3">SECURE REGISTRY</span>
+            <h1 class="display-4 text-white fw-bold mb-4">Certificate Verification <span class="gradient-text">Portal</span></h1>
+            <p class="text-secondary">Confirm the validity of BlueNova Cohort diplomas. Enter the serial registry number printed on the document.</p>
+        </div>
+
+        <div class="row g-4 justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <!-- Search panel -->
+                <div class="glass-panel p-4 mb-4 text-center">
+                    <form id="verifyForm">
+                        <div class="input-group">
+                            <input type="text" id="cert-id-input" class="form-control form-control-premium text-white py-3" placeholder="e.g. BNT-2026-X839" required>
+                            <button type="submit" class="btn btn-premium px-4"><i class="bi bi-search me-1"></i> Verify</button>
+                        </div>
+                        <small class="text-muted d-block mt-2">Test IDs: BNT-2026-X839, BNT-2026-A201</small>
+                    </form>
+                </div>
+
+                <!-- Verification Result Display -->
+                <div id="verifyResult" class="glass-panel p-5 text-center d-none" style="position: relative; overflow: hidden; border: 2px solid rgba(99, 102, 241, 0.4);">
+                    <div class="position-absolute top-0 start-0 w-100 bg-success-gradient text-white py-1 small">VERIFIED REGISTERED RECORD</div>
+                    <i class="bi bi-patch-check-fill text-success display-3 d-block mt-4 mb-3"></i>
+                    
+                    <h3 id="res-name" class="text-white fw-bold mb-1">Candidate Name</h3>
+                    <p id="res-track" class="text-secondary small mb-4">Software Engineering Track</p>
+                    
+                    <div class="row g-3 text-start small mb-4 justify-content-center">
+                        <div class="col-sm-6 text-secondary"><strong class="text-white">Serial ID:</strong> <span id="res-id">BNT-2026-X839</span></div>
+                        <div class="col-sm-6 text-secondary"><strong class="text-white">Issue Date:</strong> 2026-06-25</div>
+                        <div class="col-sm-6 text-secondary"><strong class="text-white">Cohort Period:</strong> Spring 2026</div>
+                        <div class="col-sm-6 text-secondary"><strong class="text-white">Status:</strong> Graduate Honors</div>
+                    </div>
+                    
+                    <button class="btn btn-premium w-100 py-3" onclick="showToast('Downloading certificate file...', 'success')"><i class="bi bi-file-earmark-pdf-fill me-1"></i> Download PDF Diploma</button>
+                </div>
+
+                <!-- Error Result -->
+                <div id="verifyError" class="glass-panel p-4 text-center d-none text-danger">
+                    <i class="bi bi-exclamation-triangle-fill display-5 mb-2 d-block"></i>
+                    No certificate matching this registry number was found in the database.
+                </div>
+
+            </div>
+        </div>
+    </main>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Live mock search resolver
+    const mockCerts = {
+        "BNT-2026-X839": {
+            name: "John Doe",
+            track: "Python & Django Engineering",
+            id: "BNT-2026-X839",
+            date: "2026-06-25",
+            cohort: "Spring 2026"
+        },
+        "BNT-2026-A201": {
+            name: "Jane Smith",
+            track: "UI/UX Design Systems",
+            id: "BNT-2026-A201",
+            date: "2026-06-24",
+            cohort: "Spring 2026"
+        }
+    };
+
+    document.getElementById("verifyForm").addEventListener("submit", function(e) {
+        e.preventDefault();
+        const searchVal = document.getElementById("cert-id-input").value.trim();
+        const resultDiv = document.getElementById("verifyResult");
+        const errorDiv = document.getElementById("verifyError");
+        
+        resultDiv.classList.add("d-none");
+        errorDiv.classList.add("d-none");
+        
+        if (mockCerts[searchVal]) {
+            const data = mockCerts[searchVal];
+            document.getElementById("res-name").textContent = data.name;
+            document.getElementById("res-track").textContent = data.track;
+            document.getElementById("res-id").textContent = data.id;
+            resultDiv.classList.remove("d-none");
+            showToast("Certificate verified successfully!", "success");
+        } else {
+            errorDiv.classList.remove("d-none");
+            showToast("Certificate ID not found.", "danger");
+        }
+    });
+</script>
+{% endblock %}

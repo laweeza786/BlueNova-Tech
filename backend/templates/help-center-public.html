@@ -1,0 +1,48 @@
+{% extends 'base_public.html' %}
+
+{% block title %}Help Center - BlueNova Technologies{% endblock %}
+
+{% block content %}
+    <!-- Breadcrumb -->
+    <nav class="container mb-4" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/" class="text-secondary text-decoration-none">Home</a></li>
+            <li class="breadcrumb-item active text-white" aria-current="page">Help Center</li>
+        </ol>
+    </nav>
+
+    <!-- Help Center Body -->
+    <main class="container py-5 text-start">
+        <div class="glass-panel p-5 col-lg-10 mx-auto">
+            <h1 class="text-white mb-4"><i class="bi bi-question-circle-fill text-primary me-2"></i>Public Help Center</h1>
+            <p class="text-secondary mb-4">Find general guidelines, documentation, and support procedures for the BlueNova Technologies platform.</p>
+            
+            <div class="row g-4 mt-2">
+                <div class="col-md-6">
+                    <div class="glass-panel p-4 h-100">
+                        <h5 class="text-white mb-2"><i class="bi bi-shield-lock me-2 text-accent"></i>Account Access</h5>
+                        <p class="text-secondary small mb-0">Learn how to create candidate accounts, confirm credentials, reset password parameters, and access multi-factor codes.</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="glass-panel p-4 h-100">
+                        <h5 class="text-white mb-2"><i class="bi bi-cloud-arrow-up me-2 text-success"></i>Upload Files</h5>
+                        <p class="text-secondary small mb-0">Review supported file limits, allowed file extensions, and learn how to run physical upload drag-and-drop queues.</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="glass-panel p-4 h-100">
+                        <h5 class="text-white mb-2"><i class="bi bi-trophy me-2 text-warning"></i>Certificates & Verification</h5>
+                        <p class="text-secondary small mb-0">Verify how to search registry records, download PDF diplomas, and coordinate code achievements with job profiles.</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="glass-panel p-4 h-100">
+                        <h5 class="text-white mb-2"><i class="bi bi-chat-left-text me-2 text-primary"></i>Mentor Review Sprints</h5>
+                        <p class="text-secondary small mb-0">How to coordinate code reviews, attend weekly seminars, log milestone tasks, and submit files for approval.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

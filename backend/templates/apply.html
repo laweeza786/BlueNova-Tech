@@ -1,0 +1,206 @@
+{% extends 'base_public.html' %}
+
+{% block title %}Internship Application - BlueNova Technologies{% endblock %}
+
+{% block content %}
+<main class="container py-4 text-start">
+    <!-- Breadcrumbs -->
+    <nav class="mb-4" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/" class="text-secondary text-decoration-none">Home</a></li>
+            <li class="breadcrumb-item"><a href="/services/" class="text-secondary text-decoration-none">Services</a></li>
+            <li class="breadcrumb-item active text-white" aria-current="page">Apply</li>
+        </ol>
+    </nav>
+
+    <div class="row g-5">
+        <!-- Form Panel -->
+        <div class="col-lg-8 mx-auto">
+            <div class="glass-panel p-5">
+                <div class="text-center mb-5">
+                    <span class="badge bg-primary-gradient px-3 py-2 rounded-pill mb-3">APPLY NOW</span>
+                    <h2 class="text-white fw-bold mb-2">Internship Recruitment Registration</h2>
+                    <p class="text-secondary small">Complete this form to submit your application directly to our selection panel.</p>
+                </div>
+
+                <form id="applyForm" method="POST" enctype="multipart/form-data" novalidate>
+                    {% csrf_token %}
+                    
+                    <div id="alertBox" class="alert d-none mb-4" role="alert"></div>
+
+                    <!-- Personal Information -->
+                    <h5 class="text-primary mb-4 border-bottom border-secondary-subtle pb-2"><i class="bi bi-person-fill me-2"></i>Personal Details</h5>
+                    
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label for="full_name" class="form-label">Full Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control form-control-premium" id="full_name" name="full_name" required placeholder="e.g. John Doe">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="email" class="form-label">Email Address <span class="text-danger">*</span></label>
+                            <input type="email" class="form-control form-control-premium" id="email" name="email" required placeholder="e.g. john@example.com">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="phone" class="form-label">Phone Number <span class="text-danger">*</span></label>
+                            <input type="tel" class="form-control form-control-premium" id="phone" name="phone" required placeholder="e.g. +1234567890">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="city" class="form-label">City <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control form-control-premium" id="city" name="city" required placeholder="e.g. New York">
+                        </div>
+                    </div>
+
+                    <!-- Academic Information -->
+                    <h5 class="text-primary mb-4 border-bottom border-secondary-subtle pb-2"><i class="bi bi-mortarboard-fill me-2"></i>Academic Profile</h5>
+                    
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label for="college" class="form-label">College / University Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control form-control-premium" id="college" name="college" required placeholder="e.g. MIT">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="branch" class="form-label">Branch / Major <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control form-control-premium" id="branch" name="branch" required placeholder="e.g. CSE">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="semester" class="form-label">Semester <span class="text-danger">*</span></label>
+                            <select class="form-select form-control-premium text-white" id="semester" name="semester" required>
+                                <option value="" disabled selected>Select</option>
+                                <option value="1">Semester 1</option>
+                                <option value="2">Semester 2</option>
+                                <option value="3">Semester 3</option>
+                                <option value="4">Semester 4</option>
+                                <option value="5">Semester 5</option>
+                                <option value="6">Semester 6</option>
+                                <option value="7">Semester 7</option>
+                                <option value="8">Semester 8</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Program Preferences -->
+                    <h5 class="text-primary mb-4 border-bottom border-secondary-subtle pb-2"><i class="bi bi-sliders me-2"></i>Program Preferences</h5>
+                    
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-4">
+                            <label for="course" class="form-label">Preferred Program <span class="text-danger">*</span></label>
+                            <select class="form-select form-control-premium text-white" id="course" name="course" required>
+                                <option value="" disabled>Select program</option>
+                                {% for c in courses %}
+                                    <option value="{{ c }}" {% if prefilled_course == c %}selected{% endif %}>{{ c }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="batch" class="form-label">Preferred Batch <span class="text-danger">*</span></label>
+                            <select class="form-select form-control-premium text-white" id="batch" name="batch" required>
+                                <option value="July 2026 Cohort">July 2026 Cohort</option>
+                                <option value="August 2026 Cohort">August 2026 Cohort</option>
+                                <option value="September 2026 Cohort">September 2026 Cohort</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="mode" class="form-label">Internship Mode <span class="text-danger">*</span></label>
+                            <select class="form-select form-control-premium text-white" id="mode" name="mode" required>
+                                <option value="Hybrid">Hybrid</option>
+                                <option value="Online">Online</option>
+                                <option value="Offline">Offline</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Files -->
+                    <h5 class="text-primary mb-4 border-bottom border-secondary-subtle pb-2"><i class="bi bi-file-earmark-arrow-up-fill me-2"></i>Documents</h5>
+                    
+                    <div class="mb-4">
+                        <label for="resume" class="form-label">Upload Resume (PDF, DOC, DOCX) <span class="text-danger">*</span></label>
+                        <input type="file" class="form-control form-control-premium" id="resume" name="resume" required accept=".pdf,.doc,.docx">
+                        <div class="form-text text-muted small mt-1">Maximum file size allowed is 10MB. Only PDF or Word formats.</div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="cover_letter" class="form-label">Cover Letter (Optional)</label>
+                        <textarea class="form-control form-control-premium text-white" id="cover_letter" name="cover_letter" rows="4" placeholder="Briefly describe why you are a good fit for this role..."></textarea>
+                    </div>
+
+                    <!-- Terms -->
+                    <div class="mb-4 form-check text-start">
+                        <input type="checkbox" class="form-check-input" id="terms" required>
+                        <label class="form-check-label text-secondary small" for="terms">I agree to the Terms & Conditions and understand that my information will be reviewed by the cohort coordinators.</label>
+                    </div>
+
+                    <!-- Submit -->
+                    <button type="submit" id="submitBtn" class="btn btn-premium w-100 py-3 fs-5">
+                        <span id="btnText">Submit Application</span>
+                        <span id="btnSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const form = document.getElementById("applyForm");
+    const alertBox = document.getElementById("alertBox");
+    const submitBtn = document.getElementById("submitBtn");
+    const btnText = document.getElementById("btnText");
+    const btnSpinner = document.getElementById("btnSpinner");
+
+    form.addEventListener("submit", function(e) {
+        e.preventDefault();
+
+        // Basic Client Side Val
+        if (!form.checkValidity() || !document.getElementById("terms").checked) {
+            alertBox.className = "alert alert-danger";
+            alertBox.innerHTML = "<i class='bi bi-exclamation-triangle-fill me-2'></i>Please complete all fields and accept the terms.";
+            alertBox.classList.remove("d-none");
+            return;
+        }
+
+        // Prepare FormData
+        const formData = new FormData(form);
+
+        // UI state change
+        submitBtn.disabled = true;
+        btnText.textContent = "Filing Application...";
+        btnSpinner.classList.remove("d-none");
+        alertBox.classList.add("d-none");
+
+        fetch("{% url 'apply' %}", {
+            method: "POST",
+            body: formData,
+            headers: {
+                "X-Requested-With": "XMLHttpRequest"
+            }
+        })
+        .then(response => response.json().then(data => ({ status: response.status, body: data })))
+        .then(res => {
+            submitBtn.disabled = false;
+            btnText.textContent = "Submit Application";
+            btnSpinner.classList.add("d-none");
+
+            if (res.status === 200 && res.body.success) {
+                alertBox.className = "alert alert-success";
+                alertBox.innerHTML = `<i class='bi bi-check-circle-fill me-2'></i>${res.body.message}`;
+                alertBox.classList.remove("d-none");
+                form.reset();
+            } else {
+                alertBox.className = "alert alert-danger";
+                alertBox.innerHTML = `<i class='bi bi-x-circle-fill me-2'></i>${res.body.message || "Failed to submit application."}`;
+                alertBox.classList.remove("d-none");
+            }
+        })
+        .catch(err => {
+            submitBtn.disabled = false;
+            btnText.textContent = "Submit Application";
+            btnSpinner.classList.add("d-none");
+            alertBox.className = "alert alert-danger";
+            alertBox.innerHTML = "<i class='bi bi-x-circle-fill me-2'></i>Network error occurred. Please try again.";
+            alertBox.classList.remove("d-none");
+        });
+    });
+});
+</script>
+{% endblock %}

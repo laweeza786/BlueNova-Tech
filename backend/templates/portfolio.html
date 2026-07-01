@@ -1,0 +1,67 @@
+{% extends 'base_public.html' %}
+
+{% block title %}Case Studies & Portfolio - BlueNova Technologies{% endblock %}
+
+{% block content %}
+    <!-- Breadcrumb -->
+    <nav class="container mb-4" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/" class="text-secondary text-decoration-none">Home</a></li>
+            <li class="breadcrumb-item active text-white" aria-current="page">Portfolio</li>
+        </ol>
+    </nav>
+
+    <!-- Portfolio Workspace -->
+    <main class="container py-5">
+        <div class="text-center mb-5 col-lg-8 mx-auto">
+            <span class="badge bg-primary-gradient px-3 py-2 rounded-pill mb-3">OUR WORK</span>
+            <h1 class="display-4 text-white fw-bold mb-4">Enterprise Case Studies & <span class="gradient-text">Projects</span></h1>
+            <p class="text-secondary">Explore commercial products built by our consulting teams alongside outstanding project deployments from our top-performing cohort interns.</p>
+        </div>
+
+        <!-- Project Cards Grid -->
+        <div class="row g-4">
+            <!-- Project 1 -->
+            <div class="col-lg-6">
+                <div class="glass-panel p-4 h-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80" class="img-fluid rounded-3 mb-4 w-100" style="height: 250px; object-fit: cover;" alt="ERP Screenshot">
+                        <span class="badge bg-primary-gradient mb-2">Company Project</span>
+                        <h3 class="text-white mb-3">BlueNova Internship ERP Core</h3>
+                        <p class="text-secondary small mb-4">A complete glassmorphism management portal handling multi-role candidate signups, physical media uploads, system notifications logging, and administrative CRUD operations.</p>
+                        
+                        <div class="row g-2 mb-4 small text-muted">
+                            <div class="col-6"><i class="bi bi-cpu text-primary me-2"></i>Django, SQLite</div>
+                            <div class="col-6"><i class="bi bi-clock text-accent me-2"></i>Active Deployment</div>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <a href="/auth/login/" class="btn btn-premium w-100"><i class="bi bi-laptop me-1"></i> Live Demo</a>
+                        <a href="https://github.com/" target="_blank" class="btn btn-secondary-premium w-100"><i class="bi bi-github me-1"></i> GitHub Code</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 2 -->
+            <div class="col-lg-6">
+                <div class="glass-panel p-4 h-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <img src="https://images.unsplash.com/photo-1542744094-3a31f103e35f?auto=format&fit=crop&w=600&q=80" class="img-fluid rounded-3 mb-4 w-100" style="height: 250px; object-fit: cover;" alt="Marketing Analytics">
+                        <span class="badge bg-primary-gradient mb-2">Student Team Project</span>
+                        <h3 class="text-white mb-3">NovaFlow Marketing Dashboard</h3>
+                        <p class="text-secondary small mb-4">Built by the Spring 2026 Cohort interns, this application monitors campaign traffic metrics, calculates organic user retention scales, and exports CSV reports.</p>
+                        
+                        <div class="row g-2 mb-4 small text-muted">
+                            <div class="col-6"><i class="bi bi-cpu text-success me-2"></i>React, Node, Chart.js</div>
+                            <div class="col-6"><i class="bi bi-check-circle text-info me-2"></i>Passed Code Audit</div>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <a href="#" class="btn btn-premium w-100 disabled"><i class="bi bi-laptop me-1"></i> Demo Offline</a>
+                        <a href="https://github.com/" target="_blank" class="btn btn-secondary-premium w-100"><i class="bi bi-github me-1"></i> GitHub Code</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

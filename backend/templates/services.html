@@ -1,0 +1,369 @@
+{% extends 'base_public.html' %}
+
+{% block title %}Corporate IT Services - BlueNova Technologies{% endblock %}
+
+{% block content %}
+    <!-- Breadcrumb -->
+    <nav class="container mb-4" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/" class="text-secondary text-decoration-none">Home</a></li>
+            <li class="breadcrumb-item active text-white" aria-current="page">Services</li>
+        </ol>
+    </nav>
+
+    <!-- Services Overview -->
+    <main class="container py-5">
+        <div class="text-center mb-5 col-lg-8 mx-auto">
+            <span class="badge bg-primary-gradient px-3 py-2 rounded-pill mb-3">WHAT WE DO</span>
+            <h1 class="display-4 text-white fw-bold mb-4">Innovative IT & Engineering <span class="gradient-text">Services</span></h1>
+            <p class="text-secondary">We build high-performance business applications and deliver advanced engineering solutions across 15 technical domains.</p>
+        </div>
+
+        <div class="row g-4">
+            <!-- 1. Web Development -->
+            <div class="col-lg-4 col-md-6">
+                <div class="glass-panel glass-panel-hover p-4 h-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <img src="https://images.unsplash.com/photo-1547658719-da2b51169166?auto=format&fit=crop&w=400&q=80" class="img-fluid rounded-3 mb-3 w-100" style="height: 160px; object-fit: cover;" alt="Web Dev">
+                        <h4 class="text-white mb-2">Web Development</h4>
+                        <p class="text-secondary small mb-3">Custom scalable enterprise applications engineered using progressive frameworks and lightweight design grids.</p>
+                        <ul class="text-muted small ps-3 mb-4">
+                            <li>Responsive UI layouts</li>
+                            <li>SEO-optimized semantic DOM</li>
+                            <li>Micro-frontends orchestration</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div class="border-top border-secondary-subtle pt-3 mb-3 d-flex justify-content-between text-muted small">
+                            <span><strong class="text-white">Tech:</strong> Next.js, HTML5</span>
+                            <span>12 Wks</span>
+                        </div>
+                        <a href="{% url 'course_detail' 'web-development' %}" class="btn btn-sm btn-premium w-100">Learn More</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Mobile App Development -->
+            <div class="col-lg-4 col-md-6">
+                <div class="glass-panel glass-panel-hover p-4 h-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=400&q=80" class="img-fluid rounded-3 mb-3 w-100" style="height: 160px; object-fit: cover;" alt="Mobile App">
+                        <h4 class="text-white mb-2">Mobile App Development</h4>
+                        <p class="text-secondary small mb-3">Native and hybrid applications designed for reliable operations across Android and iOS devices.</p>
+                        <ul class="text-muted small ps-3 mb-4">
+                            <li>Cross-platform deployment</li>
+                            <li>Offline local storage syncing</li>
+                            <li>Biometric auth integrations</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div class="border-top border-secondary-subtle pt-3 mb-3 d-flex justify-content-between text-muted small">
+                            <span><strong class="text-white">Tech:</strong> Flutter, Swift</span>
+                            <span>12 Wks</span>
+                        </div>
+                        <a href="{% url 'course_detail' 'mobile-app-development' %}" class="btn btn-sm btn-premium w-100">Learn More</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. Python Development -->
+            <div class="col-lg-4 col-md-6">
+                <div class="glass-panel glass-panel-hover p-4 h-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <img src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=400&q=80" class="img-fluid rounded-3 mb-3 w-100" style="height: 160px; object-fit: cover;" alt="Python">
+                        <h4 class="text-white mb-2">Python Development</h4>
+                        <p class="text-secondary small mb-3">Dynamic script orchestration, task queues, robust backend pipelines, and structural scraping components.</p>
+                        <ul class="text-muted small ps-3 mb-4">
+                            <li>Multiprocess orchestration</li>
+                            <li>Pandas/NumPy parsing layers</li>
+                            <li>Asynchronous queue workers</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div class="border-top border-secondary-subtle pt-3 mb-3 d-flex justify-content-between text-muted small">
+                            <span><strong class="text-white">Tech:</strong> Python, FastAPI</span>
+                            <span>12 Wks</span>
+                        </div>
+                        <a href="{% url 'course_detail' 'python-development' %}" class="btn btn-sm btn-premium w-100">Learn More</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. Django Development -->
+            <div class="col-lg-4 col-md-6">
+                <div class="glass-panel glass-panel-hover p-4 h-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=400&q=80" class="img-fluid rounded-3 mb-3 w-100" style="height: 160px; object-fit: cover;" alt="Django">
+                        <h4 class="text-white mb-2">Django Development</h4>
+                        <p class="text-secondary small mb-3">Monolith and headless architectural backends, including integrated Django ORM, authentication, and secure middleware.</p>
+                        <ul class="text-muted small ps-3 mb-4">
+                            <li>Custom User structures</li>
+                            <li>Security parameter configurations</li>
+                            <li>Database migration flows</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div class="border-top border-secondary-subtle pt-3 mb-3 d-flex justify-content-between text-muted small">
+                            <span><strong class="text-white">Tech:</strong> Django, SQLite</span>
+                            <span>12 Wks</span>
+                        </div>
+                        <a href="{% url 'course_detail' 'django-development' %}" class="btn btn-sm btn-premium w-100">Learn More</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. MERN Stack -->
+            <div class="col-lg-4 col-md-6">
+                <div class="glass-panel glass-panel-hover p-4 h-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <img src="https://images.unsplash.com/photo-1633356122544-f134324a6cee?auto=format&fit=crop&w=400&q=80" class="img-fluid rounded-3 mb-3 w-100" style="height: 160px; object-fit: cover;" alt="MERN">
+                        <h4 class="text-white mb-2">MERN Stack Solutions</h4>
+                        <p class="text-secondary small mb-3">High-speed modular development utilizing React frontends connected to Node/Express REST backends.</p>
+                        <ul class="text-muted small ps-3 mb-4">
+                            <li>Dynamic state management</li>
+                            <li>Non-relational schemas</li>
+                            <li>JSON web token authentications</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div class="border-top border-secondary-subtle pt-3 mb-3 d-flex justify-content-between text-muted small">
+                            <span><strong class="text-white">Tech:</strong> React, Express</span>
+                            <span>12 Wks</span>
+                        </div>
+                        <a href="{% url 'course_detail' 'mern-stack' %}" class="btn btn-sm btn-premium w-100">Learn More</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6. Java Development -->
+            <div class="col-lg-4 col-md-6">
+                <div class="glass-panel glass-panel-hover p-4 h-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=400&q=80" class="img-fluid rounded-3 mb-3 w-100" style="height: 160px; object-fit: cover;" alt="Java">
+                        <h4 class="text-white mb-2">Java Development</h4>
+                        <p class="text-secondary small mb-3">Enterprise Spring Boot microservices designed with strict typing and highly reliable concurrent transaction managers.</p>
+                        <ul class="text-muted small ps-3 mb-4">
+                            <li>Spring Cloud Discovery</li>
+                            <li>Robust JUnit test layouts</li>
+                            <li>Multi-threaded code structures</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div class="border-top border-secondary-subtle pt-3 mb-3 d-flex justify-content-between text-muted small">
+                            <span><strong class="text-white">Tech:</strong> Java, Spring Boot</span>
+                            <span>12 Wks</span>
+                        </div>
+                        <a href="{% url 'course_detail' 'java-development' %}" class="btn btn-sm btn-premium w-100">Learn More</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 7. UI/UX Design -->
+            <div class="col-lg-4 col-md-6">
+                <div class="glass-panel glass-panel-hover p-4 h-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <img src="https://images.unsplash.com/photo-1561070791-26c113006238?auto=format&fit=crop&w=400&q=80" class="img-fluid rounded-3 mb-3 w-100" style="height: 160px; object-fit: cover;" alt="UI UX">
+                        <h4 class="text-white mb-2">UI/UX Design</h4>
+                        <p class="text-secondary small mb-3">Sleek glassmorphism screens, comprehensive interactive prototypes, user journey sheets, and typography guidelines.</p>
+                        <ul class="text-muted small ps-3 mb-4">
+                            <li>Figma layouts configuration</li>
+                            <li>Design token frameworks</li>
+                            <li>Interactive animation flows</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div class="border-top border-secondary-subtle pt-3 mb-3 d-flex justify-content-between text-muted small">
+                            <span><strong class="text-white">Tech:</strong> Figma, Adobe XD</span>
+                            <span>12 Wks</span>
+                        </div>
+                        <a href="{% url 'course_detail' 'ui-ux-design' %}" class="btn btn-sm btn-premium w-100">Learn More</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 8. Data Science -->
+            <div class="col-lg-4 col-md-6">
+                <div class="glass-panel glass-panel-hover p-4 h-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=400&q=80" class="img-fluid rounded-3 mb-3 w-100" style="height: 160px; object-fit: cover;" alt="Data Science">
+                        <h4 class="text-white mb-2">Data Science</h4>
+                        <p class="text-secondary small mb-3">Data cleansing, dynamic visualizations, and statistical modeling using Jupyter ecosystems.</p>
+                        <ul class="text-muted small ps-3 mb-4">
+                            <li>Predictive modeling</li>
+                            <li>Cleansing large datasets</li>
+                            <li>Matplotlib plotting maps</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div class="border-top border-secondary-subtle pt-3 mb-3 d-flex justify-content-between text-muted small">
+                            <span><strong class="text-white">Tech:</strong> Python, Pandas</span>
+                            <span>12 Wks</span>
+                        </div>
+                        <a href="{% url 'course_detail' 'data-science' %}" class="btn btn-sm btn-premium w-100">Learn More</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 9. Artificial Intelligence -->
+            <div class="col-lg-4 col-md-6">
+                <div class="glass-panel glass-panel-hover p-4 h-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <img src="https://images.unsplash.com/photo-1677442136019-21780efad99a?auto=format&fit=crop&w=400&q=80" class="img-fluid rounded-3 mb-3 w-100" style="height: 160px; object-fit: cover;" alt="AI">
+                        <h4 class="text-white mb-2">Artificial Intelligence</h4>
+                        <p class="text-secondary small mb-3">Neural networks modeling, language parsing, custom transformer integrations, and chat models fine-tuning.</p>
+                        <ul class="text-muted small ps-3 mb-4">
+                            <li>Natural language frameworks</li>
+                            <li>Weights configuration</li>
+                            <li>Fine-tuning datasets</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div class="border-top border-secondary-subtle pt-3 mb-3 d-flex justify-content-between text-muted small">
+                            <span><strong class="text-white">Tech:</strong> PyTorch, OpenAI</span>
+                            <span>12 Wks</span>
+                        </div>
+                        <a href="{% url 'course_detail' 'artificial-intelligence' %}" class="btn btn-sm btn-premium w-100">Learn More</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 10. Machine Learning -->
+            <div class="col-lg-4 col-md-6">
+                <div class="glass-panel glass-panel-hover p-4 h-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <img src="https://images.unsplash.com/photo-1527474305487-b87b222841cc?auto=format&fit=crop&w=400&q=80" class="img-fluid rounded-3 mb-3 w-100" style="height: 160px; object-fit: cover;" alt="ML">
+                        <h4 class="text-white mb-2">Machine Learning</h4>
+                        <p class="text-secondary small mb-3">Regression trees, random forests, classification models, and vector matching pipelines.</p>
+                        <ul class="text-muted small ps-3 mb-4">
+                            <li>Scikit-Learn modeling</li>
+                            <li>K-Means clustering grids</li>
+                            <li>TensorBoard monitoring</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div class="border-top border-secondary-subtle pt-3 mb-3 d-flex justify-content-between text-muted small">
+                            <span><strong class="text-white">Tech:</strong> TensorFlow, SciPy</span>
+                            <span>12 Wks</span>
+                        </div>
+                        <a href="{% url 'course_detail' 'machine-learning' %}" class="btn btn-sm btn-premium w-100">Learn More</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 11. Cloud Computing -->
+            <div class="col-lg-4 col-md-6">
+                <div class="glass-panel glass-panel-hover p-4 h-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <img src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=400&q=80" class="img-fluid rounded-3 mb-3 w-100" style="height: 160px; object-fit: cover;" alt="Cloud">
+                        <h4 class="text-white mb-2">Cloud Computing</h4>
+                        <p class="text-secondary small mb-3">Serverless scaling strategies, custom VPC definitions, and robust IAM identity configurations.</p>
+                        <ul class="text-muted small ps-3 mb-4">
+                            <li>AWS Lambda orchestrations</li>
+                            <li>CloudFront distributions</li>
+                            <li>Database replica structures</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div class="border-top border-secondary-subtle pt-3 mb-3 d-flex justify-content-between text-muted small">
+                            <span><strong class="text-white">Tech:</strong> AWS, Azure</span>
+                            <span>12 Wks</span>
+                        </div>
+                        <a href="{% url 'course_detail' 'cloud-computing' %}" class="btn btn-sm btn-premium w-100">Learn More</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 12. Cyber Security -->
+            <div class="col-lg-4 col-md-6">
+                <div class="glass-panel glass-panel-hover p-4 h-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=400&q=80" class="img-fluid rounded-3 mb-3 w-100" style="height: 160px; object-fit: cover;" alt="Security">
+                        <h4 class="text-white mb-2">Cyber Security</h4>
+                        <p class="text-secondary small mb-3">OWASP vulnerability testing, penetration scripting, access list auditing, and secure token layers.</p>
+                        <ul class="text-muted small ps-3 mb-4">
+                            <li>XSS attack mitigations</li>
+                            <li>SQL Injection shielding</li>
+                            <li>Network logging parsing</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div class="border-top border-secondary-subtle pt-3 mb-3 d-flex justify-content-between text-muted small">
+                            <span><strong class="text-white">Tech:</strong> Wireshark, Kali</span>
+                            <span>12 Wks</span>
+                        </div>
+                        <a href="{% url 'course_detail' 'cyber-security' %}" class="btn btn-sm btn-premium w-100">Learn More</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 13. DevOps -->
+            <div class="col-lg-4 col-md-6">
+                <div class="glass-panel glass-panel-hover p-4 h-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <img src="https://images.unsplash.com/photo-1618401471353-b98aedd07871?auto=format&fit=crop&w=400&q=80" class="img-fluid rounded-3 mb-3 w-100" style="height: 160px; object-fit: cover;" alt="DevOps">
+                        <h4 class="text-white mb-2">DevOps & CI/CD</h4>
+                        <p class="text-secondary small mb-3">Container systems, automated orchestration loops, GitHub actions, and metrics monitoring dashboards.</p>
+                        <ul class="text-muted small ps-3 mb-4">
+                            <li>Docker build scripts</li>
+                            <li>Kubernetes node pools</li>
+                            <li>Prometheus logging tracking</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div class="border-top border-secondary-subtle pt-3 mb-3 d-flex justify-content-between text-muted small">
+                            <span><strong class="text-white">Tech:</strong> Docker, Git</span>
+                            <span>12 Wks</span>
+                        </div>
+                        <a href="{% url 'course_detail' 'devops' %}" class="btn btn-sm btn-premium w-100">Learn More</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 14. IoT -->
+            <div class="col-lg-4 col-md-6">
+                <div class="glass-panel glass-panel-hover p-4 h-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=400&q=80" class="img-fluid rounded-3 mb-3 w-100" style="height: 160px; object-fit: cover;" alt="IoT">
+                        <h4 class="text-white mb-2">Internet of Things (IoT)</h4>
+                        <p class="text-secondary small mb-3">Developing sensor synchronization systems, edge network scripts, and telemetry dashboard frameworks.</p>
+                        <ul class="text-muted small ps-3 mb-4">
+                            <li>MQTT telemetry queues</li>
+                            <li>Firmware flashing scripts</li>
+                            <li>Raspberry Pi controllers</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div class="border-top border-secondary-subtle pt-3 mb-3 d-flex justify-content-between text-muted small">
+                            <span><strong class="text-white">Tech:</strong> C++, Arduino</span>
+                            <span>12 Wks</span>
+                        </div>
+                        <a href="{% url 'course_detail' 'iot' %}" class="btn btn-sm btn-premium w-100">Learn More</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 15. Digital Marketing -->
+            <div class="col-lg-4 col-md-6">
+                <div class="glass-panel glass-panel-hover p-4 h-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=400&q=80" class="img-fluid rounded-3 mb-3 w-100" style="height: 160px; object-fit: cover;" alt="Marketing">
+                        <h4 class="text-white mb-2">Digital Marketing</h4>
+                        <p class="text-secondary small mb-3">SEO optimization strategies, dynamic ad analytics, social dashboard trackers, and organic reach metrics tools.</p>
+                        <ul class="text-muted small ps-3 mb-4">
+                            <li>Keyword tracking analytics</li>
+                            <li>Audience profiling models</li>
+                            <li>AdWords campaigns control</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div class="border-top border-secondary-subtle pt-3 mb-3 d-flex justify-content-between text-muted small">
+                            <span><strong class="text-white">Tech:</strong> Google Analytics</span>
+                            <span>12 Wks</span>
+                        </div>
+                        <a href="{% url 'course_detail' 'digital-marketing' %}" class="btn btn-sm btn-premium w-100">Learn More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

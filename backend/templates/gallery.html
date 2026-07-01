@@ -1,0 +1,133 @@
+{% extends 'base_public.html' %}
+
+{% block title %}Corporate Media Gallery - BlueNova Technologies{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Masonry grid styles */
+    .masonry-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        grid-gap: 20px;
+        grid-auto-flow: dense;
+    }
+    .masonry-item {
+        overflow: hidden;
+        border-radius: 16px;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+    }
+    .masonry-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transition: transform 0.4s ease;
+    }
+    .masonry-item:hover img {
+        transform: scale(1.05);
+    }
+    /* Lightbox Modal CSS */
+    .lightbox-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(10, 10, 20, 0.95);
+        backdrop-filter: blur(15px);
+        z-index: 9999;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    .lightbox-modal.show {
+        display: flex;
+        opacity: 1;
+    }
+    .lightbox-content {
+        max-width: 90%;
+        max-height: 80%;
+        border-radius: 12px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    }
+    .lightbox-close {
+        position: absolute;
+        top: 30px;
+        right: 45px;
+        color: #fff;
+        font-size: 2.5rem;
+        cursor: pointer;
+        transition: color 0.2s;
+    }
+    .lightbox-close:hover {
+        color: var(--primary-color);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+    <!-- Breadcrumb -->
+    <nav class="container mb-4" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/" class="text-secondary text-decoration-none">Home</a></li>
+            <li class="breadcrumb-item active text-white" aria-current="page">Gallery</li>
+        </ol>
+    </nav>
+
+    <!-- Gallery Container -->
+    <main class="container py-5">
+        <div class="text-center mb-5 col-lg-8 mx-auto">
+            <span class="badge bg-primary-gradient px-3 py-2 rounded-pill mb-3">LIFE AT BLUENOVA</span>
+            <h1 class="display-4 text-white fw-bold mb-4">BlueNova Media <span class="gradient-text">Gallery</span></h1>
+            <p class="text-secondary">Explore snaps of our workspace workshops, student hackathons, celebration logs, and certification ceremonies.</p>
+        </div>
+
+        <!-- Masonry Grid -->
+        <div class="masonry-grid mb-5">
+            <div class="masonry-item glass-panel p-2" onclick="openLightbox(this)">
+                <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=500&q=80" alt="Company Office Lobby">
+            </div>
+            <div class="masonry-item glass-panel p-2" onclick="openLightbox(this)">
+                <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=500&q=80" alt="Training Session Programming">
+            </div>
+            <div class="masonry-item glass-panel p-2" onclick="openLightbox(this)">
+                <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=500&q=80" alt="Team Standup Workshop">
+            </div>
+            <div class="masonry-item glass-panel p-2" onclick="openLightbox(this)">
+                <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=500&q=80" alt="Conference Seminar Hall">
+            </div>
+            <div class="masonry-item glass-panel p-2" onclick="openLightbox(this)">
+                <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=500&q=80" alt="Celebrations Award Banquet">
+            </div>
+            <div class="masonry-item glass-panel p-2" onclick="openLightbox(this)">
+                <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=500&q=80" alt="Intern Presentation Slide Review">
+            </div>
+        </div>
+    </main>
+
+    <!-- Lightbox Modal -->
+    <div id="lightbox" class="lightbox-modal" onclick="closeLightbox()">
+        <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+        <img id="lightbox-img" class="lightbox-content" src="" alt="Expanded Snap">
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function openLightbox(item) {
+        const imgSrc = item.querySelector('img').src;
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        
+        lightboxImg.src = imgSrc;
+        lightbox.classList.add('show');
+    }
+
+    function closeLightbox() {
+        document.getElementById('lightbox').classList.remove('show');
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,93 @@
+{% extends 'base_public.html' %}
+
+{% block title %}Training Programs - BlueNova Technologies{% endblock %}
+
+{% block content %}
+    <!-- Breadcrumb -->
+    <nav class="container mb-4" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/" class="text-secondary text-decoration-none">Home</a></li>
+            <li class="breadcrumb-item active text-white" aria-current="page">Training Programs</li>
+        </ol>
+    </nav>
+
+    <!-- Training Programs Overview -->
+    <main class="container py-5">
+        <div class="text-center mb-5 col-lg-8 mx-auto">
+            <span class="badge bg-primary-gradient px-3 py-2 rounded-pill mb-3">UPGRADE YOUR SKILLS</span>
+            <h1 class="display-4 text-white fw-bold mb-4">Professional Training <span class="gradient-text">Programs</span></h1>
+            <p class="text-secondary">Instructor-led training bootcamps combining theoretical models, live code sessions, and complete job placement coordination.</p>
+        </div>
+
+        <div class="row g-4">
+            <!-- Program 1: Full Stack Web Engineering -->
+            <div class="col-lg-6">
+                <div class="glass-panel p-5 h-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <div class="d-flex justify-content-between align-items-start mb-4">
+                            <div>
+                                <h3 class="text-white mb-1">Full Stack Web Engineering</h3>
+                                <p class="text-secondary small mb-0">Live developer coaching from scratch to production scaling.</p>
+                            </div>
+                            <span class="badge bg-primary-gradient fs-6">$850</span>
+                        </div>
+                        <hr class="border-secondary opacity-25 mb-4">
+                        <div class="row g-3 small mb-4">
+                            <div class="col-sm-6 text-secondary"><strong class="text-white">Duration:</strong> 16 Weeks</div>
+                            <div class="col-sm-6 text-secondary"><strong class="text-white">Trainer:</strong> Sarah Jenkins (Ex-Meta Lead)</div>
+                            <div class="col-sm-6 text-secondary"><strong class="text-white">Modules:</strong> 6 Modules + Capstone</div>
+                            <div class="col-sm-6 text-secondary"><strong class="text-white">Format:</strong> Live Online + Cohort Slack</div>
+                        </div>
+                        <h6 class="text-white mb-2">Curriculum Modules:</h6>
+                        <ul class="text-muted small ps-3 mb-4">
+                            <li>Module 1: Advanced Semantic UI & CSS frameworks</li>
+                            <li>Module 2: JavaScript Engines, DOM Manipulation, ES6+</li>
+                            <li>Module 3: React state architectures, Custom Hooks, Redux</li>
+                            <li>Module 4: Node/Express APIs development, JWT Authentication</li>
+                            <li>Module 5: PostgreSQL Database structures & query triggers</li>
+                            <li>Module 6: CI/CD Deployment loops using Docker & AWS instances</li>
+                        </ul>
+                        <div class="small text-muted mb-4"><strong>Live Projects:</strong> Real-world team collaborative workspace manager app.</div>
+                    </div>
+                    <div>
+                        <a href="/contact/" class="btn btn-premium w-100 py-3">Inquire / Enroll Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Program 2: Advanced Data Analytics & AI -->
+            <div class="col-lg-6">
+                <div class="glass-panel p-5 h-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <div class="d-flex justify-content-between align-items-start mb-4">
+                            <div>
+                                <h3 class="text-white mb-1">Data Analytics & Artificial Intelligence</h3>
+                                <p class="text-secondary small mb-0">Learn math systems, vector grids, and training pipelines.</p>
+                            </div>
+                            <span class="badge bg-primary-gradient fs-6">$950</span>
+                        </div>
+                        <hr class="border-secondary opacity-25 mb-4">
+                        <div class="row g-3 small mb-4">
+                            <div class="col-sm-6 text-secondary"><strong class="text-white">Duration:</strong> 16 Weeks</div>
+                            <div class="col-sm-6 text-secondary"><strong class="text-white">Trainer:</strong> Dr. Aris Thorne (ML Researcher)</div>
+                            <div class="col-sm-6 text-secondary"><strong class="text-white">Modules:</strong> 5 Extensive Modules</div>
+                            <div class="col-sm-6 text-secondary"><strong class="text-white">Format:</strong> Live Hybrid + Lab Access</div>
+                        </div>
+                        <h6 class="text-white mb-2">Curriculum Modules:</h6>
+                        <ul class="text-muted small ps-3 mb-4">
+                            <li>Module 1: Mathematical Foundations & Python libraries</li>
+                            <li>Module 2: Cleansing data patterns, Exploratory Data Analysis</li>
+                            <li>Module 3: Supervised & unsupervised machine models setup</li>
+                            <li>Module 4: Neural networks architecture (TensorFlow & PyTorch)</li>
+                            <li>Module 5: Fine-tuning Large Language Models & API hosting</li>
+                        </ul>
+                        <div class="small text-muted mb-4"><strong>Live Projects:</strong> Dynamic product recommendation system model.</div>
+                    </div>
+                    <div>
+                        <a href="/contact/" class="btn btn-premium w-100 py-3">Inquire / Enroll Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

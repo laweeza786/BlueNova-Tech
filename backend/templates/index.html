@@ -1,0 +1,162 @@
+{% extends 'base_public.html' %}
+
+{% block title %}Launch Your IT Career - BlueNova Technologies{% endblock %}
+
+{% block content %}
+    <!-- Hero Section -->
+    <header class="hero-section container text-center py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <span class="badge bg-primary-gradient px-3 py-2 rounded-pill mb-4 fade-in-up">⚡ 2026 COHORT REGISTRATIONS ACTIVE</span>
+                <h1 class="display-3 text-white fw-bold mb-4 fade-in-up" style="animation-delay: 0.1s;">
+                    Launch Your Career with <br><span class="gradient-text">BlueNova Technologies</span>
+                </h1>
+                <p class="lead text-secondary mb-5 fade-in-up mx-auto col-md-8" style="animation-delay: 0.2s;">
+                    Secure hands-on industry internship experience, professional certificates, live projects mentorship, and complete career placement assistance.
+                </p>
+                <div class="d-flex justify-content-center gap-3 fade-in-up" style="animation-delay: 0.3s;">
+                    <a href="/auth/signup/" class="btn btn-premium btn-lg">Apply for Internship</a>
+                    <a href="/internships/" class="btn btn-secondary-premium btn-lg">Explore Tracks</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Company Statistics -->
+    <section class="py-5 bg-secondary-bg">
+        <div class="container">
+            <div class="row g-4 text-center">
+                <div class="col-md-3 col-6">
+                    <div class="glass-panel p-4">
+                        <h2 class="display-5 text-white fw-bold">98%</h2>
+                        <p class="text-muted mb-0">Placement Success Rate</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="glass-panel p-4">
+                        <h2 class="display-5 text-white fw-bold">1,200+</h2>
+                        <p class="text-muted mb-0">Interns Mentored</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="glass-panel p-4">
+                        <h2 class="display-5 text-white fw-bold">25+</h2>
+                        <p class="text-muted mb-0">Industry Partnerships</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="glass-panel p-4">
+                        <h2 class="display-5 text-white fw-bold">150+</h2>
+                        <p class="text-muted mb-0">Active Live Projects</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose BlueNova Technologies -->
+    <section id="why-choose" class="py-5 mt-5">
+        <div class="container text-center">
+            <div class="mb-5">
+                <h2 class="display-5 text-white fw-bold">Why Choose <span class="gradient-text">BlueNova</span></h2>
+                <p class="text-secondary">We bridge the gap between academic theory and enterprise environments.</p>
+            </div>
+            <div class="row g-4 text-start">
+                <div class="col-lg-4 col-md-6">
+                    <div class="glass-panel glass-panel-hover p-4 h-100">
+                        <i class="bi bi-laptop text-primary fs-2 mb-3"></i>
+                        <h4 class="text-white">Real Projects</h4>
+                        <p class="text-secondary mb-0">Gain coding, testing, and production deployment experiences working on actual company client tools.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="glass-panel glass-panel-hover p-4 h-100">
+                        <i class="bi bi-people-fill text-accent fs-2 mb-3"></i>
+                        <h4 class="text-white">Industry Mentors</h4>
+                        <p class="text-secondary mb-0">Collaborate one-on-one with senior developers and architects who guide your design choices.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-12">
+                    <div class="glass-panel glass-panel-hover p-4 h-100">
+                        <i class="bi bi-award-fill text-success fs-2 mb-3"></i>
+                        <h4 class="text-white">Professional Certificates</h4>
+                        <p class="text-secondary mb-0">Earn verification diplomas and recommendation letters that bolster your job application profile.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Domain Tracks Preview -->
+    <section id="programs" class="py-5 bg-secondary-bg">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-5 text-white fw-bold">Trending <span class="gradient-text">Internships</span></h2>
+                <p class="text-secondary">Explore our most popular domains and tracks for this cohort.</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="glass-panel glass-panel-hover p-4 text-start">
+                        <i class="bi bi-braces text-primary fs-3 mb-3 d-block"></i>
+                        <h4 class="text-white mb-2">Web Development</h4>
+                        <p class="text-secondary small mb-4">Learn HTML5, CSS3, JavaScript, React, and responsive layouts to build high-performance web pages.</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="text-muted small"><i class="bi bi-clock me-1"></i> 12 Weeks</span>
+                            <a href="/internships/" class="btn btn-sm btn-outline-primary">View Track</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="glass-panel glass-panel-hover p-4 text-start">
+                        <i class="bi bi-terminal-fill text-success fs-3 mb-3 d-block"></i>
+                        <h4 class="text-white mb-2">Python & Django</h4>
+                        <p class="text-secondary small mb-4">Master Django ORM, server logic, database setups, REST APIs, and core backend architectures.</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="text-muted small"><i class="bi bi-clock me-1"></i> 12 Weeks</span>
+                            <a href="/internships/" class="btn btn-sm btn-outline-success">View Track</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-12">
+                    <div class="glass-panel glass-panel-hover p-4 text-start">
+                        <i class="bi bi-palette-fill text-accent fs-3 mb-3 d-block"></i>
+                        <h4 class="text-white mb-2">UI/UX Design</h4>
+                        <p class="text-secondary small mb-4">Design premium visual layouts, wireframes, user personas, and glassmorphic designs inside Figma.</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="text-muted small"><i class="bi bi-clock me-1"></i> 12 Weeks</span>
+                            <a href="/internships/" class="btn btn-sm btn-outline-info">View Track</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Placement Success Section -->
+    <section class="py-5">
+        <div class="container text-center col-lg-8">
+            <div class="mb-5">
+                <h2 class="display-5 text-white fw-bold">Placement <span class="gradient-text">Assistance</span></h2>
+                <p class="text-secondary">We match our top-tier graduates with leading IT companies and global hiring partners.</p>
+            </div>
+            <div class="row g-4 justify-content-center align-items-center">
+                <div class="col-sm-4 col-6">
+                    <div class="glass-panel p-3 text-center">
+                        <span class="text-white fw-bold fs-5"><i class="bi bi-google text-primary me-2"></i>Google</span>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-6">
+                    <div class="glass-panel p-3 text-center">
+                        <span class="text-white fw-bold fs-5"><i class="bi bi-microsoft text-info me-2"></i>Microsoft</span>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-6">
+                    <div class="glass-panel p-3 text-center">
+                        <span class="text-white fw-bold fs-5"><i class="bi bi-amazon text-warning me-2"></i>Amazon</span>
+                    </div>
+                </div>
+            </div>
+            <a href="/placements/" class="btn btn-secondary-premium mt-5 px-4 py-2">Explore Placements</a>
+        </div>
+    </section>
+{% endblock %}

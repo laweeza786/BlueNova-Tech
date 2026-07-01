@@ -1,0 +1,240 @@
+{% extends 'base_public.html' %}
+
+{% block title %}Internship Programs - BlueNova Technologies{% endblock %}
+
+{% block content %}
+    <!-- Breadcrumb -->
+    <nav class="container mb-4" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/" class="text-secondary text-decoration-none">Home</a></li>
+            <li class="breadcrumb-item active text-white" aria-current="page">Internships</li>
+        </ol>
+    </nav>
+
+    <!-- Internship Page Body -->
+    <main class="container py-5">
+        <div class="text-center mb-5 col-lg-8 mx-auto">
+            <span class="badge bg-primary-gradient px-3 py-2 rounded-pill mb-3">COHORTS ACTIVE</span>
+            <h1 class="display-4 text-white fw-bold mb-4">Available Internship <span class="gradient-text">Domains</span></h1>
+            <p class="text-secondary">Gain real coding experience, attend mentoring code reviews, and build verifiable portfolio projects in your chosen domain.</p>
+        </div>
+
+        <div class="row g-4">
+            <!-- 1. Python Domain -->
+            <div class="col-lg-4 col-md-6">
+                <div class="glass-panel glass-panel-hover p-4 h-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <span class="badge bg-primary-gradient mb-3">Backend</span>
+                        <h4 class="text-white mb-2">Python Internship</h4>
+                        <p class="text-secondary small mb-3">Build high-performance asynchronous data crawlers and custom CLI scrapers.</p>
+                        <div class="small text-muted mb-2"><strong>Duration:</strong> 12 Weeks</div>
+                        <div class="small text-muted mb-2"><strong>Eligibility:</strong> Students & Grads with OOP basics</div>
+                        <div class="small text-muted mb-2"><strong>Skills:</strong> Asyncio, Web Scraping, OOP, SQLite</div>
+                        <div class="small text-muted mb-4"><strong>Live Projects:</strong> Real-time log parser dashboard</div>
+                    </div>
+                    <div class="border-top border-secondary-subtle pt-3 text-center">
+                        <a href="/auth/signup/" class="btn btn-sm btn-premium w-100 py-2">Apply Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Java Domain -->
+            <div class="col-lg-4 col-md-6">
+                <div class="glass-panel glass-panel-hover p-4 h-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <span class="badge bg-primary-gradient mb-3">Backend</span>
+                        <h4 class="text-white mb-2">Java Internship</h4>
+                        <p class="text-secondary small mb-3">Design robust enterprise microservices using Spring frameworks.</p>
+                        <div class="small text-muted mb-2"><strong>Duration:</strong> 12 Weeks</div>
+                        <div class="small text-muted mb-2"><strong>Eligibility:</strong> Computer Science undergraduates</div>
+                        <div class="small text-muted mb-2"><strong>Skills:</strong> Spring Boot, Spring Security, Gradle</div>
+                        <div class="small text-muted mb-4"><strong>Live Projects:</strong> E-commerce product microservice</div>
+                    </div>
+                    <div class="border-top border-secondary-subtle pt-3 text-center">
+                        <a href="/auth/signup/" class="btn btn-sm btn-premium w-100 py-2">Apply Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. MERN Domain -->
+            <div class="col-lg-4 col-md-6">
+                <div class="glass-panel glass-panel-hover p-4 h-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <span class="badge bg-primary-gradient mb-3">Full Stack</span>
+                        <h4 class="text-white mb-2">MERN Stack Internship</h4>
+                        <p class="text-secondary small mb-3">Develop dynamic responsive user interfaces and scalable Express APIs.</p>
+                        <div class="small text-muted mb-2"><strong>Duration:</strong> 12 Weeks</div>
+                        <div class="small text-muted mb-2"><strong>Eligibility:</strong> Basic HTML, CSS, JS knowledge</div>
+                        <div class="small text-muted mb-2"><strong>Skills:</strong> React, Express, MongoDB, Node</div>
+                        <div class="small text-muted mb-4"><strong>Live Projects:</strong> Real-time task manager board</div>
+                    </div>
+                    <div class="border-top border-secondary-subtle pt-3 text-center">
+                        <a href="/auth/signup/" class="btn btn-sm btn-premium w-100 py-2">Apply Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. React Domain -->
+            <div class="col-lg-4 col-md-6">
+                <div class="glass-panel glass-panel-hover p-4 h-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <span class="badge bg-primary-gradient mb-3">Frontend</span>
+                        <h4 class="text-white mb-2">React.js Internship</h4>
+                        <p class="text-secondary small mb-3">Construct highly interactive visual components using clean states and props hooks.</p>
+                        <div class="small text-muted mb-2"><strong>Duration:</strong> 12 Weeks</div>
+                        <div class="small text-muted mb-2"><strong>Eligibility:</strong> Solid JavaScript foundations</div>
+                        <div class="small text-muted mb-2"><strong>Skills:</strong> React Hooks, Context API, Tailwind</div>
+                        <div class="small text-muted mb-4"><strong>Live Projects:</strong> Dynamic audio stream manager UI</div>
+                    </div>
+                    <div class="border-top border-secondary-subtle pt-3 text-center">
+                        <a href="/auth/signup/" class="btn btn-sm btn-premium w-100 py-2">Apply Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. Node Domain -->
+            <div class="col-lg-4 col-md-6">
+                <div class="glass-panel glass-panel-hover p-4 h-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <span class="badge bg-primary-gradient mb-3">Backend</span>
+                        <h4 class="text-white mb-2">Node.js Internship</h4>
+                        <p class="text-secondary small mb-3">Implement fast file servers, database APIs, and custom middleware handlers.</p>
+                        <div class="small text-muted mb-2"><strong>Duration:</strong> 12 Weeks</div>
+                        <div class="small text-muted mb-2"><strong>Eligibility:</strong> Basic command-line tool skills</div>
+                        <div class="small text-muted mb-2"><strong>Skills:</strong> Node, Express, SQL, JWT auth</div>
+                        <div class="small text-muted mb-4"><strong>Live Projects:</strong> Encrypted file sharing service API</div>
+                    </div>
+                    <div class="border-top border-secondary-subtle pt-3 text-center">
+                        <a href="/auth/signup/" class="btn btn-sm btn-premium w-100 py-2">Apply Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6. Flutter Domain -->
+            <div class="col-lg-4 col-md-6">
+                <div class="glass-panel glass-panel-hover p-4 h-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <span class="badge bg-primary-gradient mb-3">Mobile</span>
+                        <h4 class="text-white mb-2">Flutter Internship</h4>
+                        <p class="text-secondary small mb-3">Code native apps from a single codebase supporting fluid micro-animations.</p>
+                        <div class="small text-muted mb-2"><strong>Duration:</strong> 12 Weeks</div>
+                        <div class="small text-muted mb-2"><strong>Eligibility:</strong> Understanding of basic mobile UI flows</div>
+                        <div class="small text-muted mb-2"><strong>Skills:</strong> Dart, Flutter SDK, Provider state</div>
+                        <div class="small text-muted mb-4"><strong>Live Projects:</strong> Corporate contact list mobile client</div>
+                    </div>
+                    <div class="border-top border-secondary-subtle pt-3 text-center">
+                        <a href="/auth/signup/" class="btn btn-sm btn-premium w-100 py-2">Apply Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 7. Android Domain -->
+            <div class="col-lg-4 col-md-6">
+                <div class="glass-panel glass-panel-hover p-4 h-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <span class="badge bg-primary-gradient mb-3">Mobile</span>
+                        <h4 class="text-white mb-2">Android Internship</h4>
+                        <p class="text-secondary small mb-3">Design custom Material UI views and process local SQLite offline caches.</p>
+                        <div class="small text-muted mb-2"><strong>Duration:</strong> 12 Weeks</div>
+                        <div class="small text-muted mb-2"><strong>Eligibility:</strong> Basic Kotlin or Java logic</div>
+                        <div class="small text-muted mb-2"><strong>Skills:</strong> Kotlin, Android Studio, Room DB</div>
+                        <div class="small text-muted mb-4"><strong>Live Projects:</strong> Local health tracker calendar app</div>
+                    </div>
+                    <div class="border-top border-secondary-subtle pt-3 text-center">
+                        <a href="/auth/signup/" class="btn btn-sm btn-premium w-100 py-2">Apply Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 8. AI Domain -->
+            <div class="col-lg-4 col-md-6">
+                <div class="glass-panel glass-panel-hover p-4 h-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <span class="badge bg-primary-gradient mb-3">Intelligence</span>
+                        <h4 class="text-white mb-2">Artificial Intelligence</h4>
+                        <p class="text-secondary small mb-3">Orchestrate semantic search layers and vector representations.</p>
+                        <div class="small text-muted mb-2"><strong>Duration:</strong> 12 Weeks</div>
+                        <div class="small text-muted mb-2"><strong>Eligibility:</strong> Linear Algebra & Python skills</div>
+                        <div class="small text-muted mb-2"><strong>Skills:</strong> PyTorch, LLMs fine-tuning, HuggingFace</div>
+                        <div class="small text-muted mb-4"><strong>Live Projects:</strong> Conversational FAQ indexing engine</div>
+                    </div>
+                    <div class="border-top border-secondary-subtle pt-3 text-center">
+                        <a href="/auth/signup/" class="btn btn-sm btn-premium w-100 py-2">Apply Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 9. ML Domain -->
+            <div class="col-lg-4 col-md-6">
+                <div class="glass-panel glass-panel-hover p-4 h-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <span class="badge bg-primary-gradient mb-3">Intelligence</span>
+                        <h4 class="text-white mb-2">Machine Learning</h4>
+                        <p class="text-secondary small mb-3">Build classification logic and regression analytics for prediction models.</p>
+                        <div class="small text-muted mb-2"><strong>Duration:</strong> 12 Weeks</div>
+                        <div class="small text-muted mb-2"><strong>Eligibility:</strong> Stats models & Python parsing</div>
+                        <div class="small text-muted mb-2"><strong>Skills:</strong> NumPy, Scikit-Learn, TensorFlow</div>
+                        <div class="small text-muted mb-4"><strong>Live Projects:</strong> Candidate filter regression model</div>
+                    </div>
+                    <div class="border-top border-secondary-subtle pt-3 text-center">
+                        <a href="/auth/signup/" class="btn btn-sm btn-premium w-100 py-2">Apply Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 10. Cyber Security Domain -->
+            <div class="col-lg-4 col-md-6">
+                <div class="glass-panel glass-panel-hover p-4 h-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <span class="badge bg-primary-gradient mb-3">Security</span>
+                        <h4 class="text-white mb-2">Cyber Security</h4>
+                        <p class="text-secondary small mb-3">Perform penetration sweeps, port testing, and write safety shields.</p>
+                        <div class="small text-muted mb-2"><strong>Duration:</strong> 12 Weeks</div>
+                        <div class="small text-muted mb-2"><strong>Eligibility:</strong> Basic TCP/IP routing logic</div>
+                        <div class="small text-muted mb-2"><strong>Skills:</strong> Kali Linux, Nmap, Port sniffing</div>
+                        <div class="small text-muted mb-4"><strong>Live Projects:</strong> Corporate login vulnerability audit</div>
+                    </div>
+                    <div class="border-top border-secondary-subtle pt-3 text-center">
+                        <a href="/auth/signup/" class="btn btn-sm btn-premium w-100 py-2">Apply Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 11. Cloud Domain -->
+            <div class="col-lg-4 col-md-6">
+                <div class="glass-panel glass-panel-hover p-4 h-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <span class="badge bg-primary-gradient mb-3">Cloud</span>
+                        <h4 class="text-white mb-2">Cloud Computing</h4>
+                        <p class="text-secondary small mb-3">Create automated configuration workflows and deploy serverless functions.</p>
+                        <div class="small text-muted mb-2"><strong>Duration:</strong> 12 Weeks</div>
+                        <div class="small text-muted mb-2"><strong>Eligibility:</strong> Basic operating systems command-line</div>
+                        <div class="small text-muted mb-2"><strong>Skills:</strong> AWS EC2, S3 bucket policy, Lambda</div>
+                        <div class="small text-muted mb-4"><strong>Live Projects:</strong> Automated media transcoding pipeline</div>
+                    </div>
+                    <div class="border-top border-secondary-subtle pt-3 text-center">
+                        <a href="/auth/signup/" class="btn btn-sm btn-premium w-100 py-2">Apply Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 12. UI/UX Domain -->
+            <div class="col-lg-4 col-md-6">
+                <div class="glass-panel glass-panel-hover p-4 h-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <span class="badge bg-primary-gradient mb-3">Creative</span>
+                        <h4 class="text-white mb-2">UI/UX Design</h4>
+                        <p class="text-secondary small mb-3">Build high-fidelity mockups, responsive site blueprints, and layouts.</p>
+                        <div class="small text-muted mb-2"><strong>Duration:</strong> 12 Weeks</div>
+                        <div class="small text-muted mb-2"><strong>Eligibility:</strong> Sense of color typography</div>
+                        <div class="small text-muted mb-2"><strong>Skills:</strong> Figma prototyping, Wireframes, UX Research</div>
+                        <div class="small text-muted mb-4"><strong>Live Projects:</strong> Glassmorphism web app system dashboard</div>
+                    </div>
+                    <div class="border-top border-secondary-subtle pt-3 text-center">
+                        <a href="/auth/signup/" class="btn btn-sm btn-premium w-100 py-2">Apply Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

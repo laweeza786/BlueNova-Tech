@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help Center - BlueNova ERP</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+
+    <div class="app-wrapper">
+        <!-- Sidebar Navigation -->
+        <aside class="app-sidebar">
+            <div class="sidebar-header">
+                <a href="dashboard.html" class="d-flex align-items-center gap-2 fw-bold text-white text-decoration-none">
+                    <i class="bi bi-rocket-takeoff-fill text-primary"></i> <span>BlueNova ERP</span>
+                </a>
+                <button class="sidebar-toggler sidebar-toggle-btn d-lg-none"><i class="bi bi-x-lg"></i></button>
+            </div>
+            <ul class="sidebar-menu">
+                <li class="sidebar-item">
+                    <a href="dashboard.html" class="sidebar-link"><i class="bi bi-grid-fill"></i> <span>Dashboard</span></a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="profile.html" class="sidebar-link"><i class="bi bi-person-fill"></i> <span>My Profile</span></a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="upload-files.html" class="sidebar-link"><i class="bi bi-cloud-arrow-up-fill"></i> <span>Upload Files</span></a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="messages.html" class="sidebar-link"><i class="bi bi-chat-left-text-fill"></i> <span>Messages</span></a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="history.html" class="sidebar-link"><i class="bi bi-clock-history"></i> <span>History</span></a>
+                </li>
+                <li class="sidebar-item active">
+                    <a href="help-center.html" class="sidebar-link"><i class="bi bi-question-circle-fill"></i> <span>Help Center</span></a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="feedback.html" class="sidebar-link"><i class="bi bi-star-fill"></i> <span>Feedback</span></a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="settings.html" class="sidebar-link"><i class="bi bi-gear-fill"></i> <span>Settings</span></a>
+                </li>
+                <li class="sidebar-item mt-5">
+                    <a href="logout.html" class="sidebar-link text-danger"><i class="bi bi-box-arrow-right"></i> <span>Sign Out</span></a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main Panel Workspace -->
+        <main class="app-content">
+            <!-- Top Navbar -->
+            <header class="app-navbar">
+                <div class="d-flex align-items-center gap-3">
+                    <button class="sidebar-toggler sidebar-toggle-btn d-lg-block text-white" aria-label="Toggle Sidebar"><i class="bi bi-list"></i></button>
+                </div>
+            </header>
+
+            <!-- Support Center content -->
+            <div class="app-body">
+                <div class="mb-4">
+                    <h2 class="text-white mb-1">Help Desk & Support</h2>
+                    <p class="text-secondary small mb-0">Browse troubleshooting resources or send a support ticket.</p>
+                </div>
+
+                <div class="row g-4">
+                    <div class="col-lg-6">
+                        <div class="glass-panel p-4">
+                            <h4 class="text-white mb-3">Frequently Asked Questions</h4>
+                            
+                            <div class="accordion accordion-flush" id="helpAccordion">
+                                <div class="accordion-item bg-transparent text-white border-bottom border-secondary-subtle">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed bg-transparent text-white border-0 py-3" type="button" data-bs-toggle="collapse" data-bs-target="#h1">
+                                            How do I submit my weekly files?
+                                        </button>
+                                    </h2>
+                                    <div id="h1" class="accordion-collapse collapse" data-bs-parent="#helpAccordion">
+                                        <div class="accordion-body text-secondary small">
+                                            Navigate to the "Upload Files" tab in your sidebar, select your document (ZIP, PDF, etc.), and drag it into the drop zone.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item bg-transparent text-white border-bottom border-secondary-subtle">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed bg-transparent text-white border-0 py-3" type="button" data-bs-toggle="collapse" data-bs-target="#h2">
+                                            What are the file uploading limits?
+                                        </button>
+                                    </h2>
+                                    <div id="h2" class="accordion-collapse collapse" data-bs-parent="#helpAccordion">
+                                        <div class="accordion-body text-secondary small">
+                                            The maximum file size is restricted to 10MB per document. Acceptable extensions are PDF, DOCX, ZIP, PNG, and JPG.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-6">
+                        <div class="glass-panel p-4">
+                            <h4 class="text-white mb-3">Submit Support Ticket</h4>
+                            <form id="helpTicketForm">
+                                <div class="mb-3">
+                                    <label class="form-label text-secondary small">Issue Category</label>
+                                    <select class="form-select form-control-premium" required>
+                                        <option value="technical">Technical Glitch</option>
+                                        <option value="academic">Cohort Track Query</option>
+                                        <option value="upload">Document Upload Error</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label text-secondary small">Description</label>
+                                    <textarea class="form-control form-control-premium" rows="4" placeholder="Detail your issue details here..." required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-premium w-100 py-3">Submit Ticket</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/mockData.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

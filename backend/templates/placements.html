@@ -1,0 +1,95 @@
+{% extends 'base_public.html' %}
+
+{% block title %}Placements & Hiring Partners - BlueNova Technologies{% endblock %}
+
+{% block content %}
+    <!-- Breadcrumb -->
+    <nav class="container mb-4" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/" class="text-secondary text-decoration-none">Home</a></li>
+            <li class="breadcrumb-item active text-white" aria-current="page">Placements</li>
+        </ol>
+    </nav>
+
+    <!-- Placement Assistance Overview -->
+    <main class="container py-5">
+        <div class="text-center mb-5 col-lg-8 mx-auto">
+            <span class="badge bg-primary-gradient px-3 py-2 rounded-pill mb-3">PLACEMENT ASSISTANCE</span>
+            <h1 class="display-4 text-white fw-bold mb-4">Placement Statistics & Hiring <span class="gradient-text">Partners</span></h1>
+            <p class="text-secondary">We bridge the gap between academic graduation and high-speed developer workspaces, matching graduates with leading tech organizations.</p>
+        </div>
+
+        <!-- Placement Stats Cards Row -->
+        <div class="row g-4 mb-5 text-center">
+            <div class="col-md-3 col-6">
+                <div class="glass-panel p-4">
+                    <h2 class="display-5 text-white fw-bold">98%</h2>
+                    <p class="text-muted mb-0">Placement Rate</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="glass-panel p-4">
+                    <h2 class="display-5 text-white fw-bold">8.4 LPA</h2>
+                    <p class="text-muted mb-0">Average Salary Package</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="glass-panel p-4">
+                    <h2 class="display-5 text-white fw-bold">22 LPA</h2>
+                    <p class="text-muted mb-0">Highest Salary Package</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="glass-panel p-4">
+                    <h2 class="display-5 text-white fw-bold">450+</h2>
+                    <p class="text-muted mb-0">Placed Candidates</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Placed Students Profiles -->
+        <h3 class="text-white text-center mb-4">Placed Cohort Graduates</h3>
+        <div class="row g-4 mb-5 text-start">
+            <div class="col-md-4">
+                <div class="glass-panel p-4 text-center">
+                    <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=100&q=80" class="rounded-circle mb-3 border border-2 border-secondary" width="80" height="80" alt="Student">
+                    <h5 class="text-white mb-1">Ethan Rogers</h5>
+                    <p class="text-secondary small mb-2">Cohort: Winter 2025</p>
+                    <span class="badge bg-secondary-premium py-2 px-3 rounded-pill text-white mb-3">Placed: Software Dev, Microsoft</span>
+                    <p class="text-muted small mb-0">"The Python/Django backend coaching at BlueNova helped me clear deep technical routing questions during screening reviews."</p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="glass-panel p-4 text-center">
+                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&q=80" class="rounded-circle mb-3 border border-2 border-secondary" width="80" height="80" alt="Student">
+                    <h5 class="text-white mb-1">Clara Mitchell</h5>
+                    <p class="text-secondary small mb-2">Cohort: Summer 2025</p>
+                    <span class="badge bg-secondary-premium py-2 px-3 rounded-pill text-white mb-3">Placed: UI Designer, Amazon</span>
+                    <p class="text-muted small mb-0">"Design mentoring in Figma helped me construct responsive blueprints, giving me dynamic case studies for my interview portfolios."</p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="glass-panel p-4 text-center">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80" class="rounded-circle mb-3 border border-2 border-secondary" width="80" height="80" alt="Student">
+                    <h5 class="text-white mb-1">Marcus Chen</h5>
+                    <p class="text-secondary small mb-2">Cohort: Spring 2025</p>
+                    <span class="badge bg-secondary-premium py-2 px-3 rounded-pill text-white mb-3">Placed: Data Scientist, Google</span>
+                    <p class="text-muted small mb-0">"The placement support team audited my resume structure, improving my screening success rate across multiple hiring managers."</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- hiring partners banner -->
+        <div class="glass-panel p-5 text-center">
+            <h3 class="text-white mb-4">Our Hiring Partners</h3>
+            <div class="row g-3 justify-content-center align-items-center">
+                <div class="col-sm-3 col-6"><span class="text-secondary fw-semibold"><i class="bi bi-google me-2"></i>Google</span></div>
+                <div class="col-sm-3 col-6"><span class="text-secondary fw-semibold"><i class="bi bi-microsoft me-2"></i>Microsoft</span></div>
+                <div class="col-sm-3 col-6"><span class="text-secondary fw-semibold"><i class="bi bi-amazon me-2"></i>Amazon</span></div>
+                <div class="col-sm-3 col-6"><span class="text-secondary fw-semibold"><i class="bi bi-nvidia me-2"></i>Nvidia</span></div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

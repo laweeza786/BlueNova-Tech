@@ -1,0 +1,48 @@
+{% extends 'base_public.html' %}
+
+{% block title %}About Us - BlueNova Technologies{% endblock %}
+
+{% block content %}
+    <!-- Breadcrumb -->
+    <nav class="container mb-4" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/" class="text-secondary text-decoration-none">Home</a></li>
+            <li class="breadcrumb-item active text-white" aria-current="page">About Us</li>
+        </ol>
+    </nav>
+
+    <!-- Main About Page -->
+    <main class="container py-5">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6">
+                <span class="badge bg-primary-gradient px-3 py-2 rounded-pill mb-3">OUR MISSION</span>
+                <h1 class="display-4 text-white fw-bold mb-4">Empowering the Next Generation of <span class="gradient-text">Tech Leaders</span></h1>
+                <p class="text-secondary mb-4">
+                    Founded in 2021, BlueNova Technologies focuses on delivering robust industrial training modules, specialized technical coaching workshops, and structured internship bootcamps.
+                </p>
+                <p class="text-secondary mb-4">
+                    Our platform simplifies the workflow of recruiting, onboarding, mentoring, and evaluating internship candidates, creating an interface that benefits both the students and engineering management teams.
+                </p>
+                <div class="row g-4 mt-2">
+                    <div class="col-6">
+                        <div class="border-start border-3 border-primary ps-3">
+                            <h3 class="text-white fw-bold mb-0">2021</h3>
+                            <small class="text-muted">Year Founded</small>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="border-start border-3 border-accent ps-3">
+                            <h3 class="text-white fw-bold mb-0">15+</h3>
+                            <small class="text-muted">Active Mentors</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="glass-panel p-4 text-center">
+                    <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=600&q=80" class="img-fluid rounded-3" alt="Office Workstation" style="box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);">
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

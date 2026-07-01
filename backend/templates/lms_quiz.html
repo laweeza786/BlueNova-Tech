@@ -1,0 +1,61 @@
+{% extends 'base_lms.html' %}
+
+{% block title %}{{ quiz.title }} - Quiz Assessment - BlueNova ERP{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row">
+        <div class="col-lg-8 mx-auto text-start">
+            <div class="glass-panel p-5">
+                <div class="text-center mb-5">
+                    <span class="badge bg-success px-3 py-2 rounded-pill mb-3">MODULE ASSESSMENT</span>
+                    <h2 class="text-white fw-bold mb-2">{{ quiz.title }}</h2>
+                    <p class="text-secondary small">Complete all questions to verify your module track understanding. Passing score limit is 70%.</p>
+                </div>
+
+                <form method="POST">
+                    {% csrf_token %}
+                    
+                    {% for q in questions_list %}
+                        <div class="mb-5 p-4 rounded bg-secondary-bg border border-secondary-subtle">
+                            <h5 class="text-white mb-4">{{ forloop.counter }}. {{ q.text }}</h5>
+                            
+                            {% if q.type == 'MCQ' %}
+                                <div class="d-flex flex-column gap-3">
+                                    {% for opt in q.options %}
+                                        <div class="form-check text-start">
+                                            <input class="form-check-input" type="radio" name="question_{{ q.id }}" id="opt_{{ q.id }}_{{ forloop.counter }}" value="{{ opt }}" required>
+                                            <label class="form-check-label text-secondary" for="opt_{{ q.id }}_{{ forloop.counter }}">
+                                                {{ opt }}
+                                            </label>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% elif q.type == 'TF' %}
+                                <div class="d-flex gap-4">
+                                    <div class="form-check text-start">
+                                        <input class="form-check-input" type="radio" name="question_{{ q.id }}" id="tf_{{ q.id }}_t" value="True" required>
+                                        <label class="form-check-label text-secondary" for="tf_{{ q.id }}_t">
+                                            True
+                                        </label>
+                                    </div>
+                                    <div class="form-check text-start">
+                                        <input class="form-check-input" type="radio" name="question_{{ q.id }}" id="tf_{{ q.id }}_f" value="False" required>
+                                        <label class="form-check-label text-secondary" for="tf_{{ q.id }}_f">
+                                            False
+                                        </label>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+
+                    <div class="d-grid mt-4">
+                        <button type="submit" class="btn btn-premium py-3 fs-5">Submit Quiz Assessment</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

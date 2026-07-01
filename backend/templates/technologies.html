@@ -1,0 +1,133 @@
+{% extends 'base_public.html' %}
+
+{% block title %}Technologies We Teach - BlueNova Technologies{% endblock %}
+
+{% block content %}
+    <!-- Breadcrumb -->
+    <nav class="container mb-4" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/" class="text-secondary text-decoration-none">Home</a></li>
+            <li class="breadcrumb-item active text-white" aria-current="page">Technologies</li>
+        </ol>
+    </nav>
+
+    <!-- Technologies Grid page -->
+    <main class="container py-5">
+        <div class="text-center mb-5 col-lg-8 mx-auto">
+            <span class="badge bg-primary-gradient px-3 py-2 rounded-pill mb-3">CURRICULUM STACK</span>
+            <h1 class="display-4 text-white fw-bold mb-4">Programming Languages & <span class="gradient-text">Frameworks</span></h1>
+            <p class="text-secondary">Explore the technical stack we teach and integrate into our live client projects.</p>
+        </div>
+
+        <!-- Technology Grid -->
+        <div class="row g-4 text-center">
+            <!-- 1. HTML5 -->
+            <div class="col-lg-3 col-md-4 col-6">
+                <div class="glass-panel glass-panel-hover p-4">
+                    <i class="bi bi-filetype-html text-primary display-5 mb-3 d-block"></i>
+                    <h5 class="text-white mb-1">HTML5</h5>
+                    <small class="text-muted">Semantic DOM, SEO Meta</small>
+                </div>
+            </div>
+
+            <!-- 2. CSS3 -->
+            <div class="col-lg-3 col-md-4 col-6">
+                <div class="glass-panel glass-panel-hover p-4">
+                    <i class="bi bi-filetype-css text-accent display-5 mb-3 d-block"></i>
+                    <h5 class="text-white mb-1">CSS3</h5>
+                    <small class="text-muted">Flexbox, Variables, Glassmorphism</small>
+                </div>
+            </div>
+
+            <!-- 3. JavaScript -->
+            <div class="col-lg-3 col-md-4 col-6">
+                <div class="glass-panel glass-panel-hover p-4">
+                    <i class="bi bi-filetype-js text-warning display-5 mb-3 d-block"></i>
+                    <h5 class="text-white mb-1">JavaScript</h5>
+                    <small class="text-muted">ES6 Engines, Async/Await</small>
+                </div>
+            </div>
+
+            <!-- 4. React -->
+            <div class="col-lg-3 col-md-4 col-6">
+                <div class="glass-panel glass-panel-hover p-4">
+                    <i class="bi bi-bootstrap-reboot text-info display-5 mb-3 d-block"></i>
+                    <h5 class="text-white mb-1">React</h5>
+                    <small class="text-muted">Components, Hooks, State Manager</small>
+                </div>
+            </div>
+
+            <!-- 5. Python -->
+            <div class="col-lg-3 col-md-4 col-6">
+                <div class="glass-panel glass-panel-hover p-4">
+                    <i class="bi bi-terminal text-success display-5 mb-3 d-block"></i>
+                    <h5 class="text-white mb-1">Python</h5>
+                    <small class="text-muted">OOP Programming, Pandas, Scraping</small>
+                </div>
+            </div>
+
+            <!-- 6. Django -->
+            <div class="col-lg-3 col-md-4 col-6">
+                <div class="glass-panel glass-panel-hover p-4">
+                    <i class="bi bi-database-fill-gear text-primary display-5 mb-3 d-block"></i>
+                    <h5 class="text-white mb-1">Django</h5>
+                    <small class="text-muted">Django ORM, Routing, Session auth</small>
+                </div>
+            </div>
+
+            <!-- 7. Java -->
+            <div class="col-lg-3 col-md-4 col-6">
+                <div class="glass-panel glass-panel-hover p-4">
+                    <i class="bi bi-cup-hot-fill text-danger display-5 mb-3 d-block"></i>
+                    <h5 class="text-white mb-1">Java</h5>
+                    <small class="text-muted">Strict types, Spring MVC, Cloud API</small>
+                </div>
+            </div>
+
+            <!-- 8. Node.js -->
+            <div class="col-lg-3 col-md-4 col-6">
+                <div class="glass-panel glass-panel-hover p-4">
+                    <i class="bi bi-box-fill text-success display-5 mb-3 d-block"></i>
+                    <h5 class="text-white mb-1">Node.js</h5>
+                    <small class="text-muted">V8 engine routing, Express backend</small>
+                </div>
+            </div>
+
+            <!-- 9. MongoDB -->
+            <div class="col-lg-3 col-md-4 col-6">
+                <div class="glass-panel glass-panel-hover p-4">
+                    <i class="bi bi-folder-fill text-warning display-5 mb-3 d-block"></i>
+                    <h5 class="text-white mb-1">MongoDB</h5>
+                    <small class="text-muted">NoSQL Collections, JSON documents</small>
+                </div>
+            </div>
+
+            <!-- 10. SQL -->
+            <div class="col-lg-3 col-md-4 col-6">
+                <div class="glass-panel glass-panel-hover p-4">
+                    <i class="bi bi-database-fill text-info display-5 mb-3 d-block"></i>
+                    <h5 class="text-white mb-1">SQL</h5>
+                    <small class="text-muted">Schema models, Joins & triggers</small>
+                </div>
+            </div>
+
+            <!-- 11. Docker -->
+            <div class="col-lg-3 col-md-4 col-6">
+                <div class="glass-panel glass-panel-hover p-4">
+                    <i class="bi bi-box-seam-fill text-primary display-5 mb-3 d-block"></i>
+                    <h5 class="text-white mb-1">Docker</h5>
+                    <small class="text-muted">Container builds, local node images</small>
+                </div>
+            </div>
+
+            <!-- 12. Git & GitHub -->
+            <div class="col-lg-3 col-md-4 col-6">
+                <div class="glass-panel glass-panel-hover p-4">
+                    <i class="bi bi-github text-white display-5 mb-3 d-block"></i>
+                    <h5 class="text-white mb-1">Git & GitHub</h5>
+                    <small class="text-muted">Commit branch pipelines, PR reviews</small>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

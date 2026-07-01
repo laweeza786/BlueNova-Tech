@@ -1,0 +1,76 @@
+{% extends 'base_public.html' %}
+
+{% block title %}Our Team & Mentors - BlueNova Technologies{% endblock %}
+
+{% block content %}
+    <!-- Breadcrumb -->
+    <nav class="container mb-4" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/" class="text-secondary text-decoration-none">Home</a></li>
+            <li class="breadcrumb-item active text-white" aria-current="page">Our Team</li>
+        </ol>
+    </nav>
+
+    <!-- Team page container -->
+    <main class="container py-5">
+        <div class="text-center mb-5 col-lg-8 mx-auto">
+            <span class="badge bg-primary-gradient px-3 py-2 rounded-pill mb-3">COHORT LEADERS</span>
+            <h1 class="display-4 text-white fw-bold mb-4">Meet Our Mentors & <span class="gradient-text">Developers</span></h1>
+            <p class="text-secondary">Learn from industry specialists, developers, and consultants who supervise your code submissions.</p>
+        </div>
+
+        <div class="row g-4">
+            <!-- 1. Founder -->
+            <div class="col-md-3 col-sm-6">
+                <div class="glass-panel p-4 text-center h-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=150&q=80" class="rounded-circle mb-3 border border-2 border-secondary" width="100" height="100" alt="">
+                        <h5 class="text-white mb-1">Thomas Vance</h5>
+                        <p class="text-secondary small mb-2">Founder & Executive Director</p>
+                        <p class="text-muted small mb-0">15+ Yrs Industry Experience guiding product engineering.</p>
+                    </div>
+                    <a href="https://linkedin.com" target="_blank" class="text-primary mt-3 text-decoration-none small"><i class="bi bi-linkedin"></i> LinkedIn</a>
+                </div>
+            </div>
+
+            <!-- 2. Lead Mentor -->
+            <div class="col-md-3 col-sm-6">
+                <div class="glass-panel p-4 text-center h-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=150&q=80" class="rounded-circle mb-3 border border-2 border-secondary" width="100" height="100" alt="">
+                        <h5 class="text-white mb-1">Sarah Jenkins</h5>
+                        <p class="text-secondary small mb-2">Lead Backend Mentor</p>
+                        <p class="text-muted small mb-0">Ex-Meta Core Engineer. Python & Spring architecture specialist.</p>
+                    </div>
+                    <a href="https://linkedin.com" target="_blank" class="text-primary mt-3 text-decoration-none small"><i class="bi bi-linkedin"></i> LinkedIn</a>
+                </div>
+            </div>
+
+            <!-- 3. Developer -->
+            <div class="col-md-3 col-sm-6">
+                <div class="glass-panel p-4 text-center h-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=150&q=80" class="rounded-circle mb-3 border border-2 border-secondary" width="100" height="100" alt="">
+                        <h5 class="text-white mb-1">Marcus Chen</h5>
+                        <p class="text-secondary small mb-2">Senior Full Stack Developer</p>
+                        <p class="text-muted small mb-0">React, Node, databases optimization consultant.</p>
+                    </div>
+                    <a href="https://linkedin.com" target="_blank" class="text-primary mt-3 text-decoration-none small"><i class="bi bi-linkedin"></i> LinkedIn</a>
+                </div>
+            </div>
+
+            <!-- 4. HR Trainer -->
+            <div class="col-md-3 col-sm-6">
+                <div class="glass-panel p-4 text-center h-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=150&q=80" class="rounded-circle mb-3 border border-2 border-secondary" width="100" height="100" alt="">
+                        <h5 class="text-white mb-1">Alice Lawson</h5>
+                        <p class="text-secondary small mb-2">HR Placement Lead</p>
+                        <p class="text-muted small mb-0">Resume coach matching cohort graduates with company recruiters.</p>
+                    </div>
+                    <a href="https://linkedin.com" target="_blank" class="text-primary mt-3 text-decoration-none small"><i class="bi bi-linkedin"></i> LinkedIn</a>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

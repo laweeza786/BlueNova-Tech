@@ -1,0 +1,128 @@
+{% extends 'base_public.html' %}
+
+{% block title %}Blog & Tech News - BlueNova Technologies{% endblock %}
+
+{% block content %}
+    <!-- Breadcrumb -->
+    <nav class="container mb-4" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/" class="text-secondary text-decoration-none">Home</a></li>
+            <li class="breadcrumb-item active text-white" aria-current="page">Blog</li>
+        </ol>
+    </nav>
+
+    <!-- Blog listing workspace -->
+    <main class="container py-5">
+        <div class="text-center mb-5 col-lg-8 mx-auto">
+            <span class="badge bg-primary-gradient px-3 py-2 rounded-pill mb-3">LATEST NEWS</span>
+            <h1 class="display-4 text-white fw-bold mb-4">BlueNova Tech <span class="gradient-text">Journal</span></h1>
+            <p class="text-secondary">Read technical writeups on web frameworks, Figma UX, deployment processes, and career guides written by our developer community.</p>
+        </div>
+
+        <div class="row g-4">
+            <!-- Search & Filters Sidebar -->
+            <div class="col-lg-4">
+                <!-- Search Box -->
+                <div class="glass-panel p-4 mb-4">
+                    <h5 class="text-white mb-3">Search Articles</h5>
+                    <div class="input-group">
+                        <input type="text" id="blog-search-input" class="form-control form-control-premium text-white" placeholder="Type keyword...">
+                        <button class="btn btn-premium" id="btn-blog-search" aria-label="Search"><i class="bi bi-search"></i></button>
+                    </div>
+                </div>
+
+                <!-- Categories -->
+                <div class="glass-panel p-4 mb-4 text-start">
+                    <h5 class="text-white mb-3">Categories</h5>
+                    <div class="d-flex flex-column gap-2 small">
+                        <button class="btn btn-sm btn-outline-primary text-start text-secondary" onclick="filterCategory('all')">All Tech Posts</button>
+                        <button class="btn btn-sm btn-outline-primary text-start text-secondary" onclick="filterCategory('backend')">Backend Engineering</button>
+                        <button class="btn btn-sm btn-outline-primary text-start text-secondary" onclick="filterCategory('frontend')">Frontend Design</button>
+                        <button class="btn btn-sm btn-outline-primary text-start text-secondary" onclick="filterCategory('career')">Career Guidelines</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Blog Listings Grid -->
+            <div class="col-lg-8">
+                <div class="row g-4" id="blog-grid">
+                    <!-- Post 1 -->
+                    <div class="col-12 blog-card" data-category="backend" data-title="scale django postgres migrations">
+                        <div class="glass-panel p-4 h-100 d-flex flex-column justify-content-between text-start">
+                            <div>
+                                <span class="badge bg-primary-gradient mb-3">Backend Engineering</span>
+                                <h4 class="text-white mb-2">Scaling Django Database Migrations</h4>
+                                <p class="text-secondary small mb-3">Best practices for modifying fields in production databases containing millions of user logs without triggering deadlock state halts.</p>
+                            </div>
+                            <div class="border-top border-secondary-subtle pt-3 d-flex justify-content-between align-items-center small text-muted">
+                                <span><i class="bi bi-person me-1"></i> Sarah Jenkins</span>
+                                <span>June 20, 2026</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Post 2 -->
+                    <div class="col-12 blog-card" data-category="frontend" data-title="glassmorphism bootstrap elements UI design">
+                        <div class="glass-panel p-4 h-100 d-flex flex-column justify-content-between text-start">
+                            <div>
+                                <span class="badge bg-primary-gradient mb-3">Frontend Design</span>
+                                <h4 class="text-white mb-2">Aesthetic Glassmorphism in Bootstrap 5</h4>
+                                <p class="text-secondary small mb-3">How to style frosted glass panels using standard utility backdrops, thin transparent outlines, and glowing background elements.</p>
+                            </div>
+                            <div class="border-top border-secondary-subtle pt-3 d-flex justify-content-between align-items-center small text-muted">
+                                <span><i class="bi bi-person me-1"></i> Marcus Chen</span>
+                                <span>June 18, 2026</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Post 3 -->
+                    <div class="col-12 blog-card" data-category="career" data-title="resume format tech developer internships interview">
+                        <div class="glass-panel p-4 h-100 d-flex flex-column justify-content-between text-start">
+                            <div>
+                                <span class="badge bg-primary-gradient mb-3">Career Guidelines</span>
+                                <h4 class="text-white mb-2">Passing Tech Screening Reviews</h4>
+                                <p class="text-secondary small mb-3">An HR breakdown of how to style project profiles, list core code domains, and highlight internship projects on standard resumes.</p>
+                            </div>
+                            <div class="border-top border-secondary-subtle pt-3 d-flex justify-content-between align-items-center small text-muted">
+                                <span><i class="bi bi-person me-1"></i> Alice Lawson</span>
+                                <span>June 15, 2026</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Live Client Side Blog Filters
+    const searchInput = document.getElementById("blog-search-input");
+    const cards = document.querySelectorAll(".blog-card");
+
+    function filterCategory(cat) {
+        cards.forEach(card => {
+            if (cat === "all" || card.getAttribute("data-category") === cat) {
+                card.style.display = "block";
+            } else {
+                card.style.display = "none";
+            }
+        });
+        showToast(`Filtered by ${cat} category.`, "success");
+    }
+
+    searchInput.addEventListener("keyup", function(e) {
+        const query = e.target.value.toLowerCase();
+        cards.forEach(card => {
+            const title = card.getAttribute("data-title");
+            if (title.includes(query)) {
+                card.style.display = "block";
+            } else {
+                card.style.display = "none";
+            }
+        });
+    });
+</script>
+{% endblock %}

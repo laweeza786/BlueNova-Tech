@@ -1,0 +1,66 @@
+{% extends 'base_public.html' %}
+
+{% block title %}Events & Workshops - BlueNova Technologies{% endblock %}
+
+{% block content %}
+    <!-- Breadcrumb -->
+    <nav class="container mb-4" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/" class="text-secondary text-decoration-none">Home</a></li>
+            <li class="breadcrumb-item active text-white" aria-current="page">Events</li>
+        </ol>
+    </nav>
+
+    <!-- Events Content -->
+    <main class="container py-5">
+        <div class="text-center mb-5 col-lg-8 mx-auto">
+            <span class="badge bg-primary-gradient px-3 py-2 rounded-pill mb-3">GET ENGAGED</span>
+            <h1 class="display-4 text-white fw-bold mb-4">Upcoming Webinars & <span class="gradient-text">Workshops</span></h1>
+            <p class="text-secondary">Attend live development webinars, candidate panel talks, coding hackathons, and placement bootcamps.</p>
+        </div>
+
+        <div class="row g-4">
+            <!-- Event 1 -->
+            <div class="col-lg-6">
+                <div class="glass-panel p-5 h-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <span class="badge bg-primary-gradient">HACKATHON</span>
+                            <small class="text-muted"><i class="bi bi-calendar-event me-1"></i> July 15, 2026</small>
+                        </div>
+                        <h3 class="text-white mb-2">Summer 24-Hour Hackathon</h3>
+                        <p class="text-secondary small mb-4">Form teams of 3 and build a complete functional web app utilizing dynamic Django APIs or Spring frameworks. Awesome prizes for top placements!</p>
+                        
+                        <ul class="text-muted small ps-3 mb-4">
+                            <li>Registration closes: July 12</li>
+                            <li>Mentorship slots: Throughout the night</li>
+                            <li>Prizes: Oculus, keyboard kits, recommendation letters</li>
+                        </ul>
+                    </div>
+                    <button class="btn btn-premium w-100 py-3" onclick="showToast('Registered for Hackathon!', 'success')">Register for Hackathon</button>
+                </div>
+            </div>
+
+            <!-- Event 2 -->
+            <div class="col-lg-6">
+                <div class="glass-panel p-5 h-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <span class="badge bg-primary-gradient">SEMINAR</span>
+                            <small class="text-muted"><i class="bi bi-calendar-event me-1"></i> July 22, 2026</small>
+                        </div>
+                        <h3 class="text-white mb-2">Scaling Python Web Backends</h3>
+                        <p class="text-secondary small mb-4">Lead Backend Mentor Sarah Jenkins explains how to optimize DB queries, configure redis caching filters, and organize multi-process workers inside Docker.</p>
+                        
+                        <ul class="text-muted small ps-3 mb-4">
+                            <li>Session length: 2 Hours</li>
+                            <li>Live Q&A: 30 minutes</li>
+                            <li>Pre-requisite: Basic Python class knowledge</li>
+                        </ul>
+                    </div>
+                    <button class="btn btn-premium w-100 py-3" onclick="showToast('Registered for Seminar!', 'success')">Register for Seminar</button>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}
