@@ -242,7 +242,8 @@ def upload_file(request):
             }
         })
         
-    context = {}
+    files_query = UploadedFile.objects.filter(user=request.user).order_by('-uploaded_at')
+    context = {'files': files_query}
     context.update(get_erp_context(request))
     return render(request, 'upload-files.html', context)
 

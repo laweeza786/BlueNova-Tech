@@ -12,8 +12,8 @@ window.addActivityLog = function(userId, action) {
     logs.unshift(newLog);
     localStorage.setItem("erp_logs", JSON.stringify(logs));
 };
-
-window.addActivityLog = function(userId, action) { ... };
+// Named alias so bare addActivityLog() calls also work
+function addActivityLog(userId, action) { window.addActivityLog(userId, action); }
 
 function getCookie(name) {
     let cookieValue = null;
@@ -299,7 +299,7 @@ function renderUserDashboard() {
     if (avatarImg && user.avatar) avatarImg.src = user.avatar;
     
     // Render logs count
-    const files = JSON.parse(localStorage.getItem("erp_files") || "[]").filter(f => f.user_id === user.id);
+    const files = JSON.parse(localStorage.getItem("erp_files") || "[]").filter(f => Number(f.user_id) === Number(user.id));
     const notifications = JSON.parse(localStorage.getItem("erp_notifications") || "[]").filter(n => n.user_id === user.id);
     
     document.getElementById("stat-files").textContent = files.length;
@@ -1241,7 +1241,11 @@ function handleFilesUpload(filesList, userId) {
     if (filesList.length === 0) return;
     
     const allowedTypes = ["pdf", "docx", "zip", "png", "jpg", "jpeg"];
-    
+    const progressContainer = document.getElementById("progress-container");
+    const progressBar = document.getElementById("progress-bar");
+    const uploadPercent = document.getElementById("upload-percent");
+    const uploadStatusText = document.getElementById("upload-status-text");
+
     for (let i = 0; i < filesList.length; i++) {
         const file = filesList[i];
         const ext = file.name.split(".").pop().toLowerCase();
@@ -1256,40 +1260,55 @@ function handleFilesUpload(filesList, userId) {
             continue;
         }
         
+        // Show progress UI if present
+        if (progressContainer) {
+            progressContainer.style.display = "block";
+            progressBar.style.width = "0%";
+            uploadPercent.textContent = "0%";
+            uploadStatusText.textContent = `Uploading ${file.name}...`;
+        }
+        
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "/erp/upload-files/");
+        xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
+        
+        xhr.upload.addEventListener("progress", (e) => {
+            if (e.lengthComputable && progressBar && uploadPercent) {
+                const percent = Math.round((e.loaded / e.total) * 100);
+                progressBar.style.width = percent + "%";
+                uploadPercent.textContent = percent + "%";
+            }
+        });
+        
+        xhr.addEventListener("load", () => {
+            if (progressContainer) progressContainer.style.display = "none";
+            try {
+                const data = JSON.parse(xhr.responseText);
+                if (data.success) {
+                    showToast(`File ${file.name} uploaded successfully!`, "success");
+                    window.addActivityLog(userId, `Uploaded document ${file.name}`);
+                    
+                    const localFiles = JSON.parse(localStorage.getItem("erp_files") || "[]");
+                    localFiles.push(data.file);
+                    localStorage.setItem("erp_files", JSON.stringify(localFiles));
+                    
+                    renderFilesList(userId);
+                } else {
+                    showToast(data.message || "Failed to upload file", "danger");
+                }
+            } catch (err) {
+                showToast("Failed to process upload response", "danger");
+            }
+        });
+        
+        xhr.addEventListener("error", () => {
+            if (progressContainer) progressContainer.style.display = "none";
+            showToast("Network error during file upload", "danger");
+        });
+        
         const formData = new FormData();
         formData.append("file", file);
-        
-        fetch("/erp/upload-files/", {
-            method: "POST",
-            headers: {
-                "X-CSRFToken": getCookie("csrftoken")
-            },
-            body: formData
-        })
-        .then(res => {
-            if (!res.ok) {
-                return res.json().then(err => { throw new Error(err.message || "Upload failed"); });
-            }
-            return res.json();
-        })
-        .then(data => {
-            if (data.success) {
-                showToast(`File ${file.name} uploaded successfully!`, "success");
-                addActivityLog(userId, `Uploaded document ${file.name}`);
-                
-                const localFiles = JSON.parse(localStorage.getItem("erp_files") || "[]");
-                localFiles.push(data.file);
-                localStorage.setItem("erp_files", JSON.stringify(localFiles));
-                
-                renderFilesList(userId);
-            } else {
-                showToast(data.message || "Failed to upload file", "danger");
-            }
-        })
-        .catch(err => {
-            showToast(err.message || "Error uploading file to server", "danger");
-            console.error(err);
-        });
+        xhr.send(formData);
     }
 }
 
@@ -1297,7 +1316,7 @@ function renderFilesList(userId) {
     const tableBody = document.getElementById("uploaded-files-table");
     if (!tableBody) return;
     
-    const files = JSON.parse(localStorage.getItem("erp_files") || "[]").filter(f => f.user_id === userId);
+    const files = JSON.parse(localStorage.getItem("erp_files") || "[]").filter(f => Number(f.user_id) === Number(userId));
     tableBody.innerHTML = "";
     
     if (files.length === 0) {
@@ -1309,13 +1328,24 @@ function renderFilesList(userId) {
         const tr = document.createElement("tr");
         const formattedSize = (f.file_size / (1024 * 1024)).toFixed(2) + " MB";
         const formattedDate = new Date(f.uploaded_at).toLocaleDateString();
+        
+        let iconClass = "bi-file-earmark-image text-info";
+        if (f.file_type === 'pdf') iconClass = "bi-filetype-pdf text-danger";
+        else if (f.file_type === 'zip') iconClass = "bi-file-zip text-warning";
+        else if (f.file_type === 'docx') iconClass = "bi-filetype-docx text-primary";
+        
         tr.innerHTML = `
-            <td>${f.file_name}</td>
+            <td>
+                <div class="d-flex align-items-center gap-2">
+                    <i class="bi ${iconClass} fs-5"></i>
+                    <span class="text-white">${f.file_name}</span>
+                </div>
+            </td>
             <td>${formattedSize}</td>
             <td>${formattedDate}</td>
             <td>
-                <a href="#" class="btn btn-sm btn-outline-info me-2" onclick="showToast('Simulating secure download...', 'info')">Download</a>
-                <button class="btn btn-sm btn-outline-danger" onclick="deleteUserFile(${f.id}, ${userId})">Delete</button>
+                <a href="${f.file_url || '#'}" download class="btn btn-sm btn-outline-info me-2"><i class="bi bi-download"></i></a>
+                <button class="btn btn-sm btn-outline-danger" onclick="deleteUserFile(${f.id}, ${userId})"><i class="bi bi-trash"></i></button>
             </td>
         `;
         tableBody.appendChild(tr);
@@ -1338,7 +1368,7 @@ window.deleteUserFile = function(fileId, userId) {
                 files = files.filter(f => f.id !== fileId);
                 localStorage.setItem("erp_files", JSON.stringify(files));
                 
-                if (file) addActivityLog(userId, `Deleted document ${file.file_name}`);
+                if (file) window.addActivityLog(userId, `Deleted document ${file.file_name}`);
                 showToast("File deleted", "success");
                 renderFilesList(userId);
             } else {
