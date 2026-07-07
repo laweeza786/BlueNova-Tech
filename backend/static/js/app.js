@@ -774,22 +774,42 @@ function renderUserManagement() {
                 </div>
             </td>
             <td>
-                <div class="dropdown">
-                    <button class="btn btn-secondary-premium btn-sm dropdown-toggle py-1 px-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Actions
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-dark glass-panel" style="border:1px solid var(--card-border);">
-                        <li><a class="dropdown-item" href="#" onclick="editUserModal(${u.id})"><i class="bi bi-pencil me-2 text-primary"></i> Edit User</a></li>
-                        <li><a class="dropdown-item" href="#" onclick="toggleAccountStatus(${u.id}, ${u.is_active})"><i class="bi ${u.is_active ? 'bi-shield-slash-fill text-warning' : 'bi-shield-fill-check text-success'} me-2"></i> ${u.is_active ? 'Disable Account' : 'Enable Account'}</a></li>
-                        <li><a class="dropdown-item" href="#" onclick="resetPasswordModal(${u.id})"><i class="bi bi-key-fill me-2 text-info"></i> Reset Password</a></li>
-                        <hr class="dropdown-divider border-secondary">
-                        <li><a class="dropdown-item" href="#" onclick="viewUserDetailsModal(${u.id}, 'profile')"><i class="bi bi-person-fill me-2"></i> View Profile</a></li>
-                        <li><a class="dropdown-item" href="#" onclick="viewUserDetailsModal(${u.id}, 'uploads')"><i class="bi bi-file-earmark-arrow-up-fill me-2"></i> View Uploads</a></li>
-                        <li><a class="dropdown-item" href="#" onclick="viewUserDetailsModal(${u.id}, 'reports')"><i class="bi bi-file-earmark-bar-graph-fill me-2"></i> View Reports</a></li>
-                        <li><a class="dropdown-item" href="#" onclick="viewUserDetailsModal(${u.id}, 'notifications')"><i class="bi bi-bell-fill me-2"></i> View Notifications</a></li>
-                        <hr class="dropdown-divider border-secondary">
-                        <li><a class="dropdown-item" href="#" onclick="deleteUser(${u.id})"><i class="bi bi-trash-fill me-2 text-danger"></i> Delete User</a></li>
-                    </ul>
+                <div class="d-flex align-items-center gap-2">
+                    <div class="status-action-btns">
+                        ${u.status === 'pending' ? `
+                            <div class="d-flex align-items-center gap-1">
+                                <button class="btn btn-success btn-sm py-1 px-2" onclick="changeUserStatus(${u.id}, 'approved')" title="Approve Candidate"><i class="bi bi-check-lg"></i> Approve</button>
+                                <button class="btn btn-danger btn-sm py-1 px-2" onclick="changeUserStatus(${u.id}, 'rejected')" title="Reject Candidate"><i class="bi bi-x-lg"></i> Reject</button>
+                            </div>
+                        ` : u.status === 'approved' ? `
+                            <div class="d-flex align-items-center gap-1">
+                                <span class="badge bg-success-bg text-success border border-success py-1 px-2" style="font-size:0.75rem;"><i class="bi bi-check-circle-fill"></i> Approved</span>
+                                <button class="btn btn-outline-danger btn-sm py-1 px-2" onclick="changeUserStatus(${u.id}, 'rejected')" title="Change to Rejected" style="border-color: rgba(244, 63, 94, 0.4); color: #f43f5e;"><i class="bi bi-x-lg"></i></button>
+                            </div>
+                        ` : `
+                            <div class="d-flex align-items-center gap-1">
+                                <span class="badge bg-danger-bg text-danger border border-danger py-1 px-2" style="font-size:0.75rem;"><i class="bi bi-x-circle-fill"></i> Rejected</span>
+                                <button class="btn btn-outline-success btn-sm py-1 px-2" onclick="changeUserStatus(${u.id}, 'approved')" title="Change to Approved" style="border-color: rgba(0, 230, 118, 0.4); color: #00e676;"><i class="bi bi-check-lg"></i></button>
+                            </div>
+                        `}
+                    </div>
+                    <div class="dropdown">
+                        <button class="btn btn-secondary-premium btn-sm dropdown-toggle py-1 px-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Options
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-dark glass-panel" style="border:1px solid var(--card-border);">
+                            <li><a class="dropdown-item" href="#" onclick="editUserModal(${u.id})"><i class="bi bi-pencil me-2 text-primary"></i> Edit User</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="toggleAccountStatus(${u.id}, ${u.is_active})"><i class="bi ${u.is_active ? 'bi-shield-slash-fill text-warning' : 'bi-shield-fill-check text-success'} me-2"></i> ${u.is_active ? 'Disable Account' : 'Enable Account'}</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="resetPasswordModal(${u.id})"><i class="bi bi-key-fill me-2 text-info"></i> Reset Password</a></li>
+                            <hr class="dropdown-divider border-secondary">
+                            <li><a class="dropdown-item" href="#" onclick="viewUserDetailsModal(${u.id}, 'profile')"><i class="bi bi-person-fill me-2"></i> View Profile</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="viewUserDetailsModal(${u.id}, 'uploads')"><i class="bi bi-file-earmark-arrow-up-fill me-2"></i> View Uploads</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="viewUserDetailsModal(${u.id}, 'reports')"><i class="bi bi-file-earmark-bar-graph-fill me-2"></i> View Reports</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="viewUserDetailsModal(${u.id}, 'notifications')"><i class="bi bi-bell-fill me-2"></i> View Notifications</a></li>
+                            <hr class="dropdown-divider border-secondary">
+                            <li><a class="dropdown-item" href="#" onclick="deleteUser(${u.id})"><i class="bi bi-trash-fill me-2 text-danger"></i> Delete User</a></li>
+                        </ul>
+                    </div>
                 </div>
             </td>
         `;

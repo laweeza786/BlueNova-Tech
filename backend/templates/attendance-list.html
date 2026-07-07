@@ -26,14 +26,23 @@
     <div class="app-wrapper">
         <aside class="app-sidebar">
             <div class="sidebar-header">
-                <a href="/erp/admin-dashboard/" class="d-flex align-items-center gap-2 fw-bold text-white text-decoration-none">
+                <a href="/" class="d-flex align-items-center gap-2 fw-bold text-white text-decoration-none">
                     <i class="bi bi-rocket-takeoff-fill text-primary"></i> <span>BlueNova ERP</span>
                 </a>
                 <button class="sidebar-toggler sidebar-toggle-btn d-lg-none"><i class="bi bi-x-lg"></i></button>
             </div>
             <ul class="sidebar-menu">
                 <li class="sidebar-item"><a href="/erp/admin-dashboard/" class="sidebar-link"><i class="bi bi-grid-fill"></i> <span>Dashboard</span></a></li>
-                <li class="sidebar-item"><a href="/erp/user-management/" class="sidebar-link"><i class="bi bi-people-fill"></i> <span>Candidate Management</span></a></li>
+                <li class="sidebar-item">
+                    <a href="/erp/user-management/" class="sidebar-link"><i class="bi bi-people-fill"></i> <span>Candidate Management</span></a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="/erp/user-management/?filter=approved" class="sidebar-link"><i class="bi bi-check-circle-fill text-success"></i> <span>Approved Candidates</span></a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="/erp/user-management/?filter=rejected" class="sidebar-link"><i class="bi bi-x-circle-fill text-danger"></i> <span>Rejected Candidates</span></a>
+                </li>
+
                 <li class="sidebar-item"><a href="/erp/attendance/dashboard/" class="sidebar-link"><i class="bi bi-calendar-check-fill"></i> <span>Attendance</span></a></li>
                 <li class="sidebar-item"><a href="/erp/attendance/mark/" class="sidebar-link" style="padding-left:42px;font-size:0.9rem;"><i class="bi bi-pencil-square"></i> <span>Mark Attendance</span></a></li>
                 <li class="sidebar-item active"><a href="/erp/attendance/list/" class="sidebar-link" style="padding-left:42px;font-size:0.9rem;"><i class="bi bi-list-check"></i> <span>Attendance List</span></a></li>
