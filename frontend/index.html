@@ -31,8 +31,8 @@
                 </ul>
                 <div class="d-flex align-items-center gap-3">
                     <button class="theme-switch theme-toggle-btn" aria-label="Toggle Theme"></button>
-                    <a href="login.html" class="btn btn-secondary-premium">Login</a>
-                    <a href="signup.html" class="btn btn-premium">Apply Now</a>
+                    <a href="{% url \'login\' %}" class="btn btn-secondary-premium">Login</a>
+                    <a href="{% url \'signup\' %}" class="btn btn-premium">Apply Now</a>
                 </div>
             </div>
         </div>
@@ -50,7 +50,7 @@
                     Secure hands-on industry internship experience, professional certificates, live projects mentorship, and complete career placement assistance.
                 </p>
                 <div class="d-flex justify-content-center gap-3 fade-in-up" style="animation-delay: 0.3s;">
-                    <a href="signup.html" class="btn btn-premium btn-lg">Apply for Internship</a>
+                    <a href="{% url \'signup\' %}" class="btn btn-premium btn-lg">Apply for Internship</a>
                     <a href="#programs" class="btn btn-secondary-premium btn-lg">Explore Tracks</a>
                 </div>
             </div>
@@ -176,7 +176,7 @@
                             <h4 class="text-white">Full Stack Django & React</h4>
                             <p class="text-secondary">Master Python backend, Restful APIs, Javascript frontends, SQLite/PostgreSQL optimization, and secure deployments.</p>
                         </div>
-                        <a href="signup.html" class="btn btn-outline-light w-100 mt-4">Apply Track</a>
+                        <a href="{% url \'signup\' %}" class="btn btn-outline-light w-100 mt-4">Apply Track</a>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -186,7 +186,7 @@
                             <h4 class="text-white">Product Layout & Prototyping</h4>
                             <p class="text-secondary">Construct design languages, wireframe complex screens, test user interactions, and build high fidelity responsive models in Figma.</p>
                         </div>
-                        <a href="signup.html" class="btn btn-outline-light w-100 mt-4">Apply Track</a>
+                        <a href="{% url \'signup\' %}" class="btn btn-outline-light w-100 mt-4">Apply Track</a>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -196,7 +196,7 @@
                             <h4 class="text-white">Business Intelligence & Science</h4>
                             <p class="text-secondary">Analyze business data flows using Python, Pandas, visualization tools like ChartJS/Tableau, and format custom analytics indices.</p>
                         </div>
-                        <a href="signup.html" class="btn btn-outline-light w-100 mt-4">Apply Track</a>
+                        <a href="{% url \'signup\' %}" class="btn btn-outline-light w-100 mt-4">Apply Track</a>
                     </div>
                 </div>
             </div>
@@ -314,8 +314,8 @@
                     <ul class="list-unstyled d-flex flex-column gap-2 small">
                         <li><a href="about.html" class="text-secondary text-decoration-none">About Us</a></li>
                         <li><a href="contact.html" class="text-secondary text-decoration-none">Contact Us</a></li>
-                        <li><a href="login.html" class="text-secondary text-decoration-none">Log In</a></li>
-                        <li><a href="signup.html" class="text-secondary text-decoration-none">Sign Up</a></li>
+                        <li><a href="{% url \'login\' %}" class="text-secondary text-decoration-none">Log In</a></li>
+                        <li><a href="{% url \'signup\' %}" class="text-secondary text-decoration-none">Sign Up</a></li>
                     </ul>
                 </div>
                 <div class="col-md-3">

@@ -97,7 +97,7 @@
             const homeLink = document.querySelector("#msg-sidebar-aside a");
             
             if (u.role === "admin") {
-                homeLink.href = "admin-dashboard.html";
+                homeLink.href = "/erp/admin-dashboard/";
                 menu.innerHTML = `
                     <li class="sidebar-item"><a href="/erp/admin-dashboard/" class="sidebar-link"><i class="bi bi-grid-fill"></i> <span>Control Center</span></a></li>
                     <li class="sidebar-item"><a href="/erp/user-management/" class="sidebar-link"><i class="bi bi-people-fill"></i> <span>User Accounts</span></a></li>
@@ -110,7 +110,7 @@
                     <li class="sidebar-item mt-4"><a href="/auth/logout/" class="sidebar-link text-danger"><i class="bi bi-box-arrow-right"></i> <span>Sign Out</span></a></li>
                 `;
             } else {
-                homeLink.href = "dashboard.html";
+                homeLink.href = "/erp/dashboard/";
                 menu.innerHTML = `
                     <li class="sidebar-item"><a href="/erp/dashboard/" class="sidebar-link"><i class="bi bi-grid-fill"></i> <span>Dashboard</span></a></li>
                     <li class="sidebar-item"><a href="/erp/profile/" class="sidebar-link"><i class="bi bi-person-fill"></i> <span>My Profile</span></a></li>

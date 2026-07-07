@@ -205,7 +205,7 @@ function getLoggedInUser() {
 function checkAuthentication(requiredRole) {
     const user = getLoggedInUser();
     if (!user) {
-        window.location.href = "login.html";
+        window.location.href = "/auth/login/";
         return null;
     }
     if (requiredRole && user.role !== requiredRole) {

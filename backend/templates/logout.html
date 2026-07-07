@@ -16,13 +16,13 @@
         </div>
     </div>
 
-    <script src="/static/js/mockData.js"></script>
     <script>
-        // Clear session token
+        // Clear any client-side session data
         localStorage.removeItem("erp_session");
+        // Redirect to Django logout endpoint which handles server-side session clearing
         setTimeout(() => {
-            window.location.href = "login.html";
-        }, 1000);
+            window.location.href = "/auth/logout/";
+        }, 800);
     </script>
 </body>
 </html>

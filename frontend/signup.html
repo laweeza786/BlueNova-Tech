@@ -74,7 +74,7 @@
                     </form>
                     
                     <div class="text-center mt-4">
-                        <span class="small text-secondary">Already applied? <a href="login.html" class="text-primary text-decoration-none fw-semibold">Login here</a></span>
+                        <span class="small text-secondary">Already applied? <a href="{% url \'login\' %}" class="text-primary text-decoration-none fw-semibold">Login here</a></span>
                     </div>
                 </div>
             </div>
@@ -174,7 +174,7 @@
                 successBox.classList.remove("d-none");
                 
                 setTimeout(() => {
-                    window.location.href = "login.html";
+                    window.location.href = "/auth/login/";
                 }, 1500);
             }, 800);
         });
