@@ -106,7 +106,8 @@ def get_erp_context(request):
         msg_list.append({
             'id': m.id,
             'sender_id': m.sender.id,
-            'receiver_id': m.receiver.id,
+            'receiver_id': m.receiver.id if m.receiver else None,
+            'group_name': m.group_name or "",
             'subject': m.subject,
             'body': m.body,
             'is_read': m.is_read,
@@ -2301,3 +2302,105 @@ def attendance_export_own_csv(request):
 
     log_action(request.user, "Exported personal attendance CSV", request)
     return response
+
+
+@login_required
+@csrf_protect
+def send_message_api(request):
+    if request.method != 'POST':
+        return JsonResponse({'success': False, 'message': 'POST required.'}, status=405)
+
+    try:
+        data = json.loads(request.body)
+    except json.JSONDecodeError:
+        data = request.POST
+
+    body = data.get('body', '').strip()
+    receiver_id = data.get('receiver_id')
+    group_name = data.get('group_name', '').strip()
+
+    if not body:
+        return JsonResponse({'success': False, 'message': 'Message body cannot be empty.'}, status=400)
+
+    # Resolve receiver
+    receiver = None
+    if receiver_id:
+        try:
+            receiver = User.objects.get(id=receiver_id)
+        except User.DoesNotExist:
+            pass
+
+    # Save message in the database
+    msg = Message.objects.create(
+        sender=request.user,
+        receiver=receiver,
+        group_name=group_name if not receiver else "",
+        subject="Direct ERP Message" if receiver else f"Group: {group_name}",
+        body=body
+    )
+
+    # Notification logic
+    sender_name = request.user.profile.full_name if hasattr(request.user, 'profile') and request.user.profile.full_name else request.user.username
+    if receiver:
+        # Create notification for specific user
+        Notification.objects.create(
+            user=receiver,
+            title="New Message",
+            message=f"You received a message from {sender_name}.",
+            level="info"
+        )
+    elif group_name:
+        # Create notifications for all other users in that group/track
+        recipients = User.objects.filter(role='user')
+        if group_name == 'all-cohort':
+            # Exclude sender if sender is a user
+            recipients = recipients.exclude(id=request.user.id)
+        else:
+            # Match track
+            recipients = recipients.filter(profile__track=group_name).exclude(id=request.user.id)
+
+        for user in recipients:
+            Notification.objects.create(
+                user=user,
+                title=f"New Group Message: {group_name}",
+                message=f"{sender_name} posted in {group_name}: {body[:50]}...",
+                level="info"
+            )
+
+    return JsonResponse({
+        'success': True,
+        'message': 'Message sent successfully.',
+        'msg': {
+            'id': msg.id,
+            'sender_id': msg.sender.id,
+            'receiver_id': msg.receiver.id if msg.receiver else None,
+            'group_name': msg.group_name or "",
+            'subject': msg.subject,
+            'body': msg.body,
+            'is_read': msg.is_read,
+            'created_at': msg.created_at.isoformat()
+        }
+    })
+
+
+@login_required
+@csrf_protect
+def mark_messages_read_api(request):
+    if request.method != 'POST':
+        return JsonResponse({'success': False, 'message': 'POST required.'}, status=405)
+
+    try:
+        data = json.loads(request.body)
+    except json.JSONDecodeError:
+        data = request.POST
+
+    receiver_id = data.get('receiver_id')
+    group_name = data.get('group_name', '').strip()
+
+    if receiver_id:
+        Message.objects.filter(sender_id=receiver_id, receiver=request.user, is_read=False).update(is_read=True)
+    elif group_name:
+        Message.objects.filter(group_name=group_name, is_read=False).exclude(sender=request.user).update(is_read=True)
+
+    return JsonResponse({'success': True})
+

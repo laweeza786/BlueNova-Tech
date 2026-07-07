@@ -70,4 +70,6 @@ urlpatterns = [
     path('api/attendance/analytics/', views.attendance_analytics_api, name='attendance_analytics_api'),
     path('reports/attendance/', views.attendance_report, name='attendance_report'),
     path('reports/attendance/csv/', views.attendance_export_own_csv, name='attendance_export_own_csv'),
+    path('api/messages/send/', views.send_message_api, name='send_message_api'),
+    path('api/messages/read/', views.mark_messages_read_api, name='mark_messages_read_api'),
 ]
