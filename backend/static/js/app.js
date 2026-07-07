@@ -48,13 +48,13 @@ function refreshSystemState() {
             
             handleNotificationsBadge();
             const pathName = window.location.pathname;
-            if (pathName.includes("dashboard.html") || pathName.endsWith("/dashboard/")) {
+            if (pathName.includes("dashboard.html") || pathName.endsWith("/erp/dashboard/")) {
                 renderUserDashboard();
-            } else if (pathName.includes("admin-dashboard.html") || pathName.endsWith("/admin-dashboard/")) {
+            } else if (pathName.includes("admin-dashboard.html") || pathName.endsWith("/erp/admin-dashboard/")) {
                 renderAdminDashboard();
-            } else if (pathName.includes("user-management.html") || pathName.endsWith("/user-management/")) {
+            } else if (pathName.includes("user-management.html") || pathName.endsWith("/erp/user-management/")) {
                 renderUserManagement();
-            } else if (pathName.includes("notifications.html") || pathName.endsWith("/notifications/")) {
+            } else if (pathName.includes("notifications.html") || pathName.endsWith("/erp/notifications/")) {
                 renderNotificationsPage();
             }
             return data;
@@ -123,11 +123,11 @@ document.addEventListener("DOMContentLoaded", () => {
     // Page specific handlers
     const pathName = window.location.pathname;
     
-    if (pathName.includes("dashboard.html") || pathName.endsWith("/dashboard/")) {
+    if (pathName.includes("dashboard.html") || pathName.endsWith("/erp/dashboard/")) {
         renderUserDashboard();
-    } else if (pathName.includes("admin-dashboard.html") || pathName.endsWith("/admin-dashboard/")) {
+    } else if (pathName.includes("admin-dashboard.html") || pathName.endsWith("/erp/admin-dashboard/")) {
         renderAdminDashboard();
-    } else if (pathName.includes("user-management.html") || pathName.endsWith("/user-management/")) {
+    } else if (pathName.includes("user-management.html") || pathName.endsWith("/erp/user-management/")) {
         const searchInput = document.getElementById("admin-search-users");
         if (searchInput) {
             searchInput.addEventListener("input", (e) => {
@@ -149,33 +149,33 @@ document.addEventListener("DOMContentLoaded", () => {
             }, 100);
         }
         renderUserManagement();
-    } else if (pathName.includes("upload-files.html") || pathName.endsWith("/upload-files/")) {
+    } else if (pathName.includes("upload-files.html") || pathName.endsWith("/erp/upload-files/")) {
         setupFileUploader();
-    } else if (pathName.includes("messages.html") || pathName.endsWith("/messages/")) {
+    } else if (pathName.includes("messages.html") || pathName.endsWith("/erp/messages/")) {
         setupMessagesSystem();
-    } else if (pathName.includes("edit-profile.html") || pathName.endsWith("/edit-profile/")) {
+    } else if (pathName.includes("edit-profile.html") || pathName.endsWith("/erp/edit-profile/")) {
         setupEditProfileForm();
-    } else if (pathName.includes("settings.html") || pathName.endsWith("/settings/")) {
+    } else if (pathName.includes("settings.html") || pathName.endsWith("/erp/settings/")) {
         setupSettings();
-    } else if (pathName.includes("activity-logs.html") || pathName.endsWith("/activity-logs/")) {
+    } else if (pathName.includes("activity-logs.html") || pathName.endsWith("/erp/activity-logs/")) {
         renderActivityLogs();
-    } else if (pathName.includes("data-management.html") || pathName.endsWith("/data-management/")) {
+    } else if (pathName.includes("data-management.html") || pathName.endsWith("/erp/data-management/")) {
         setupDataManagement();
-    } else if (pathName.includes("reports.html") || pathName.endsWith("/reports/")) {
+    } else if (pathName.includes("reports.html") || pathName.endsWith("/erp/reports/")) {
         renderReportsPage();
-    } else if (pathName.includes("analytics.html") || pathName.endsWith("/analytics/")) {
+    } else if (pathName.includes("analytics.html") || pathName.endsWith("/erp/analytics/")) {
         renderAnalyticsPage();
-    } else if (pathName.includes("search.html") || pathName.endsWith("/search/")) {
+    } else if (pathName.includes("search.html") || pathName.endsWith("/erp/search/")) {
         setupSearchPage();
-    } else if (pathName.includes("history.html") || pathName.endsWith("/history/")) {
+    } else if (pathName.includes("history.html") || pathName.endsWith("/erp/history/")) {
         renderHistoryPage();
-    } else if (pathName.includes("notifications.html") || pathName.endsWith("/notifications/")) {
+    } else if (pathName.includes("notifications.html") || pathName.endsWith("/erp/notifications/")) {
         renderNotificationsPage();
-    } else if (pathName.includes("profile.html") || pathName.endsWith("/profile/") || (pathName.includes("/profile/") && !pathName.includes("/edit-profile/"))) {
+    } else if (pathName.includes("profile.html") || pathName.endsWith("/erp/profile/") || (pathName.includes("/erp/profile/") && !pathName.includes("/erp/edit-profile/"))) {
         renderProfilePage();
-    } else if (pathName.includes("feedback.html") || pathName.endsWith("/feedback/")) {
+    } else if (pathName.includes("feedback.html") || pathName.endsWith("/erp/feedback/")) {
         setupFeedbackForm();
-    } else if (pathName.includes("help-center.html") || pathName.endsWith("/help-center/")) {
+    } else if (pathName.includes("help-center.html") || pathName.endsWith("/erp/help-center/")) {
         setupHelpCenter();
     }
 });
@@ -225,7 +225,7 @@ function checkAuthentication(requiredRole) {
         return null;
     }
     if (requiredRole && user.role !== requiredRole) {
-        window.location.href = "404.html";
+        window.location.href = "/404/";
         return null;
     }
     return user;

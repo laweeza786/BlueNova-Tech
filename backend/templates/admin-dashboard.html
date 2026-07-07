@@ -41,13 +41,7 @@
                     <a href="/erp/user-management/" class="sidebar-link"><i class="bi bi-people-fill"></i> <span>Candidate Management</span></a>
                 </li>
                 <li class="sidebar-item">
-                    <a href="user-management.html?filter=approved" class="sidebar-link"><i class="bi bi-check-circle-fill text-success"></i> <span>Approved Candidates</span></a>
-                </li>
-                <li class="sidebar-item">
-                    <a href="user-management.html?filter=rejected" class="sidebar-link"><i class="bi bi-x-circle-fill text-danger"></i> <span>Rejected Candidates</span></a>
-                </li>
-                <li class="sidebar-item">
-                    <a href="/erp/user-management/" class="sidebar-link"><i class="bi bi-person-badge-fill"></i> <span>All Users</span></a>
+                    <a href="/erp/attendance/dashboard/" class="sidebar-link"><i class="bi bi-calendar-check-fill"></i> <span>Attendance</span></a>
                 </li>
                 <li class="sidebar-item">
                     <a href="/erp/notifications/" class="sidebar-link"><i class="bi bi-bell-fill"></i> <span>Notifications <span class="badge bg-danger notif-badge ms-1" style="display:none;">0</span></span></a>
@@ -126,6 +120,13 @@
                         <div class="glass-panel metric-card">
                             <div class="text-secondary small mb-1">System Logs</div>
                             <h2 id="admin-stat-logs" class="text-white fw-bold mb-0">0</h2>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-6">
+                        <div class="glass-panel metric-card att-stat-present">
+                            <div class="text-secondary small mb-1">Present Today</div>
+                            <h2 class="fw-bold mb-0" style="color: var(--success);">{{ today_present }}</h2>
+                            <a href="/erp/attendance/dashboard/" class="text-secondary small text-decoration-none">{{ admin_attendance_pct }}% rate →</a>
                         </div>
                     </div>
                 </div>

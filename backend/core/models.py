@@ -155,3 +155,33 @@ class InternshipApplication(models.Model):
     def __str__(self):
         return f"{self.full_name} - {self.course}"
 
+
+class Attendance(models.Model):
+    STATUS_CHOICES = (
+        ('present', 'Present'),
+        ('absent', 'Absent'),
+        ('late', 'Late'),
+        ('leave', 'Leave'),
+    )
+    TRACK_CHOICES = (
+        ('Software Engineering', 'Software Engineering'),
+        ('UI/UX Design', 'UI/UX Design'),
+        ('Data Analytics', 'Data Analytics'),
+    )
+
+    student = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='attendance_records')
+    internship_track = models.CharField(max_length=50, choices=TRACK_CHOICES)
+    date = models.DateField()
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='present')
+    remarks = models.TextField(blank=True)
+    marked_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, related_name='marked_attendance')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ('student', 'date')
+        ordering = ['-date', 'student']
+
+    def __str__(self):
+        return f"{self.student.username} - {self.date} - {self.status}"
+
