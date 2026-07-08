@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - BlueNova Technologies</title>
+    <title>Admin Login - BlueNova Technologies</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link href="/static/css/style.css?v=6.4" rel="stylesheet">
 </head>
-<body class="d-flex align-items-center justify-content-center" style="min-height: 100vh;">
+<body class="d-flex align-items-center justify-content-center bg-admin" style="min-height: 100vh;">
 
     <!-- Glowing Background Orbs -->
     <div class="glow-orb glow-orb-1"></div>
@@ -29,37 +29,39 @@
                 </div>
                 {% endif %}
 
-                <div class="glass-panel p-5 text-start">
-                    <h3 class="text-white mb-2">Welcome Back</h3>
-                    <p class="text-secondary small mb-4">Enter your credentials to enter the BlueNova platform.</p>
+                <div class="glass-panel p-5 text-start border-primary" style="border-width: 2px;">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <i class="bi bi-shield-lock-fill text-primary fs-4"></i>
+                        <h3 class="text-white mb-0">Admin Access</h3>
+                    </div>
+                    <p class="text-secondary small mb-4">Authorized personnel only. Please enter your admin credentials.</p>
 
                     <div id="login-alert" class="alert alert-danger d-none small py-2" role="alert"></div>
 
-                    <form id="loginForm">
+                    <form id="adminLoginForm">
                         {% csrf_token %}
 
                         <div class="mb-3">
-                            <label class="form-label text-secondary small">Username or Email</label>
+                            <label class="form-label text-secondary small">Admin Username</label>
                             <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-person"></i></span>
-                                <input type="text" id="login-username" name="username" class="form-control form-control-premium" required placeholder="Enter username or email">
+                                <span class="input-group-text"><i class="bi bi-person-badge"></i></span>
+                                <input type="text" id="login-username" name="username" class="form-control form-control-premium" required placeholder="Enter admin username">
                             </div>
                         </div>
                         <div class="mb-4">
                             <div class="d-flex justify-content-between">
                                 <label class="form-label text-secondary small">Password</label>
-                                <a href="{% url 'forgot_password' %}" class="small text-primary text-decoration-none">Forgot password?</a>
                             </div>
                             <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                                <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
                                 <input type="password" id="login-password" name="password" class="form-control form-control-premium" required placeholder="••••••••">
                             </div>
                         </div>
 
-                        <button type="submit" id="login-submit-btn" class="btn btn-premium w-100 py-3 mb-3">Sign In</button>
-
-                        <div class="text-center">
-                            <span class="small text-secondary">Don't have an account? <a href="{% url 'signup' %}" class="text-primary text-decoration-none fw-semibold">Apply Now</a></span>
+                        <button type="submit" id="login-submit-btn" class="btn btn-primary w-100 py-3 mb-3 fw-bold">Authenticate</button>
+                        
+                        <div class="text-center mt-3">
+                            <a href="/site-settings/" class="text-secondary small text-decoration-none"><i class="bi bi-arrow-left"></i> Back to Settings</a>
                         </div>
                     </form>
                 </div>
@@ -75,7 +77,7 @@
             return cookie ? cookie.trim().split('=')[1] : '';
         }
 
-        document.getElementById("loginForm").addEventListener("submit", function(e) {
+        document.getElementById("adminLoginForm").addEventListener("submit", function(e) {
             e.preventDefault();
 
             const alertBox = document.getElementById("login-alert");
@@ -89,7 +91,7 @@
             formData.append('username', document.getElementById('login-username').value.trim());
             formData.append('password', document.getElementById('login-password').value);
 
-            fetch('/auth/login/', {
+            fetch('/auth/admin-login/', {
                 method: 'POST',
                 headers: {
                     'X-CSRFToken': getCsrfToken()
@@ -104,25 +106,15 @@
                 } else {
                     alertBox.textContent = data.message || "Login failed. Please try again.";
                     alertBox.classList.remove("d-none");
-                    
-                    if (data.message === "User does not exist.") {
-                        alertBox.textContent = "User does not exist. Redirecting to application form...";
-                        btn.textContent = "Redirecting...";
-                        setTimeout(() => {
-                            window.location.href = '/courses/apply/';
-                        }, 2000);
-                        return;
-                    }
-                    
                     btn.disabled = false;
-                    btn.textContent = "Sign In";
+                    btn.textContent = "Authenticate";
                 }
             })
             .catch(err => {
                 alertBox.textContent = "A network error occurred. Please try again.";
                 alertBox.classList.remove("d-none");
                 btn.disabled = false;
-                btn.textContent = "Sign In";
+                btn.textContent = "Authenticate";
                 console.error(err);
             });
         });

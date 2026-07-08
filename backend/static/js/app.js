@@ -34,11 +34,15 @@ function refreshSystemState() {
     return fetch("/erp/api/system-state/")
         .then(res => {
             if (res.status === 401 || res.status === 403) {
-                window.location.href = "/auth/login/";
+                if (!window.location.pathname.includes('/auth/')) {
+                    window.location.href = "/auth/login/";
+                }
+                return null;
             }
             return res.json();
         })
         .then(data => {
+            if (!data) return null;
             localStorage.setItem("erp_users", JSON.stringify(data.users));
             localStorage.setItem("erp_files", JSON.stringify(data.files));
             localStorage.setItem("erp_notifications", JSON.stringify(data.notifications));
@@ -80,14 +84,20 @@ function startRealtimePolling() {
         fetch("/erp/api/check-status/")
             .then(res => {
                 if (res.status === 401 || res.status === 403) {
-                    window.location.href = "/auth/login/";
+                    if (!window.location.pathname.includes('/auth/')) {
+                        window.location.href = "/auth/login/";
+                    }
+                    return null;
                 }
                 return res.json();
             })
             .then(data => {
+                if (!data) return;
                 if (data.status === 'anonymous') {
                     localStorage.clear();
-                    window.location.href = "/auth/login/";
+                    if (!window.location.pathname.includes('/auth/')) {
+                        window.location.href = "/auth/login/";
+                    }
                 } else if (data.status === 'deleted') {
                     showToast(data.message || "Your account has been removed.", "danger");
                     localStorage.clear();
@@ -234,20 +244,9 @@ function checkAuthentication(requiredRole) {
     return user;
 }
 
-// Theme Engine
+// Theme Engine (Disabled)
 function initTheme() {
-    const currentTheme = localStorage.getItem("erp_theme") || "dark";
-    document.documentElement.setAttribute("data-theme", currentTheme);
-    
-    const switchers = document.querySelectorAll(".theme-toggle-btn");
-    switchers.forEach(btn => {
-        btn.addEventListener("click", () => {
-            const nextTheme = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
-            document.documentElement.setAttribute("data-theme", nextTheme);
-            localStorage.setItem("erp_theme", nextTheme);
-            showToast(`Theme switched to ${nextTheme} mode!`, "success");
-        });
-    });
+    document.documentElement.setAttribute("data-theme", "dark");
 }
 
 // Sidebar responsive drawer and toggle collapse

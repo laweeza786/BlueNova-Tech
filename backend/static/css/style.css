@@ -81,54 +81,7 @@
     --space-2xl:  48px;
 }
 
-/* ═══════════════════════════════════════════════════════════
-   LIGHT MODE OVERRIDES
-   ═══════════════════════════════════════════════════════════ */
-[data-theme="light"] {
-    --bg-primary:   #f4f7f5;
-    --bg-secondary: #eaf0ec;
-    --card-bg:      rgba(255, 255, 255, 0.85);
-    --card-border:  rgba(15, 23, 42, 0.10);
-    --card-hover-border: rgba(0, 155, 77, 0.45);
 
-    --primary:          #009b4d;
-    --primary-hover:    #007a3d;
-    --primary-gradient: linear-gradient(135deg, #009b4d 0%, #00c853 100%);
-    --accent:           #00c853;
-
-    --success-bg:  rgba(0, 200, 83, 0.12);
-    --danger-bg:   rgba(244, 63, 94, 0.12);
-    --warning-bg:  rgba(245, 158, 11, 0.12);
-    --info-bg:     rgba(14, 165, 233, 0.12);
-
-    --text-main:      #0f172a;
-    --text-primary:   #0f172a;
-    --text-secondary: #475569;
-    --text-muted:     #94a3b8;
-
-    --surface-1:  rgba(255, 255, 255, 0.60);
-    --surface-2:  rgba(255, 255, 255, 0.80);
-    --surface-3:  #ffffff;
-
-    --input-bg:          #ffffff;
-    --input-border:      #cbd5e1;
-    --input-focus-bg:    #ffffff;
-    --input-placeholder: #94a3b8;
-
-    --dropdown-bg:             #ffffff;
-    --dropdown-border:         #e2e8f0;
-    --dropdown-item-hover:     rgba(0, 155, 77, 0.08);
-    --dropdown-item-color:     #475569;
-    --dropdown-item-color-hover: #0f172a;
-
-    --navbar-bg:  var(--bg-secondary);
-    --sidebar-bg: var(--bg-secondary);
-
-    --glow-shadow: 0 0 20px rgba(0, 155, 77, 0.12);
-    --shadow-sm:   0 2px 8px rgba(15, 23, 42, 0.08);
-    --shadow-md:   0 8px 24px rgba(15, 23, 42, 0.12);
-    --shadow-lg:   0 16px 48px rgba(15, 23, 42, 0.18);
-}
 
 /* ═══════════════════════════════════════════════════════════
    RESET & BASE
@@ -151,9 +104,18 @@ body {
     transition: background-color 0.3s ease, color 0.3s ease;
     min-height: 100vh;
     line-height: 1.6;
+    position: relative;
+    z-index: 0;
 }
 
-/* Forest Parallax Background */
+/* Forest Background Animation */
+@keyframes forestPan {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Forest Parallax Background (Default Public) */
 body::before {
     content: "";
     position: fixed;
@@ -162,13 +124,25 @@ body::before {
     width: 100vw;
     height: 100vh;
     background-image: url('https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&w=1920&q=80'); /* Vibrant green forest */
-    background-attachment: fixed;
     background-size: cover;
     background-position: center;
     z-index: -1;
-    opacity: 0.15;
+    opacity: 0.35;
     pointer-events: none;
+    animation: forestPan 60s linear infinite;
     transition: opacity 0.5s ease;
+}
+
+/* User Dashboard Forest */
+body.bg-user::before {
+    background-image: url('/static/images/user_forest.png');
+    opacity: 0.45;
+}
+
+/* Admin Dashboard Forest */
+body.bg-admin::before {
+    background-image: url('/static/images/admin_forest.png');
+    opacity: 0.45;
 }
 
 /* Typewriter effect */
