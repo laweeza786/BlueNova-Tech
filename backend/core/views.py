@@ -1695,6 +1695,19 @@ def admin_user_details(request, user_id):
             'created_at': r.created_at.isoformat()
         })
         
+    tests = []
+    from core.models import WeeklyTestAttempt
+    for t in WeeklyTestAttempt.objects.filter(user=user).order_by('-week_number'):
+        tests.append({
+            'id': t.id,
+            'week_number': t.week_number,
+            'course_name': t.course_name,
+            'score': t.score,
+            'passed': t.passed,
+            'completed_at': t.completed_at.isoformat() if t.completed_at else None,
+            'admin_marks': t.admin_marks
+        })
+        
     return JsonResponse({
         'success': True,
         'user': {
@@ -1716,7 +1729,8 @@ def admin_user_details(request, user_id):
         'files': files,
         'notifications': notifications,
         'logs': logs,
-        'reports': reports
+        'reports': reports,
+        'tests': tests
     })
 
 
@@ -2428,4 +2442,162 @@ def mark_messages_read_api(request):
         Message.objects.filter(group_name=group_name, is_read=False).exclude(sender=request.user).update(is_read=True)
 
     return JsonResponse({'success': True})
+
+
+# ═══════════════════════════════════════════════════════════════════════
+# ASSESSMENTS & TESTS
+# ═══════════════════════════════════════════════════════════════════════
+
+from django.utils import timezone
+from .models import WeeklyTestAttempt
+import random
+from django.shortcuts import get_object_or_404, redirect
+
+@login_required
+def assessments_view(request):
+    ctx = get_erp_context(request)
+    
+    user_course = request.user.profile.track if hasattr(request.user, 'profile') else 'Software Engineering'
+    
+    # Get all past attempts
+    attempts = WeeklyTestAttempt.objects.filter(user=request.user).order_by('-week_number')
+    
+    # Check if there's an active one (not completed and not expired)
+    now = timezone.now()
+    active_test = attempts.filter(completed_at__isnull=True, expires_at__gt=now).first()
+    
+    # Auto-fail expired tests
+    expired_tests = attempts.filter(completed_at__isnull=True, expires_at__lte=now)
+    for test in expired_tests:
+        test.score = 0
+        test.passed = False
+        test.completed_at = test.expires_at
+        test.save()
+        
+    next_week = attempts.count() + 1 if not active_test else active_test.week_number
+
+    can_generate = active_test is None
+    
+    ctx.update({
+        'attempts': attempts,
+        'active_test': active_test,
+        'next_week': next_week,
+        'can_generate': can_generate,
+        'user_course': user_course
+    })
+    return render(request, 'assessments.html', ctx)
+
+@login_required
+def generate_test_api(request):
+    if request.method != 'POST':
+        return JsonResponse({'success': False, 'message': 'Invalid method.'})
+        
+    user_course = request.user.profile.track if hasattr(request.user, 'profile') else 'Software Engineering'
+    now = timezone.now()
+    
+    active_test = WeeklyTestAttempt.objects.filter(user=request.user, completed_at__isnull=True, expires_at__gt=now).exists()
+    if active_test:
+        return JsonResponse({'success': False, 'message': 'You already have an active test.'})
+        
+    next_week = WeeklyTestAttempt.objects.filter(user=request.user).count() + 1
+    
+    # Generate actual questions based on course and week
+    from core.questions_db import generate_questions
+    questions = generate_questions(user_course, next_week)
+    
+    test = WeeklyTestAttempt.objects.create(
+        user=request.user,
+        course_name=user_course,
+        week_number=next_week,
+        expires_at=now + timezone.timedelta(days=7),
+        questions_data=questions
+    )
+    
+    return JsonResponse({'success': True, 'test_id': test.id, 'message': 'Mock Test Generated! You have 7 days to complete it.'})
+
+@login_required
+def take_test_view(request, test_id):
+    test = get_object_or_404(WeeklyTestAttempt, id=test_id, user=request.user)
+    
+    now = timezone.now()
+    if test.completed_at or test.expires_at <= now:
+        return redirect('assessments')
+        
+    ctx = get_erp_context(request)
+    ctx.update({'test': test})
+    return render(request, 'take-test.html', ctx)
+
+@login_required
+def submit_test_api(request, test_id):
+    if request.method != 'POST':
+        return JsonResponse({'success': False, 'message': 'Invalid method'})
+        
+    test = get_object_or_404(WeeklyTestAttempt, id=test_id, user=request.user)
+    
+    now = timezone.now()
+    if test.completed_at or test.expires_at <= now:
+        return JsonResponse({'success': False, 'message': 'Test has already been submitted or expired.'})
+        
+    import json
+    try:
+        data = json.loads(request.body)
+    except:
+        data = request.POST
+        
+    answers = data.get('answers', {}) # Dict of { "1": "A", "2": "B" ... }
+    
+    score = 0
+    questions = test.questions_data
+    for q in questions:
+        q_id = str(q['id'])
+        user_ans = answers.get(q_id)
+        if user_ans == q['correct']:
+            score += 1
+            
+    test.score = score
+    test.passed = score >= 8
+    test.completed_at = now
+    test.save()
+    
+    return JsonResponse({'success': True, 'score': score, 'passed': test.passed, 'message': 'Test submitted successfully!'})
+
+@login_required
+def progress_report_view(request):
+    ctx = get_erp_context(request)
+    
+    attempts = WeeklyTestAttempt.objects.filter(user=request.user, completed_at__isnull=False).order_by('week_number')
+    
+    labels = [f"Week {a.week_number}" for a in attempts]
+    scores = [a.score for a in attempts]
+    
+    ctx.update({
+        'attempts': attempts,
+        'chart_labels': json.dumps(labels),
+        'chart_scores': json.dumps(scores),
+        'total_tests': attempts.count(),
+        'passed_tests': attempts.filter(passed=True).count(),
+    })
+    
+    return render(request, 'progress-report.html', ctx)
+
+@login_required
+@admin_required
+def admin_grade_test_api(request, test_id):
+    if request.method != 'POST':
+        return JsonResponse({'success': False, 'message': 'Invalid method.'})
+        
+    test = get_object_or_404(WeeklyTestAttempt, id=test_id)
+    
+    try:
+        data = json.loads(request.body)
+    except:
+        data = request.POST
+        
+    admin_marks = data.get('admin_marks', '').strip()
+    
+    test.admin_marks = admin_marks
+    test.save()
+    
+    return JsonResponse({'success': True, 'message': 'Marks/Feedback saved successfully.'})
+
 

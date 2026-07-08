@@ -42,6 +42,13 @@ urlpatterns = [
     path('help-center/', views.help_center_view, name='help_center'),
     path('feedback/', views.feedback_view, name='feedback'),
     
+    # Assessments
+    path('assessments/', views.assessments_view, name='assessments'),
+    path('api/assessments/generate/', views.generate_test_api, name='generate_test_api'),
+    path('assessments/take/<int:test_id>/', views.take_test_view, name='take_test'),
+    path('api/assessments/submit/<int:test_id>/', views.submit_test_api, name='submit_test_api'),
+    path('assessments/progress/', views.progress_report_view, name='progress_report'),
+    
     # Reports
     path('reports/', views.reports_view, name='reports'),
     path('reports/csv/', views.export_csv_view, name='export_csv'),
@@ -59,6 +66,7 @@ urlpatterns = [
     path('admin/api/users/delete/', views.admin_user_delete, name='admin_user_delete'),
     path('admin/api/users/<int:user_id>/details/', views.admin_user_details, name='admin_user_details'),
     path('admin/api/courses/add/', views.add_course_api, name='add_course_api'),
+    path('admin/api/tests/<int:test_id>/grade/', views.admin_grade_test_api, name='admin_grade_test_api'),
     path('api/check-status/', views.check_status_api, name='check_status_api'),
 
     # Attendance Management Module

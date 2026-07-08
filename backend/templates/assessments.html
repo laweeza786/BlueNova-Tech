@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assessments - BlueNova ERP</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="/static/css/style.css?v=6.6" rel="stylesheet">
+</head>
+<body>
+
+    {% if request.user.is_authenticated %}
+    <script>
+        localStorage.setItem("erp_users", '{{ json_users|escapejs }}');
+        localStorage.setItem("erp_session", '{{ session_token }}');
+    </script>
+    {% endif %}
+
+    <!-- Forest Animation Background -->
+    <div class="forest-bg-container">
+        <div class="forest-layer layer-back"></div>
+        <div class="forest-layer layer-mid"></div>
+        <div class="forest-layer layer-front"></div>
+        <div class="fireflies"></div>
+    </div>
+
+    <div class="app-wrapper">
+        <!-- Sidebar Navigation -->
+        {% include "includes/sidebar.html" with active_tab="assessments" %}
+
+        <!-- Main Panel Workspace -->
+        <main class="app-content">
+            <!-- Top Navbar -->
+            <header class="app-navbar">
+                <div class="d-flex align-items-center gap-3">
+                    <button class="sidebar-toggler sidebar-toggle-btn d-lg-block text-white" aria-label="Toggle Sidebar"><i class="bi bi-list"></i></button>
+                    <h6 class="mb-0 text-white d-none d-md-block"><i class="bi bi-journal-check me-2"></i>Assessments</h6>
+                </div>
+            </header>
+
+            <div class="app-body">
+                <div class="mb-4">
+                    <h2 class="text-white mb-1">Weekly Assessments</h2>
+                    <p class="text-secondary small mb-0">Generate and complete your weekly {{ user_course }} mock tests to track your progress.</p>
+                </div>
+
+                <div class="row g-4">
+                    <!-- Current Status Panel -->
+                    <div class="col-lg-12">
+                        <div class="glass-panel p-4">
+                            {% if active_test %}
+                            <div class="alert alert-warning mb-0 border-0" style="background: rgba(255, 193, 7, 0.1);">
+                                <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                                    <div>
+                                        <h5 class="text-warning mb-1"><i class="bi bi-exclamation-triangle-fill me-2"></i> Active Test Pending</h5>
+                                        <p class="mb-0 text-white-50 small">You have an active test for Week {{ active_test.week_number }}. It expires on {{ active_test.expires_at|date:"F d, Y h:i A" }}.</p>
+                                    </div>
+                                    <a href="{% url 'take_test' active_test.id %}" class="btn btn-warning fw-bold"><i class="bi bi-pencil-square me-1"></i> Take Test Now</a>
+                                </div>
+                            </div>
+                            {% elif can_generate %}
+                            <div class="text-center py-4">
+                                <h4 class="text-white mb-3">Ready for Week {{ next_week }}?</h4>
+                                <p class="text-secondary mb-4">Generate your weekly mock test. You will have exactly 7 days to complete 20 MCQs.</p>
+                                <button class="btn btn-premium btn-lg" onclick="generateTest()"><i class="bi bi-lightning-fill me-2"></i> Generate Mock Test</button>
+                            </div>
+                            {% else %}
+                            <div class="alert alert-success mb-0 border-0" style="background: rgba(25, 135, 84, 0.1);">
+                                <h5 class="text-success mb-1"><i class="bi bi-check-circle-fill me-2"></i> All Caught Up</h5>
+                                <p class="mb-0 text-white-50 small">You have completed your test for this week. Come back next week!</p>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Past Attempts -->
+                    <div class="col-lg-12">
+                        <div class="glass-panel p-4">
+                            <h4 class="text-white mb-4">Assessment History</h4>
+                            <div class="table-responsive">
+                                <table class="custom-table text-white mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>Week</th>
+                                            <th>Date Completed</th>
+                                            <th class="text-center">Score</th>
+                                            <th class="text-center">Status</th>
+                                            <th>Admin Feedback</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for attempt in attempts %}
+                                        <tr>
+                                            <td>Week {{ attempt.week_number }}</td>
+                                            <td>
+                                                {% if attempt.completed_at %}
+                                                    {{ attempt.completed_at|date:"M d, Y" }}
+                                                {% else %}
+                                                    <span class="text-warning">Pending</span>
+                                                {% endif %}
+                                            </td>
+                                            <td class="text-center">
+                                                {% if attempt.completed_at %}
+                                                    <span class="fw-bold fs-5 {% if attempt.passed %}text-success{% else %}text-danger{% endif %}">{{ attempt.score }}/20</span>
+                                                {% else %}
+                                                    -
+                                                {% endif %}
+                                            </td>
+                                            <td class="text-center">
+                                                {% if not attempt.completed_at %}
+                                                    <span class="badge-status status-pending">Pending</span>
+                                                {% elif attempt.passed %}
+                                                    <span class="badge-status status-approved">Passed</span>
+                                                {% else %}
+                                                    <span class="badge-status status-rejected">Failed</span>
+                                                {% endif %}
+                                            </td>
+                                            <td class="text-secondary small">
+                                                {{ attempt.admin_marks|default:"No feedback yet." }}
+                                            </td>
+                                        </tr>
+                                        {% empty %}
+                                        <tr>
+                                            <td colspan="5" class="text-center py-4 text-secondary">No assessments taken yet.</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- CSRF Token -->
+    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/static/js/app.js?v=6.6"></script>
+    <script>
+        function generateTest() {
+            Swal.fire({
+                title: 'Generate Mock Test?',
+                text: "You will have 7 days to complete it. The timer starts now!",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3b82f6',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, generate it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const csrf = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                    fetch('/erp/api/assessments/generate/', {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': csrf,
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            Swal.fire('Generated!', data.message, 'success').then(() => {
+                                window.location.reload();
+                            });
+                        } else {
+                            Swal.fire('Error', data.message, 'error');
+                        }
+                    });
+                }
+            })
+        }
+    </script>
+</body>
+</html>

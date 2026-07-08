@@ -981,6 +981,7 @@ window.viewUserDetailsModal = function(userId, activeTab = 'profile') {
             const notifications = data.notifications || [];
             const logs = data.logs || [];
             const reports = data.reports || [];
+            const tests = data.tests || [];
             
             const modalHtml = `
                 <div class="modal fade show d-block" id="userDetailsModal" tabindex="-1" style="background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); z-index: 1050;">
@@ -997,6 +998,9 @@ window.viewUserDetailsModal = function(userId, activeTab = 'profile') {
                                     </li>
                                     <li class="nav-item">
                                         <button class="nav-link text-white bg-transparent border-0 py-2 px-3 ${activeTab === 'uploads' ? 'active border-bottom border-primary fw-bold text-primary' : 'text-secondary'}" onclick="switchDetailsTab('uploads')">Uploads (${files.length})</button>
+                                    </li>
+                                    <li class="nav-item">
+                                        <button class="nav-link text-white bg-transparent border-0 py-2 px-3 ${activeTab === 'tests' ? 'active border-bottom border-primary fw-bold text-primary' : 'text-secondary'}" onclick="switchDetailsTab('tests')">Assessments (${tests.length})</button>
                                     </li>
                                     <li class="nav-item">
                                         <button class="nav-link text-white bg-transparent border-0 py-2 px-3 ${activeTab === 'notifications' ? 'active border-bottom border-primary fw-bold text-primary' : 'text-secondary'}" onclick="switchDetailsTab('notifications')">Notifications (${notifications.length})</button>
@@ -1117,6 +1121,41 @@ window.viewUserDetailsModal = function(userId, activeTab = 'profile') {
                                         </div>
                                     </div>
                                     
+                                    <div class="tab-pane fade ${activeTab === 'tests' ? 'show active' : ''}" id="details-tests">
+                                        <div class="table-responsive">
+                                            <table class="table table-dark table-hover mb-0">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Week</th>
+                                                        <th>Score</th>
+                                                        <th>Status</th>
+                                                        <th>Admin Marks/Feedback</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    ${tests.length === 0 ? '<tr><td colspan="5" class="text-center text-secondary small py-4">No assessments taken.</td></tr>' : tests.map(t => `
+                                                        <tr>
+                                                            <td>Week ${t.week_number}</td>
+                                                            <td>
+                                                                ${t.completed_at ? `<span class="fw-bold ${t.passed ? 'text-success' : 'text-danger'}">${t.score}/20</span>` : '<span class="text-warning">Pending</span>'}
+                                                            </td>
+                                                            <td>
+                                                                ${!t.completed_at ? '<span class="badge-status status-pending">Pending</span>' : (t.passed ? '<span class="badge-status status-approved">Passed</span>' : '<span class="badge-status status-rejected">Failed</span>')}
+                                                            </td>
+                                                            <td>
+                                                                <input type="text" class="form-control form-control-sm form-control-premium" id="admin-marks-${t.id}" value="${t.admin_marks || ''}" placeholder="Add feedback...">
+                                                            </td>
+                                                            <td>
+                                                                <button class="btn btn-sm btn-primary" onclick="saveAdminMarks(${t.id})">Save</button>
+                                                            </td>
+                                                        </tr>
+                                                    `).join('')}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    
                                     <div class="tab-pane fade ${activeTab === 'logs' ? 'show active' : ''}" id="details-logs">
                                         <div class="table-responsive">
                                             <table class="table table-dark table-hover mb-0" style="font-size: 0.85rem;">
@@ -1173,6 +1212,34 @@ window.viewUserDetailsModal = function(userId, activeTab = 'profile') {
             showToast("Failed to fetch candidate details.", "danger");
             console.error(err);
         });
+};
+
+window.saveAdminMarks = function(testId) {
+    const marksInput = document.getElementById(`admin-marks-${testId}`);
+    if (!marksInput) return;
+    
+    const csrf = document.querySelector('input[name=csrfmiddlewaretoken]') ? document.querySelector('input[name=csrfmiddlewaretoken]').value : getCookie('csrftoken');
+    
+    fetch(`/erp/admin/api/tests/${testId}/grade/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrf,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ admin_marks: marksInput.value })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            showToast("Feedback saved successfully!", "success");
+        } else {
+            showToast(data.message || "Failed to save feedback.", "danger");
+        }
+    })
+    .catch(err => {
+        showToast("Network error.", "danger");
+        console.error(err);
+    });
 };
 
 window.editUserModal = function(userId) {

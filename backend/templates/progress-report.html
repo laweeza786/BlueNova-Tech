@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progress Report - BlueNova ERP</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="/static/css/style.css?v=6.6" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Forest Animation Background -->
+    <div class="forest-bg-container">
+        <div class="forest-layer layer-back"></div>
+        <div class="forest-layer layer-mid"></div>
+        <div class="forest-layer layer-front"></div>
+        <div class="fireflies"></div>
+    </div>
+
+    <div class="app-wrapper">
+        <!-- Sidebar Navigation -->
+        {% include "includes/sidebar.html" with active_tab="reports" %}
+
+        <!-- Main Panel Workspace -->
+        <main class="app-content">
+            <!-- Top Navbar -->
+            <header class="app-navbar">
+                <div class="d-flex align-items-center gap-3">
+                    <button class="sidebar-toggler sidebar-toggle-btn d-lg-block text-white" aria-label="Toggle Sidebar"><i class="bi bi-list"></i></button>
+                    <h6 class="mb-0 text-white d-none d-md-block"><i class="bi bi-graph-up-arrow me-2"></i>Progress Report</h6>
+                </div>
+            </header>
+
+            <div class="app-body">
+                <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+                    <div>
+                        <h2 class="text-white mb-1">Weekly Test Progress</h2>
+                        <p class="text-secondary small mb-0">Track your mock test performance and scores over time.</p>
+                    </div>
+                    <a href="{% url 'reports' %}" class="btn btn-secondary-premium btn-sm"><i class="bi bi-arrow-left me-1"></i> Back to Reports</a>
+                </div>
+
+                <div class="row g-4 mb-4">
+                    <div class="col-md-6">
+                        <div class="glass-panel metric-card att-stat-present">
+                            <div class="text-secondary small mb-1">Total Tests Taken</div>
+                            <h2 class="fw-bold mb-0 text-white">{{ total_tests }}</h2>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="glass-panel metric-card att-stat-pct">
+                            <div class="text-secondary small mb-1">Tests Passed</div>
+                            <h2 class="fw-bold mb-0 text-success">{{ passed_tests }}</h2>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Row -->
+                <div class="row g-4 mb-4">
+                    <div class="col-lg-12">
+                        <div class="glass-panel p-4 h-100">
+                            <h4 class="text-white mb-3">Performance Trajectory</h4>
+                            <div style="height: 350px; position: relative;">
+                                <canvas id="progressChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Past Attempts Details -->
+                <div class="glass-panel p-4">
+                    <h4 class="text-white mb-4">Detailed Breakdown</h4>
+                    <div class="table-responsive">
+                        <table class="custom-table text-white mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Week</th>
+                                    <th>Date Completed</th>
+                                    <th class="text-center">Score</th>
+                                    <th class="text-center">Status</th>
+                                    <th>Admin Feedback</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for attempt in attempts %}
+                                <tr>
+                                    <td>Week {{ attempt.week_number }}</td>
+                                    <td>{{ attempt.completed_at|date:"M d, Y" }}</td>
+                                    <td class="text-center">
+                                        <span class="fw-bold fs-5 {% if attempt.passed %}text-success{% else %}text-danger{% endif %}">{{ attempt.score }}/20</span>
+                                    </td>
+                                    <td class="text-center">
+                                        {% if attempt.passed %}
+                                            <span class="badge-status status-approved">Passed</span>
+                                        {% else %}
+                                            <span class="badge-status status-rejected">Failed</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="text-secondary small">
+                                        {{ attempt.admin_marks|default:"No feedback yet." }}
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="5" class="text-center py-4 text-secondary">No assessments taken yet.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const labels = {{ chart_labels|safe }};
+            const scores = {{ chart_scores|safe }};
+            
+            if(labels.length > 0) {
+                const ctx = document.getElementById('progressChart').getContext('2d');
+                
+                const gradientBlue = ctx.createLinearGradient(0, 0, 0, 400);
+                gradientBlue.addColorStop(0, 'rgba(59, 130, 246, 0.5)');
+                gradientBlue.addColorStop(1, 'rgba(59, 130, 246, 0.0)');
+                
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Score (out of 20)',
+                            data: scores,
+                            borderColor: '#3b82f6',
+                            backgroundColor: gradientBlue,
+                            borderWidth: 3,
+                            pointBackgroundColor: '#3b82f6',
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: '#3b82f6',
+                            pointRadius: 5,
+                            pointHoverRadius: 7,
+                            fill: true,
+                            tension: 0.4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                                titleColor: '#fff',
+                                bodyColor: '#cbd5e1',
+                                borderColor: 'rgba(255,255,255,0.1)',
+                                borderWidth: 1,
+                                padding: 10,
+                                displayColors: false
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: { color: 'rgba(255, 255, 255, 0.05)', drawBorder: false },
+                                ticks: { color: '#94a3b8' }
+                            },
+                            y: {
+                                min: 0,
+                                max: 20,
+                                grid: { color: 'rgba(255, 255, 255, 0.05)', drawBorder: false },
+                                ticks: {
+                                    color: '#94a3b8',
+                                    stepSize: 5
+                                }
+                            }
+                        }
+                    }
+                });
+            } else {
+                document.getElementById('progressChart').parentElement.innerHTML = 
+                    '<div class="d-flex align-items-center justify-content-center h-100 text-secondary">No data available yet to display graph.</div>';
+            }
+        });
+    </script>
+</body>
+</html>

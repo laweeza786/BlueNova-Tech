@@ -183,6 +183,22 @@ class Attendance(models.Model):
     def __str__(self):
         return f"{self.student.username} - {self.date} - {self.status}"
 
+
+class WeeklyTestAttempt(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='test_attempts')
+    course_name = models.CharField(max_length=150)
+    week_number = models.IntegerField(default=1)
+    generated_at = models.DateTimeField(auto_now_add=True)
+    expires_at = models.DateTimeField()
+    completed_at = models.DateTimeField(null=True, blank=True)
+    questions_data = models.JSONField(default=list, help_text="List of 20 questions with options and answer key")
+    score = models.IntegerField(null=True, blank=True, help_text="Auto-graded score out of 20")
+    admin_marks = models.TextField(blank=True, help_text="Admin override score or feedback")
+    passed = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.course_name} - Week {self.week_number}"
+
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
 
