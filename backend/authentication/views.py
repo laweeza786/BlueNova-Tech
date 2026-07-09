@@ -69,6 +69,10 @@ def login_view(request):
                 user_obj = User.objects.get(email=username_val)
             else:
                 user_obj = User.objects.get(username=username_val)
+                
+            if user_obj.role == 'user' and not hasattr(user_obj, 'profile'):
+                user_obj.delete()
+                raise User.DoesNotExist
         except User.DoesNotExist:
             # Count failed attempt even for non-existent users (prevents user enumeration timing bypass)
             fail_count += 1
@@ -82,6 +86,10 @@ def login_view(request):
         # 2. Check disabled account
         if not user_obj.is_active:
             return JsonResponse({'success': False, 'message': 'Your account has been disabled.'}, status=400)
+
+        # Ensure admins don't log in here
+        if user_obj.role == 'admin' or user_obj.is_superuser:
+            return JsonResponse({'success': False, 'message': 'Invalid credentials.'}, status=400)
 
         # 3. Verify password
         user = authenticate(request, username=user_obj.username, password=password_val)
@@ -119,9 +127,53 @@ def login_view(request):
 
     return render(request, 'login.html')
 
+@csrf_protect
+def admin_login_view(request):
+    # Always force re-authentication for admin login by logging out the current user if any
+    if request.method == 'GET' and request.user.is_authenticated:
+        auth_logout(request)
+
+    if request.method == 'POST':
+        username_val = request.POST.get('username', '').strip().lower()
+        password_val = request.POST.get('password', '')
+
+        if not username_val or not password_val:
+            return JsonResponse({'success': False, 'message': 'Missing fields. Please enter both username and password.'}, status=400)
+
+        try:
+            user_obj = User.objects.get(username=username_val)
+        except User.DoesNotExist:
+            return JsonResponse({'success': False, 'message': 'Invalid admin credentials.'}, status=400)
+
+        if user_obj.role != 'admin' and not user_obj.is_superuser:
+            return JsonResponse({'success': False, 'message': 'Account does not have admin privileges.'}, status=403)
+
+        if not user_obj.is_active:
+            return JsonResponse({'success': False, 'message': 'Your account has been disabled.'}, status=400)
+
+        user = authenticate(request, username=user_obj.username, password=password_val)
+        if user is None:
+            return JsonResponse({'success': False, 'message': 'Invalid admin credentials.'}, status=400)
+
+        auth_login(request, user)
+        log_action(user, "Admin logged in", request)
+
+        try:
+            setting = Setting.objects.get(user=user)
+            request.session['theme'] = setting.theme
+        except Setting.DoesNotExist:
+            Setting.objects.create(user=user)
+            request.session['theme'] = 'dark'
+
+        return JsonResponse({'success': True, 'redirect': '/erp/admin-dashboard/'})
+
+    return render(request, 'admin-login.html')
+
 
 @csrf_protect
 def signup_view(request):
+    from core.models import Course
+    courses = Course.objects.all()
     if request.user.is_authenticated:
         return redirect('dashboard')
 
@@ -173,7 +225,7 @@ def signup_view(request):
             'redirect': '/auth/login/'
         })
 
-    return render(request, 'signup.html')
+    return render(request, 'signup.html', {'courses': courses})
 
 
 def logout_view(request):

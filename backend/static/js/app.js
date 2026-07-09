@@ -34,17 +34,24 @@ function refreshSystemState() {
     return fetch("/erp/api/system-state/")
         .then(res => {
             if (res.status === 401 || res.status === 403) {
-                window.location.href = "/auth/login/";
+                if (!window.location.pathname.includes('/auth/')) {
+                    window.location.href = "/auth/login/";
+                }
+                return null;
             }
             return res.json();
         })
         .then(data => {
+            if (!data) return null;
             localStorage.setItem("erp_users", JSON.stringify(data.users));
             localStorage.setItem("erp_files", JSON.stringify(data.files));
             localStorage.setItem("erp_notifications", JSON.stringify(data.notifications));
             localStorage.setItem("erp_messages", JSON.stringify(data.messages));
             localStorage.setItem("erp_logs", JSON.stringify(data.logs));
             localStorage.setItem("erp_history", JSON.stringify(data.history));
+            if (data.courses) {
+                localStorage.setItem("erp_courses", JSON.stringify(data.courses));
+            }
             
             handleNotificationsBadge();
             const pathName = window.location.pathname;
@@ -80,12 +87,21 @@ function startRealtimePolling() {
         fetch("/erp/api/check-status/")
             .then(res => {
                 if (res.status === 401 || res.status === 403) {
-                    window.location.href = "/auth/login/";
+                    if (!window.location.pathname.includes('/auth/')) {
+                        window.location.href = "/auth/login/";
+                    }
+                    return null;
                 }
                 return res.json();
             })
             .then(data => {
-                if (data.status === 'deleted') {
+                if (!data) return;
+                if (data.status === 'anonymous') {
+                    localStorage.clear();
+                    if (!window.location.pathname.includes('/auth/')) {
+                        window.location.href = "/auth/login/";
+                    }
+                } else if (data.status === 'deleted') {
                     showToast(data.message || "Your account has been removed.", "danger");
                     localStorage.clear();
                     setTimeout(() => {
@@ -231,20 +247,9 @@ function checkAuthentication(requiredRole) {
     return user;
 }
 
-// Theme Engine
+// Theme Engine (Disabled)
 function initTheme() {
-    const currentTheme = localStorage.getItem("erp_theme") || "dark";
-    document.documentElement.setAttribute("data-theme", currentTheme);
-    
-    const switchers = document.querySelectorAll(".theme-toggle-btn");
-    switchers.forEach(btn => {
-        btn.addEventListener("click", () => {
-            const nextTheme = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
-            document.documentElement.setAttribute("data-theme", nextTheme);
-            localStorage.setItem("erp_theme", nextTheme);
-            showToast(`Theme switched to ${nextTheme} mode!`, "success");
-        });
-    });
+    document.documentElement.setAttribute("data-theme", "dark");
 }
 
 // Sidebar responsive drawer and toggle collapse
@@ -417,31 +422,70 @@ function renderAdminDashboard() {
     // Admin charts
     const ctx = document.getElementById("adminCohortChart");
     if (ctx) {
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Software Eng', 'UI/UX Design', 'Data Analytics'],
-                datasets: [{
-                    label: 'Intern Count',
-                    data: [
-                        users.filter(u => u.track === 'Software Engineering').length,
-                        users.filter(u => u.track === 'UI/UX Design').length,
-                        users.filter(u => u.track === 'Data Analytics').length
-                    ],
-                    backgroundColor: ['#00c853', '#69f0ae', '#00e676'],
-                    borderRadius: 8
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { legend: { display: false } },
-                scales: {
-                    y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#64748b' } },
-                    x: { grid: { display: false }, ticks: { color: '#64748b' } }
+        // Fetch courses from the system state (if not cached separately, they are in system_state API)
+        fetch("/erp/api/system-state/")
+            .then(res => res.json())
+            .then(data => {
+                const courses = data.courses || [];
+                const backgroundColors = courses.map((_, i) => {
+                    const hue = (140 + i * 40) % 360;
+                    return `hsl(${hue}, 100%, 45%)`; // Dynamically generate green-ish / assorted colors
+                });
+
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: courses,
+                        datasets: [{
+                            label: 'Intern Count',
+                            data: courses.map(courseName => users.filter(u => u.track === courseName).length),
+                            backgroundColor: backgroundColors,
+                            borderRadius: 8
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#64748b' } },
+                            x: { grid: { display: false }, ticks: { color: '#64748b' } }
+                        }
+                    }
+                });
+            });
+    }
+    
+    const courseForm = document.getElementById("admin-add-course-form");
+    if (courseForm) {
+        courseForm.onsubmit = (e) => {
+            e.preventDefault();
+            const courseName = document.getElementById("new-course-name").value;
+            fetch("/erp/admin/api/courses/add/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": getCookie("csrftoken")
+                },
+                body: JSON.stringify({ name: courseName })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    showToast(data.message, "success");
+                    document.getElementById("new-course-name").value = "";
+                    refreshSystemState().then(() => {
+                        renderAdminDashboard(); // re-render charts
+                    });
+                } else {
+                    showToast(data.message, "danger");
                 }
-            }
-        });
+            })
+            .catch(err => {
+                showToast("Failed to add course.", "danger");
+                console.error(err);
+            });
+        };
     }
     
     renderRecentUsers();
@@ -937,6 +981,7 @@ window.viewUserDetailsModal = function(userId, activeTab = 'profile') {
             const notifications = data.notifications || [];
             const logs = data.logs || [];
             const reports = data.reports || [];
+            const tests = data.tests || [];
             
             const modalHtml = `
                 <div class="modal fade show d-block" id="userDetailsModal" tabindex="-1" style="background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); z-index: 1050;">
@@ -953,6 +998,9 @@ window.viewUserDetailsModal = function(userId, activeTab = 'profile') {
                                     </li>
                                     <li class="nav-item">
                                         <button class="nav-link text-white bg-transparent border-0 py-2 px-3 ${activeTab === 'uploads' ? 'active border-bottom border-primary fw-bold text-primary' : 'text-secondary'}" onclick="switchDetailsTab('uploads')">Uploads (${files.length})</button>
+                                    </li>
+                                    <li class="nav-item">
+                                        <button class="nav-link text-white bg-transparent border-0 py-2 px-3 ${activeTab === 'tests' ? 'active border-bottom border-primary fw-bold text-primary' : 'text-secondary'}" onclick="switchDetailsTab('tests')">Assessments (${tests.length})</button>
                                     </li>
                                     <li class="nav-item">
                                         <button class="nav-link text-white bg-transparent border-0 py-2 px-3 ${activeTab === 'notifications' ? 'active border-bottom border-primary fw-bold text-primary' : 'text-secondary'}" onclick="switchDetailsTab('notifications')">Notifications (${notifications.length})</button>
@@ -1073,6 +1121,41 @@ window.viewUserDetailsModal = function(userId, activeTab = 'profile') {
                                         </div>
                                     </div>
                                     
+                                    <div class="tab-pane fade ${activeTab === 'tests' ? 'show active' : ''}" id="details-tests">
+                                        <div class="table-responsive">
+                                            <table class="table table-dark table-hover mb-0">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Week</th>
+                                                        <th>Score</th>
+                                                        <th>Status</th>
+                                                        <th>Admin Marks/Feedback</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    ${tests.length === 0 ? '<tr><td colspan="5" class="text-center text-secondary small py-4">No assessments taken.</td></tr>' : tests.map(t => `
+                                                        <tr>
+                                                            <td>Week ${t.week_number}</td>
+                                                            <td>
+                                                                ${t.completed_at ? `<span class="fw-bold ${t.passed ? 'text-success' : 'text-danger'}">${t.score}/20</span>` : '<span class="text-warning">Pending</span>'}
+                                                            </td>
+                                                            <td>
+                                                                ${!t.completed_at ? '<span class="badge-status status-pending">Pending</span>' : (t.passed ? '<span class="badge-status status-approved">Passed</span>' : '<span class="badge-status status-rejected">Failed</span>')}
+                                                            </td>
+                                                            <td>
+                                                                <input type="text" class="form-control form-control-sm form-control-premium" id="admin-marks-${t.id}" value="${t.admin_marks || ''}" placeholder="Add feedback...">
+                                                            </td>
+                                                            <td>
+                                                                <button class="btn btn-sm btn-primary" onclick="saveAdminMarks(${t.id})">Save</button>
+                                                            </td>
+                                                        </tr>
+                                                    `).join('')}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    
                                     <div class="tab-pane fade ${activeTab === 'logs' ? 'show active' : ''}" id="details-logs">
                                         <div class="table-responsive">
                                             <table class="table table-dark table-hover mb-0" style="font-size: 0.85rem;">
@@ -1129,6 +1212,34 @@ window.viewUserDetailsModal = function(userId, activeTab = 'profile') {
             showToast("Failed to fetch candidate details.", "danger");
             console.error(err);
         });
+};
+
+window.saveAdminMarks = function(testId) {
+    const marksInput = document.getElementById(`admin-marks-${testId}`);
+    if (!marksInput) return;
+    
+    const csrf = document.querySelector('input[name=csrfmiddlewaretoken]') ? document.querySelector('input[name=csrfmiddlewaretoken]').value : getCookie('csrftoken');
+    
+    fetch(`/erp/admin/api/tests/${testId}/grade/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrf,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ admin_marks: marksInput.value })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            showToast("Feedback saved successfully!", "success");
+        } else {
+            showToast(data.message || "Failed to save feedback.", "danger");
+        }
+    })
+    .catch(err => {
+        showToast("Network error.", "danger");
+        console.error(err);
+    });
 };
 
 window.editUserModal = function(userId) {
@@ -1511,22 +1622,38 @@ function renderInbox(currentUser, autoSelect = true) {
     
     // 1. Gather Group Chats
     let rawGroups = [];
+    
+    // Attempt to parse courses from a cached source, or fallback to the 3 defaults
+    // Since this is synchronous rendering, we rely on the backend passing the courses somehow
+    // Wait, let's fetch the courses asynchronously first?
+    // Actually, in system_state_api, we can store courses in localStorage!
+    const courses = JSON.parse(localStorage.getItem("erp_courses") || '["Software Engineering", "UI/UX Design", "Data Analytics"]');
+
     if (currentUser.role === "admin") {
         rawGroups = [
-            { id: "all-cohort", name: "All Cohort Candidates", desc: "All candidate tracks", isGroup: true, avatarInitials: "AC" },
-            { id: "Software Engineering", name: "Software Engineering Group", desc: "Software Engineering track Group Chat", isGroup: true, avatarInitials: "SE" },
-            { id: "UI/UX Design", name: "UI/UX Design Group", desc: "UI/UX Design track Group Chat", isGroup: true, avatarInitials: "UX" },
-            { id: "Data Analytics", name: "Data Analytics Group", desc: "Data Analytics track Group Chat", isGroup: true, avatarInitials: "DA" }
+            { id: "all-cohort", name: "All Cohort Candidates", desc: "All candidate tracks", isGroup: true, avatarInitials: "AC" }
         ];
+        courses.forEach(course => {
+            rawGroups.push({
+                id: course,
+                name: `${course} Group`,
+                desc: `${course} track Group Chat`,
+                isGroup: true,
+                avatarInitials: course.substring(0, 2).toUpperCase()
+            });
+        });
     } else {
         rawGroups = [
             { id: "all-cohort", name: "All Cohort Candidates", desc: "All candidate tracks", isGroup: true, avatarInitials: "AC" }
         ];
-        const track = currentUser.track || "Software Engineering";
-        let initials = "SE";
-        if (track === "UI/UX Design") initials = "UX";
-        if (track === "Data Analytics") initials = "DA";
-        rawGroups.push({ id: track, name: `${track} Group`, desc: `${track} Group Chat`, isGroup: true, avatarInitials: initials });
+        const track = currentUser.track || courses[0] || "General";
+        rawGroups.push({ 
+            id: track, 
+            name: `${track} Group`, 
+            desc: `${track} Group Chat`, 
+            isGroup: true, 
+            avatarInitials: track.substring(0, 2).toUpperCase() 
+        });
     }
     
     // Process Groups

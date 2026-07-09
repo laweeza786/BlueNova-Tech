@@ -7,16 +7,10 @@ class Profile(models.Model):
         ('approved', 'Cohort Approved'),
         ('rejected', 'Application Rejected'),
     )
-    TRACK_CHOICES = (
-        ('Software Engineering', 'Software Engineering'),
-        ('UI/UX Design', 'UI/UX Design'),
-        ('Data Analytics', 'Data Analytics'),
-    )
-    
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='profile')
     full_name = models.CharField(max_length=200, blank=True)
     phone = models.CharField(max_length=20, blank=True)
-    track = models.CharField(max_length=50, choices=TRACK_CHOICES, blank=True)
+    track = models.CharField(max_length=150, blank=True)
     bio = models.TextField(blank=True)
     profile_picture = models.ImageField(upload_to='profile_pictures/', default='profile_pictures/default-avatar.png')
     resume = models.FileField(upload_to='resumes/', blank=True, null=True)
@@ -27,6 +21,14 @@ class Profile(models.Model):
 
     def __str__(self):
         return f"{self.user.username}'s Profile"
+
+
+class Course(models.Model):
+    name = models.CharField(max_length=150, unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
 
 
 class UploadedFile(models.Model):
@@ -165,14 +167,8 @@ class Attendance(models.Model):
         ('late', 'Late'),
         ('leave', 'Leave'),
     )
-    TRACK_CHOICES = (
-        ('Software Engineering', 'Software Engineering'),
-        ('UI/UX Design', 'UI/UX Design'),
-        ('Data Analytics', 'Data Analytics'),
-    )
-
     student = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='attendance_records')
-    internship_track = models.CharField(max_length=50, choices=TRACK_CHOICES)
+    internship_track = models.CharField(max_length=150)
     date = models.DateField()
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='present')
     remarks = models.TextField(blank=True)
@@ -186,4 +182,27 @@ class Attendance(models.Model):
 
     def __str__(self):
         return f"{self.student.username} - {self.date} - {self.status}"
+
+
+class WeeklyTestAttempt(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='test_attempts')
+    course_name = models.CharField(max_length=150)
+    week_number = models.IntegerField(default=1)
+    generated_at = models.DateTimeField(auto_now_add=True)
+    expires_at = models.DateTimeField()
+    completed_at = models.DateTimeField(null=True, blank=True)
+    questions_data = models.JSONField(default=list, help_text="List of 20 questions with options and answer key")
+    score = models.IntegerField(null=True, blank=True, help_text="Auto-graded score out of 20")
+    admin_marks = models.TextField(blank=True, help_text="Admin override score or feedback")
+    passed = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.course_name} - Week {self.week_number}"
+
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
+
+@receiver(post_delete, sender=settings.AUTH_USER_MODEL)
+def delete_related_applications(sender, instance, **kwargs):
+    InternshipApplication.objects.filter(email=instance.email).delete()
 

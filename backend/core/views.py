@@ -11,6 +11,7 @@ from django.db.models import Count, Q
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.csrf import csrf_protect
+from django.views.decorators.http import require_POST
 from django.contrib.auth import get_user_model
 from django.contrib import messages
 from django.core.serializers.json import DjangoJSONEncoder
@@ -383,7 +384,8 @@ def edit_profile_view(request):
             'completion_percentage': profile.completion_percentage,
         })
         
-    context = {'profile': profile}
+    from core.models import Course
+    context = {'profile': profile, 'courses': Course.objects.all()}
     context.update(get_erp_context(request))
     return render(request, 'edit-profile.html', context)
 
@@ -1549,7 +1551,9 @@ def admin_user_action(request):
         
     elif action == 'assign_track':
         new_track = data.get('track')
-        if new_track not in ['Software Engineering', 'UI/UX Design', 'Data Analytics', '']:
+        from core.models import Course
+        valid_tracks = list(Course.objects.values_list('name', flat=True)) + ['']
+        if new_track not in valid_tracks:
             return JsonResponse({'success': False, 'message': 'Invalid track.'}, status=400)
         profile.track = new_track
         profile.save()
@@ -1642,6 +1646,10 @@ def admin_user_delete(request):
         except Exception:
             pass
             
+    # Delete associated application records so the candidate can apply again with the same credentials
+    from core.models import InternshipApplication
+    InternshipApplication.objects.filter(email=user.email).delete()
+    
     user.delete()
     return JsonResponse({'success': True, 'message': f'User {target_name} permanently deleted.'})
 
@@ -1687,6 +1695,19 @@ def admin_user_details(request, user_id):
             'created_at': r.created_at.isoformat()
         })
         
+    tests = []
+    from core.models import WeeklyTestAttempt
+    for t in WeeklyTestAttempt.objects.filter(user=user).order_by('-week_number'):
+        tests.append({
+            'id': t.id,
+            'week_number': t.week_number,
+            'course_name': t.course_name,
+            'score': t.score,
+            'passed': t.passed,
+            'completed_at': t.completed_at.isoformat() if t.completed_at else None,
+            'admin_marks': t.admin_marks
+        })
+        
     return JsonResponse({
         'success': True,
         'user': {
@@ -1708,7 +1729,8 @@ def admin_user_details(request, user_id):
         'files': files,
         'notifications': notifications,
         'logs': logs,
-        'reports': reports
+        'reports': reports,
+        'tests': tests
     })
 
 
@@ -1728,6 +1750,9 @@ def check_status_api(request):
         
     try:
         user = User.objects.get(id=request.user.id)
+        if user.role == 'user' and not hasattr(user, 'profile'):
+            user.delete()
+            raise User.DoesNotExist
     except User.DoesNotExist:
         request.session.flush()
         return JsonResponse({
@@ -1751,11 +1776,37 @@ def check_status_api(request):
         'profile_status': user.profile.status if hasattr(user, 'profile') else 'pending',
         'unread_count': unread_count
     })
-
+@login_required
+@admin_required
+@require_POST
+def add_course_api(request):
+    try:
+        data = json.loads(request.body)
+        course_name = data.get('name', '').strip()
+        if not course_name:
+            return JsonResponse({'success': False, 'message': 'Course name is required.'}, status=400)
+        
+        from core.models import Course
+        if Course.objects.filter(name__iexact=course_name).exists():
+            return JsonResponse({'success': False, 'message': 'Course already exists.'}, status=400)
+            
+        Course.objects.create(name=course_name)
+        
+        # Log action
+        ActivityLog.objects.create(
+            user=request.user,
+            action=f"Added new course: {course_name}",
+            ip_address=request.META.get('REMOTE_ADDR', '127.0.0.1')
+        )
+        return JsonResponse({'success': True, 'message': 'Course added successfully.'})
+    except Exception as e:
+        return JsonResponse({'success': False, 'message': str(e)}, status=500)
 
 @login_required
 def system_state_api(request):
     ctx = get_erp_context(request)
+    from core.models import Course
+    courses_data = list(Course.objects.values_list('name', flat=True))
     return JsonResponse({
         'users': json.loads(ctx['json_users']),
         'files': json.loads(ctx['json_files']),
@@ -1763,6 +1814,7 @@ def system_state_api(request):
         'messages': json.loads(ctx['json_messages']),
         'logs': json.loads(ctx['json_logs']),
         'history': json.loads(ctx['json_history']),
+        'courses': courses_data,
     })
 
 
@@ -1785,12 +1837,16 @@ def attendance_dashboard(request):
     attendance_pct = round((present_today + late_today) / total_marked * 100, 1) if total_marked > 0 else 0
 
     # Track-wise attendance for today
-    se_present = today_records.filter(internship_track='Software Engineering', status__in=['present', 'late']).count()
-    se_total = today_records.filter(internship_track='Software Engineering').count()
-    uiux_present = today_records.filter(internship_track='UI/UX Design', status__in=['present', 'late']).count()
-    uiux_total = today_records.filter(internship_track='UI/UX Design').count()
-    da_present = today_records.filter(internship_track='Data Analytics', status__in=['present', 'late']).count()
-    da_total = today_records.filter(internship_track='Data Analytics').count()
+    track_stats = []
+    from core.models import Course
+    for course in Course.objects.all():
+        c_present = today_records.filter(internship_track=course.name, status__in=['present', 'late']).count()
+        c_total = today_records.filter(internship_track=course.name).count()
+        track_stats.append({
+            'name': course.name,
+            'present': c_present,
+            'total': c_total,
+        })
 
     # Weekly trend (last 7 days)
     weekly_labels = []
@@ -1811,12 +1867,7 @@ def attendance_dashboard(request):
         'leave_today': leave_today,
         'total_marked': total_marked,
         'attendance_pct': attendance_pct,
-        'se_present': se_present,
-        'se_total': se_total,
-        'uiux_present': uiux_present,
-        'uiux_total': uiux_total,
-        'da_present': da_present,
-        'da_total': da_total,
+        'track_stats': track_stats,
         'weekly_labels': json.dumps(weekly_labels),
         'weekly_present': json.dumps(weekly_present),
         'weekly_absent': json.dumps(weekly_absent),
@@ -1877,7 +1928,10 @@ def attendance_mark(request):
 
     # GET request — show the mark attendance form
     selected_date_str = request.GET.get('date', date.today().strftime('%Y-%m-%d'))
-    selected_track = request.GET.get('track', 'Software Engineering')
+    from core.models import Course
+    first_course = Course.objects.first()
+    default_track = first_course.name if first_course else 'Software Engineering'
+    selected_track = request.GET.get('track', default_track)
 
     try:
         selected_date = datetime.strptime(selected_date_str, '%Y-%m-%d').date()
@@ -1914,7 +1968,7 @@ def attendance_mark(request):
         'selected_date': selected_date_str,
         'selected_track': selected_track,
         'has_existing': has_existing,
-        'track_choices': ['Software Engineering', 'UI/UX Design', 'Data Analytics'],
+        'track_choices': list(Course.objects.values_list('name', flat=True)),
     }
     context.update(get_erp_context(request))
     return render(request, 'attendance-mark.html', context)
@@ -1935,11 +1989,8 @@ def attendance_list(request):
             Q(username__icontains=search_q)
         )
 
-    tracks_data = {
-        'Software Engineering': [],
-        'UI/UX Design': [],
-        'Data Analytics': []
-    }
+    from core.models import Course
+    tracks_data = {course.name: [] for course in Course.objects.all()}
 
     for student in students:
         track = student.profile.track if hasattr(student, 'profile') and student.profile.track else 'Software Engineering'
@@ -2162,7 +2213,9 @@ def attendance_analytics_api(request):
 
     # Track-wise comparison
     track_data = {}
-    for track in ['Software Engineering', 'UI/UX Design', 'Data Analytics']:
+    from core.models import Course
+    for course in Course.objects.all():
+        track = course.name
         t_total = Attendance.objects.filter(internship_track=track).count()
         t_present = Attendance.objects.filter(internship_track=track, status__in=['present', 'late']).count()
         track_data[track] = round(t_present / t_total * 100, 1) if t_total > 0 else 0
@@ -2389,4 +2442,162 @@ def mark_messages_read_api(request):
         Message.objects.filter(group_name=group_name, is_read=False).exclude(sender=request.user).update(is_read=True)
 
     return JsonResponse({'success': True})
+
+
+# ═══════════════════════════════════════════════════════════════════════
+# ASSESSMENTS & TESTS
+# ═══════════════════════════════════════════════════════════════════════
+
+from django.utils import timezone
+from .models import WeeklyTestAttempt
+import random
+from django.shortcuts import get_object_or_404, redirect
+
+@login_required
+def assessments_view(request):
+    ctx = get_erp_context(request)
+    
+    user_course = request.user.profile.track if hasattr(request.user, 'profile') else 'Software Engineering'
+    
+    # Get all past attempts
+    attempts = WeeklyTestAttempt.objects.filter(user=request.user).order_by('-week_number')
+    
+    # Check if there's an active one (not completed and not expired)
+    now = timezone.now()
+    active_test = attempts.filter(completed_at__isnull=True, expires_at__gt=now).first()
+    
+    # Auto-fail expired tests
+    expired_tests = attempts.filter(completed_at__isnull=True, expires_at__lte=now)
+    for test in expired_tests:
+        test.score = 0
+        test.passed = False
+        test.completed_at = test.expires_at
+        test.save()
+        
+    next_week = attempts.count() + 1 if not active_test else active_test.week_number
+
+    can_generate = active_test is None
+    
+    ctx.update({
+        'attempts': attempts,
+        'active_test': active_test,
+        'next_week': next_week,
+        'can_generate': can_generate,
+        'user_course': user_course
+    })
+    return render(request, 'assessments.html', ctx)
+
+@login_required
+def generate_test_api(request):
+    if request.method != 'POST':
+        return JsonResponse({'success': False, 'message': 'Invalid method.'})
+        
+    user_course = request.user.profile.track if hasattr(request.user, 'profile') else 'Software Engineering'
+    now = timezone.now()
+    
+    active_test = WeeklyTestAttempt.objects.filter(user=request.user, completed_at__isnull=True, expires_at__gt=now).exists()
+    if active_test:
+        return JsonResponse({'success': False, 'message': 'You already have an active test.'})
+        
+    next_week = WeeklyTestAttempt.objects.filter(user=request.user).count() + 1
+    
+    # Generate actual questions based on course and week
+    from core.questions_db import generate_questions
+    questions = generate_questions(user_course, next_week)
+    
+    test = WeeklyTestAttempt.objects.create(
+        user=request.user,
+        course_name=user_course,
+        week_number=next_week,
+        expires_at=now + timezone.timedelta(days=7),
+        questions_data=questions
+    )
+    
+    return JsonResponse({'success': True, 'test_id': test.id, 'message': 'Mock Test Generated! You have 7 days to complete it.'})
+
+@login_required
+def take_test_view(request, test_id):
+    test = get_object_or_404(WeeklyTestAttempt, id=test_id, user=request.user)
+    
+    now = timezone.now()
+    if test.completed_at or test.expires_at <= now:
+        return redirect('assessments')
+        
+    ctx = get_erp_context(request)
+    ctx.update({'test': test})
+    return render(request, 'take-test.html', ctx)
+
+@login_required
+def submit_test_api(request, test_id):
+    if request.method != 'POST':
+        return JsonResponse({'success': False, 'message': 'Invalid method'})
+        
+    test = get_object_or_404(WeeklyTestAttempt, id=test_id, user=request.user)
+    
+    now = timezone.now()
+    if test.completed_at or test.expires_at <= now:
+        return JsonResponse({'success': False, 'message': 'Test has already been submitted or expired.'})
+        
+    import json
+    try:
+        data = json.loads(request.body)
+    except:
+        data = request.POST
+        
+    answers = data.get('answers', {}) # Dict of { "1": "A", "2": "B" ... }
+    
+    score = 0
+    questions = test.questions_data
+    for q in questions:
+        q_id = str(q['id'])
+        user_ans = answers.get(q_id)
+        if user_ans == q['correct']:
+            score += 1
+            
+    test.score = score
+    test.passed = score >= 8
+    test.completed_at = now
+    test.save()
+    
+    return JsonResponse({'success': True, 'score': score, 'passed': test.passed, 'message': 'Test submitted successfully!'})
+
+@login_required
+def progress_report_view(request):
+    ctx = get_erp_context(request)
+    
+    attempts = WeeklyTestAttempt.objects.filter(user=request.user, completed_at__isnull=False).order_by('week_number')
+    
+    labels = [f"Week {a.week_number}" for a in attempts]
+    scores = [a.score for a in attempts]
+    
+    ctx.update({
+        'attempts': attempts,
+        'chart_labels': json.dumps(labels),
+        'chart_scores': json.dumps(scores),
+        'total_tests': attempts.count(),
+        'passed_tests': attempts.filter(passed=True).count(),
+    })
+    
+    return render(request, 'progress-report.html', ctx)
+
+@login_required
+@admin_required
+def admin_grade_test_api(request, test_id):
+    if request.method != 'POST':
+        return JsonResponse({'success': False, 'message': 'Invalid method.'})
+        
+    test = get_object_or_404(WeeklyTestAttempt, id=test_id)
+    
+    try:
+        data = json.loads(request.body)
+    except:
+        data = request.POST
+        
+    admin_marks = data.get('admin_marks', '').strip()
+    
+    test.admin_marks = admin_marks
+    test.save()
+    
+    return JsonResponse({'success': True, 'message': 'Marks/Feedback saved successfully.'})
+
 

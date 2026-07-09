@@ -44,6 +44,7 @@ urlpatterns = [
     path('refund-policy/', public_view('refund-policy.html'), name='refund_policy'),
     path('help-center-public/', public_view('help-center-public.html'), name='help_center_public'),
     path('sitemap/', public_view('sitemap.html'), name='sitemap'),
+    path('site-settings/', public_view('site-settings.html'), name='site_settings'),
     
     # Authentications
     path('auth/', include('authentication.urls')),
