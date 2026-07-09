@@ -126,7 +126,7 @@ body::before {
     background-image: url('https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&w=1920&q=80'); /* Vibrant green forest */
     background-size: cover;
     background-position: center;
-    z-index: -1;
+    z-index: 0;
     opacity: 0.35;
     pointer-events: none;
     animation: forestPan 60s linear infinite;
@@ -589,6 +589,7 @@ select option {
     width: 100%;
     min-height: 100vh;
     position: relative;
+    z-index: 1;
 }
 
 /* ── SIDEBAR ── */
