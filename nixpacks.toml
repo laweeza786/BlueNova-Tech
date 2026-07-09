@@ -1,5 +1,0 @@
-﻿[phases.install]
-cmds = ["pip install -r backend/requirements.txt"]
-
-[start]
-cmd = "cd backend && python manage.py migrate && python manage.py collectstatic --noinput && gunicorn bluenova_erp.wsgi --bind 0.0.0.0:$PORT"
