@@ -20,6 +20,10 @@ dj-database-url==2.1.0
 # Static Files (serve CSS/JS in production without a separate web server)
 whitenoise==6.6.0
 
+# Media Storage
+cloudinary==1.45.0
+django-cloudinary-storage==0.3.0
+
 # Environment Variables
 python-dotenv==1.2.2
 
@@ -49,13 +53,7 @@ phonenumbers==9.0.34
 email-validator==2.3.0
 
 # Utilities
-sqlparse==0.5.5
 tzdata==2026.2
 idna==3.18
 charset-normalizer==3.4.7
 dnspython==2.8.0
-
-# ─────────────────────────────────────────────────────────────
-# Optional — uncomment if switching to PostgreSQL
-# ─────────────────────────────────────────────────────────────
-# psycopg[binary]>=3.1.8

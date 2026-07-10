@@ -15,6 +15,14 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split(',')
 
+# ─────────────────────────────────────────────────────────────────────────────
+# CLOUDINARY — Cloud media storage for Railway (ephemeral filesystem workaround)
+# Set CLOUDINARY_URL in Railway environment variables to enable.
+# Format: cloudinary://api_key:api_secret@cloud_name
+# ─────────────────────────────────────────────────────────────────────────────
+CLOUDINARY_URL = os.environ.get('CLOUDINARY_URL', '')
+USE_CLOUDINARY = bool(CLOUDINARY_URL)
+
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -23,12 +31,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
+
     # Custom apps
     'authentication.apps.AuthenticationConfig',
     'core.apps.CoreConfig',
     'resume.apps.ResumeConfig',
 ]
+
+# Add Cloudinary apps when CLOUDINARY_URL is configured
+if USE_CLOUDINARY:
+    INSTALLED_APPS += ['cloudinary_storage', 'cloudinary']
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -150,8 +162,18 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # WhiteNoise compressed static file storage for production
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# Media Files (User Resumes, Avatars, ZIP uploads)
-MEDIA_URL = '/media/'
+# ─────────────────────────────────────────────────────────────────────────────
+# MEDIA FILES — Cloud (Cloudinary) or Local Disk
+# When CLOUDINARY_URL is set: all uploads go to Cloudinary (required on Railway)
+# When not set: files are stored locally in MEDIA_ROOT (local dev)
+# ─────────────────────────────────────────────────────────────────────────────
+if USE_CLOUDINARY:
+    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+    MEDIA_URL = '/media/'  # Cloudinary overrides the actual URL per file
+else:
+    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+    MEDIA_URL = '/media/'
+
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

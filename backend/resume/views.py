@@ -189,10 +189,10 @@ def resume_upload_photo(request):
         profile = _get_or_create_profile(request.user)
         if 'photo' in request.FILES:
             if profile.photo:
-                # Remove old photo
+                # Use storage-aware delete (works for both local disk and Cloudinary)
                 try:
-                    os.remove(profile.photo.path)
-                except OSError:
+                    profile.photo.delete(save=False)
+                except Exception:
                     pass
             profile.photo = request.FILES['photo']
             profile.save()
@@ -359,36 +359,32 @@ def resume_generate(request):
         profile.save()
 
         from .rendercv_service import build_and_generate_resume
+        import tempfile
+        from django.core.files import File
 
-        output_dir = pathlib.Path(settings.MEDIA_ROOT) / 'resumes' / 'generated'
-        pdf_path = build_and_generate_resume(profile, output_dir)
+        # Generate PDF into a temporary directory (works on both local and cloud)
+        with tempfile.TemporaryDirectory(prefix='bluenova_pdf_') as tmpdir:
+            tmp_output_dir = pathlib.Path(tmpdir)
+            pdf_path = build_and_generate_resume(profile, tmp_output_dir)
 
-        # Relative path for FileField
-        relative = pdf_path.relative_to(pathlib.Path(settings.MEDIA_ROOT))
+            profile_snapshot = _profile_to_dict(profile)
 
-        profile_snapshot = _profile_to_dict(profile)
+            gen = GeneratedResume.objects.create(
+                user=request.user,
+                theme=theme,
+                resume_name=f"{profile.full_name or request.user.username} — {theme}",
+                resume_data=profile_snapshot,
+            )
 
-        gen = GeneratedResume.objects.create(
-            user=request.user,
-            theme=theme,
-            resume_name=f"{profile.full_name or request.user.username} — {theme}",
-            resume_data=profile_snapshot,
-        )
-        gen.pdf_file.name = str(relative).replace('\\', '/')
-        gen.save()
+            # Save the PDF through Django's storage backend (uploads to Cloudinary if configured)
+            with open(pdf_path, 'rb') as f:
+                filename = f'resumes/generated/{gen.id}_{theme}.pdf'
+                gen.pdf_file.save(filename, File(f), save=True)
 
         # Log action to ActivityLog
         try:
             from authentication.views import log_action
             log_action(request.user, f"Generated Resume PDF ({theme} theme)", request)
-        except Exception:
-            pass
-
-        # Cache preview PNGs right at compile time to history
-        try:
-            from .rendercv_service import generate_preview_png
-            preview_dir = pathlib.Path(settings.MEDIA_ROOT) / 'resumes' / 'previews' / str(gen.id)
-            generate_preview_png(profile_snapshot, preview_dir)
         except Exception:
             pass
 
@@ -409,15 +405,25 @@ def resume_generate(request):
 
 @login_required
 def resume_download(request, resume_id):
-    """Stream the PDF file to the browser."""
+    """Stream or redirect to the PDF file."""
+    from django.http import HttpResponseRedirect
+    from django.conf import settings as django_settings
+
     gen = get_object_or_404(GeneratedResume, id=resume_id, user=request.user)
     if not gen.pdf_file:
         raise Http404("PDF not found.")
-    pdf_path = pathlib.Path(settings.MEDIA_ROOT) / gen.pdf_file.name
+
+    safe = gen.resume_name.replace(' ', '_').replace('—', '-').replace(' ', '')
+
+    # When using cloud storage (Cloudinary), redirect to the cloud URL
+    if getattr(django_settings, 'USE_CLOUDINARY', False):
+        return HttpResponseRedirect(gen.pdf_file.url)
+
+    # Local filesystem: stream the file directly
+    pdf_path = pathlib.Path(django_settings.MEDIA_ROOT) / gen.pdf_file.name
     if not pdf_path.exists():
         raise Http404("PDF file missing from disk.")
     response = FileResponse(open(pdf_path, 'rb'), content_type='application/pdf')
-    safe = gen.resume_name.replace(' ', '_').replace('—', '-').replace(' ', '')
     response['Content-Disposition'] = f'attachment; filename="{safe}.pdf"'
     return response
 
@@ -433,43 +439,37 @@ def resume_preview(request, resume_id):
 
     Returns JSON: { success, pages: [base64_png, ...] }
     Each entry in `pages` is a data-URL-ready base64 string for one PDF page.
+
+    Always generates fresh (uses tempdir) so it works on both local and cloud (Railway).
     """
     import base64
+    import tempfile
 
     gen = get_object_or_404(GeneratedResume, id=resume_id, user=request.user)
 
-    # Check if cached preview PNGs already exist on disk
-    preview_dir = pathlib.Path(settings.MEDIA_ROOT) / 'resumes' / 'previews' / str(resume_id)
-    cached = sorted(preview_dir.glob('*_preview_*.png')) if preview_dir.exists() else []
-
-    if cached:
-        pages = []
-        for p in cached:
-            with open(p, 'rb') as f:
-                pages.append(base64.b64encode(f.read()).decode())
-        return JsonResponse({'success': True, 'pages': pages})
-
-    # Generate fresh PNGs from saved snapshot data if available, else current profile
     try:
         from .rendercv_service import generate_preview_png
 
-        if gen.resume_data:
-            png_paths = generate_preview_png(gen.resume_data, preview_dir)
-        else:
-            profile = _get_or_create_profile(request.user)
-            profile.selected_theme = gen.theme   # Match the theme of this generated resume
-            png_paths = generate_preview_png(profile, preview_dir)
+        with tempfile.TemporaryDirectory(prefix='bluenova_preview_') as tmpdir:
+            tmp_path = pathlib.Path(tmpdir)
 
-        if not png_paths:
-            return JsonResponse({
-                'success': False,
-                'error': 'Preview generation failed. Download the PDF to view.'
-            })
+            if gen.resume_data:
+                png_paths = generate_preview_png(gen.resume_data, tmp_path)
+            else:
+                profile = _get_or_create_profile(request.user)
+                profile.selected_theme = gen.theme  # Match the theme of this generated resume
+                png_paths = generate_preview_png(profile, tmp_path)
 
-        pages = []
-        for p in sorted(png_paths):
-            with open(p, 'rb') as f:
-                pages.append(base64.b64encode(f.read()).decode())
+            if not png_paths:
+                return JsonResponse({
+                    'success': False,
+                    'error': 'Preview generation failed. Download the PDF to view.'
+                })
+
+            pages = []
+            for p in sorted(png_paths):
+                with open(p, 'rb') as f:
+                    pages.append(base64.b64encode(f.read()).decode())
 
         return JsonResponse({'success': True, 'pages': pages})
 
@@ -602,18 +602,10 @@ def resume_delete_generated(request, resume_id):
     gen = get_object_or_404(GeneratedResume, id=resume_id, user=request.user)
     if gen.pdf_file:
         try:
-            pdf_path = pathlib.Path(settings.MEDIA_ROOT) / gen.pdf_file.name
-            if pdf_path.exists():
-                pdf_path.unlink()
+            # Storage-aware delete: works for both local disk and Cloudinary
+            gen.pdf_file.delete(save=False)
         except Exception:
             pass
-    # Also delete cached preview PNGs
-    try:
-        preview_dir = pathlib.Path(settings.MEDIA_ROOT) / 'resumes' / 'previews' / str(resume_id)
-        if preview_dir.exists():
-            shutil.rmtree(preview_dir)
-    except Exception:
-        pass
     gen.delete()
     return JsonResponse({'success': True})
 
