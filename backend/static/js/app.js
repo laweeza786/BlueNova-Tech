@@ -2394,7 +2394,7 @@ function showLogoutConfirmation(logoutUrl) {
                     </div>
                 </div>
                 <h4 class="text-white mb-2 fw-bold">Sign Out?</h4>
-                <p class="text-secondary small mb-4" style="line-height:1.5;">Are you sure you want to end your current session and sign out of BlueNova ERP?</p>
+                <p class="text-secondary small mb-4" style="line-height:1.5;">Are you sure you want to end your current session and sign out of BlueNova?</p>
                 <div class="d-flex gap-3 justify-content-center">
                     <button id="logout-cancel-btn" class="btn btn-secondary-premium px-4 py-2" style="font-size:0.9rem;">Cancel</button>
                     <button id="logout-confirm-btn" class="btn btn-danger px-4 py-2" style="background: linear-gradient(135deg, #f43f5e 0%, #be123c 100%); border:none; font-size:0.9rem;">Sign Out</button>

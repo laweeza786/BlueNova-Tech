@@ -1,1 +1,1 @@
-# BlueNova ERP Core Configuration Module
+# BlueNova Core Configuration Module

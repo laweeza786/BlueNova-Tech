@@ -1,7 +1,7 @@
 """
 Resume Builder Views
 --------------------
-All views for the /erp/resume/ section of the BlueNova ERP.
+All views for the /erp/resume/ section of the BlueNova.
 """
 
 import json

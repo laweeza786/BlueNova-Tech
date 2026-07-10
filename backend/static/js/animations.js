@@ -1,5 +1,5 @@
 /* ============================================================
-   BlueNova ERP — Animations Engine v6.0
+   BlueNova — Animations Engine v6.0
    Scroll Reveal, Counters, Parallax, Mouse Tracking
    ============================================================ */
 

@@ -1115,7 +1115,7 @@ COURSES_DATA = {
             {'week': 'Week 9-12', 'topic': 'Figma developer handoff & guides'}
         ],
         'projects': [
-            {'name': 'BlueNova ERP Mockup App', 'desc': 'Complete responsive design system mapping.'},
+            {'name': 'BlueNova Mockup App', 'desc': 'Complete responsive design system mapping.'},
             {'name': 'Fintech Mobile App Prototype', 'desc': 'A payment app layout designed for quick flows.'}
         ],
         'mentor': {
@@ -1507,7 +1507,7 @@ def admin_user_action(request):
         Notification.objects.create(
             user=user,
             title="Application Rejected",
-            message="We appreciate your interest in BlueNova ERP. Unfortunately, your internship application was not approved at this time.",
+            message="We appreciate your interest in BlueNova. Unfortunately, your internship application was not approved at this time.",
             level="warning"
         )
         log_action(request.user, f"Admin {admin_name} rejected user {target_name}.", request)
@@ -1640,7 +1640,7 @@ def admin_user_delete(request):
             if decoded.get('_auth_user_id') == str(user.id):
                 decoded['account_deleted'] = True
                 decoded['deletion_title'] = "Account Removed"
-                decoded['deletion_message'] = "Your BlueNova ERP account has been removed by the administrator. If you believe this was a mistake, please contact support."
+                decoded['deletion_message'] = "Your BlueNova account has been removed by the administrator. If you believe this was a mistake, please contact support."
                 session.session_data = Session.objects.encode(decoded)
                 session.save()
         except Exception:
