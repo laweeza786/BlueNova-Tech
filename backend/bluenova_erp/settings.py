@@ -74,13 +74,19 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'bluenova_erp.wsgi.application'
 
-# Database — uses DATABASE_URL if set (Railway/PostgreSQL), else SQLite for local dev
+# Database — uses DATABASE_URL if set (Railway/MySQL or PostgreSQL), else SQLite for local dev
 DATABASES = {
     'default': dj_database_url.config(
         default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
         conn_max_age=600,
     )
 }
+
+# MySQL-specific: enforce utf8mb4 charset for full Unicode/emoji support
+# (ignored automatically when using SQLite or PostgreSQL)
+if DATABASES['default'].get('ENGINE') == 'django.db.backends.mysql':
+    DATABASES['default'].setdefault('OPTIONS', {})
+    DATABASES['default']['OPTIONS']['charset'] = 'utf8mb4'
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [

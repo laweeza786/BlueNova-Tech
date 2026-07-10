@@ -11,8 +11,8 @@ sqlparse==0.5.5
 # Production Server
 gunicorn==21.2.0
 
-# PostgreSQL Driver (psycopg 3 with standalone binaries)
-psycopg[binary]>=3.1.8
+# MySQL Driver
+mysqlclient>=2.2.0
 
 # Database URL parser (for Railway's DATABASE_URL)
 dj-database-url==2.1.0
